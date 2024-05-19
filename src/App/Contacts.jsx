@@ -12,13 +12,35 @@ const Contacts = () => {
     return (
         <Stack bgcolor={"#013894"} id="contacts">
             <Stack
-                maxWidth={"1920px"}
-                width={"1366px"}
-                direction={"row"}
-                justifyContent={"space-between"}
+                maxWidth={"1366px"}
+                width={"100%"}
+                margin={"auto"}
+                direction={{
+                    xs: "column",
+                    sm: "column",
+                    md: "row",
+                    lg: "row",
+                    xl: "row",
+                }}
+                justifyContent={{
+                    xs: "center",
+                    sm: "center",
+                    md: "space-between",
+                    lg: "space-between",
+                    xl: "space-between",
+                }}
                 p={5}
+                gap={5}
             >
-                <Stack width={"30%"}>
+                <Stack
+                    width={{
+                        xs: "100%",
+                        sm: "100%",
+                        md: "30%",
+                        lg: "30%",
+                        xl: "30%",
+                    }}
+                >
                     <Typography
                         fontWeight={600}
                         color={"white"}
@@ -38,7 +60,15 @@ const Contacts = () => {
                         hayotingizni toza, sog'lom va qulayroq qilamiz.
                     </Typography>
                 </Stack>
-                <Stack alignItems={"start"}>
+                <Stack
+                    alignItems={{
+                        xs: "center",
+                        sm: "center",
+                        md: "flex-start",
+                        lg: "flex-start",
+                        xl: "flex-start",
+                    }}
+                >
                     <Button component={"a"} className="footerLinks" href="#">
                         <WaterDropOutlinedIcon /> Silver Water
                     </Button>

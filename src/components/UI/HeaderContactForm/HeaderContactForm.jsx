@@ -5,8 +5,15 @@ const HeaderContactForm = () => {
     return (
         <Stack
             gap={2}
-            p={4}
-            width={500}
+            p={{
+                xs: 2,
+                sm: 3,
+                md: 4,
+            }}
+            width={{
+                xs: 350,
+                md: 500,
+            }}
             sx={{
                 background: "rgba(255, 255, 255, 0.2)",
                 borderRadius: "16px",

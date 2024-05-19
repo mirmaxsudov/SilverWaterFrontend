@@ -1,6 +1,7 @@
-import { Stack, Typography } from "@mui/material";
+import { Link, Stack, Typography } from "@mui/material";
 import logo from "../../assets/logo.png";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
+import DrawerMobileNavigation from "../UI/Sidebar/Sidebar";
 
 const Navbar = () => {
     return (
@@ -18,14 +19,28 @@ const Navbar = () => {
                 direction="row"
                 justifyContent="space-between"
                 alignItems={"center"}
-                width={"1366px"}
+                maxWidth={"1366px"}
+                width={"100%"}
                 margin={"auto"}
                 height={"80px"}
+                px={{
+                    xs: 2,
+                    sm: 5,
+                    md: 5,
+                    lg: 5,
+                    xl: 5,
+                }}
             >
+                <DrawerMobileNavigation />
                 <Stack component={"a"} href={"#"}>
                     <img src={logo} width={100} alt="" />
                 </Stack>
-                <Stack direction={"row"} gap={3}>
+
+                <Stack
+                    direction={"row"}
+                    gap={3}
+                    sx={{ display: { xs: "none", sm: "none", md: "flex" } }}
+                >
                     <a className="navLinks" href="#bizHaqimizda">
                         Biz Haqimizda
                     </a>
@@ -45,13 +60,34 @@ const Navbar = () => {
                             color: "#013690",
                             fontSize: "1.1rem",
                             display: "flex",
+
                             alignItems: "center",
                             gap: 1,
                         }}
                         fontWeight={600}
                         variant="h6"
                     >
-                        <LocalPhoneIcon /> +998 90 123 45 67
+                        <Link
+                            sx={{ color: "#013690" }}
+                            href="tel:+998991231212"
+                        >
+                            <LocalPhoneIcon />
+                        </Link>
+                        <Link
+                            sx={{
+                                color: "#013690",
+                                textDecoration: "none",
+                                display: {
+                                    xs: "none",
+                                    sm: "none",
+                                    md: "flex",
+                                },
+                                mb: 1,
+                            }}
+                            href="tel:+998991231212"
+                        >
+                            +998 99 123 12 12
+                        </Link>
                     </Typography>
                 </Stack>
             </Stack>

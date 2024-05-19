@@ -55,3 +55,9 @@ html {
     align-items: center;
     gap: 5px;
 }
+
+@media (max-width: 768px) {
+    .hero-header {
+        justify-content: center;
+    }
+}

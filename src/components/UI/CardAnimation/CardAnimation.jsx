@@ -5,10 +5,8 @@ const CardAnimation = () => {
     const [activeCard, setActiveCard] = useState("c1");
 
     useEffect(() => {
-        // This function runs every 3 seconds to cycle through the cards
         const interval = setInterval(() => {
             setActiveCard((prevCard) => {
-                // Determine the next card based on the current card
                 switch (prevCard) {
                     case "c1":
                         return "c2";
@@ -22,11 +20,10 @@ const CardAnimation = () => {
                         return "c1";
                 }
             });
-        }, 3000); // Change every 3000 milliseconds (3 seconds)
+        }, 5000);
 
-        // Cleanup function to clear the interval when the component unmounts
         return () => clearInterval(interval);
-    }, []); // Empty dependency array means this effect runs only once after the initial render
+    }, []);
 
     const handleClick = (cardId) => {
         setActiveCard(cardId);
@@ -126,7 +123,7 @@ const CardAnimation = () => {
                         className={styles.card}
                         onClick={() => handleClick("c4")}
                     >
-                        <div className={styles.row}>
+                        <div htmlFor="c4" className={styles.row}>
                             <div className={styles.icon}>4</div>
                             <div className={styles.description}>
                                 <h4 className={styles.h4}>Hamyonbob</h4>

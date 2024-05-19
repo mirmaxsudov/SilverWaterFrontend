@@ -7,29 +7,23 @@
     background: var(--bg);
 }
 
-.h1 {
-    padding: 20px;
-    color: var(--text);
-    font-size: 50px;
-}
-
 .slider {
-    width: 100%;
     height: max-content;
-    display: flex;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    overflow: hidden;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
     background: transparent;
 }
 .slider .card {
-    flex: 1;
-    margin: 0 10px;
     background: #e3effb;
-
-    border-radius: 16px;
+    border-radius: 20px;
     overflow: hidden;
 }
 
 .slider .card .img {
-    height: 250px;
+    height: 400px;
     margin: 16px;
     width: calc(100% - 32px);
     border-radius: 10px;
@@ -61,11 +55,4 @@
     font-size: 25px;
     font-weight: 500;
     color: var(--text);
-}
-.card .content .sub-title {
-    font-size: 16px;
-    font-weight: 400;
-    color: var(--sub-text);
-    line-height: 20px;
-    text-align: left;
 }
