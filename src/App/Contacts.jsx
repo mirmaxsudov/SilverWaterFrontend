@@ -101,7 +101,15 @@ const Contacts = () => {
                         <LocalPhoneOutlinedIcon /> Ish Bo&apos;yicha
                     </Button>
                 </Stack>
-                <Stack alignItems={"start"}>
+                <Stack
+                    alignItems={{
+                        xs: "center",
+                        sm: "center",
+                        md: "flex-start",
+                        lg: "flex-start",
+                        xl: "flex-start",
+                    }}
+                >
                     <Typography
                         variant="h6"
                         mb={2}
