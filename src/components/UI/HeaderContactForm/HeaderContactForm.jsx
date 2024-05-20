@@ -18,12 +18,14 @@ const HeaderContactForm = ({ setOpen }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            apply(credentials);
+            await apply(credentials);
             setOpen(true);
             setError("");
+            setFullName("");
+            setPhoneNumber("");
         } catch (error) {
             console.log(error);
-            setError(error.response.data.message);
+            setError(error.response.data.localDateTime);
         }
     };
 
@@ -46,7 +48,9 @@ const HeaderContactForm = ({ setOpen }) => {
                 backdropFilter: "blur(5px)",
             }}
         >
-            {error && <Alert severity="error">This is an error Alert.</Alert>}
+            {error && (
+                <Alert severity="error">Telefon raqam yoki Ism kiritidi</Alert>
+            )}
             <Typography variant="h5" fontWeight={600} sx={{ color: "white" }}>
                 Biz bilan bog&apos;lanish
             </Typography>
