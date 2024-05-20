@@ -80,6 +80,7 @@
     color: white;
     border-radius: 50%;
     width: 50px;
+    height: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -92,11 +93,18 @@
     flex-direction: column;
     overflow: hidden;
     height: 80px;
-    width: 520px;
+    width: 510px;
     opacity: 0;
     transform: translateY(30px);
     transition-delay: 0.3s;
     transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.058);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    padding: 0.5rem;
+    margin: 0 0 0.5rem 0;
 }
 
 .description .p {
@@ -122,16 +130,20 @@
 }
 
 .card[for="c1"] {
-    background-image: url("../../../assets/bgWater1.png");
+    background-image: url("../../../assets/card1.jpg");
+    background-position: center;
 }
 .card[for="c2"] {
-    background-image: url("../../../assets/bgWater2.png");
+    background-image: url("../../../assets/card2.jpg");
+    background-position: center;
 }
 .card[for="c3"] {
-    background-image: url("../../../assets/bgWater3.png");
+    background-image: url("../../../assets/card3.jpg");
+    background-position: bottom;
 }
 .card[for="c4"] {
-    background-image: url("../../../assets/bgWater4.png");
+    background-image: url("../../../assets/card4.jpg");
+    background-position: center;
 }
 
 @media screen and (max-width: 1280px) {
@@ -143,11 +155,19 @@
     .card {
         width: 80px;
     }
-    .card > .row > .description {
-        width: 400px;
-    }
+
     .input:checked + label {
         width: 400px;
+    }
+    .card > .row > .description {
+        padding: 0.5rem;
+        width: 310px;
+        height: 100%;
+        margin: 0 0 0.5rem 0;
+    }
+
+    .card > .row {
+        align-items: end;
     }
 }
 
@@ -170,6 +190,11 @@
         height: 400px;
         width: 90%;
     }
+    .card > .row > .description {
+        width: 70%;
+        height: 100%;
+        padding: 0.5rem;
+    }
 }
 
 @media screen and (max-width: 500px) {
@@ -180,12 +205,11 @@
     .card > .row > .description {
         width: 70%;
         height: 100%;
-        padding: 0 0.5rem 0.5rem 0;
+        padding: 0.5rem;
     }
 
     .card > .row {
         align-items: end;
-        justify-content: center;
     }
 
     .card > .row[for="c4"] {

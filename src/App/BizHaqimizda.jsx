@@ -10,25 +10,8 @@ const BizHaqimizda = () => {
             py={5}
             minHeight={"calc(768px - 80px)"}
         >
-            <Typography
-                variant="h3"
-                fontWeight={600}
-                textAlign={"center"}
-                py={5}
-                sx={{
-                    color: "#013894",
-                    fontSize: {
-                        xs: "2rem",
-                        sm: "2.5rem",
-                        md: "3rem",
-                        lg: "3.5rem",
-                        xl: "4rem",
-                    },
-                }}
-            >
-                Biz haqimizda
-            </Typography>
             <Stack
+                py={5}
                 gap={4}
                 direction={{
                     xs: "column",
@@ -63,6 +46,24 @@ const BizHaqimizda = () => {
                         p: 2,
                     }}
                 >
+                    <Typography
+                        variant="h3"
+                        fontWeight={600}
+                        textAlign={"center"}
+                        pb={3}
+                        sx={{
+                            color: "#013894",
+                            fontSize: {
+                                xs: "2rem",
+                                sm: "2.5rem",
+                                md: "3rem",
+                                lg: "3.5rem",
+                                xl: "4rem",
+                            },
+                        }}
+                    >
+                        Biz haqimizda
+                    </Typography>
                     <Typography variant="body1" sx={{ textAlign: "justify" }}>
                         Silver water kompaniyasiga 1995-yilda asos solingan
                         bo‘lib, O‘zbekistonda birinchilardan bo‘lib gazlangan va

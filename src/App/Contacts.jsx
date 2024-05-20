@@ -102,20 +102,42 @@ const Contacts = () => {
                     </Button>
                 </Stack>
                 <Stack alignItems={"center"}>
-                    <Typography variant="h6" fontWeight={600} color={"white"}>
+                    <Typography
+                        variant="h6"
+                        mb={2}
+                        fontWeight={600}
+                        color={"white"}
+                    >
                         Biz Bilan Bog&apos;laning
                     </Typography>
-                    <Button component={"a"} className="footerLinks" href="#">
+                    <Button
+                        component={"a"}
+                        className="footerLinks"
+                        target="_blank"
+                        href="https://t.me/silverwater_uz"
+                    >
                         <TelegramIcon /> Telegram
                     </Button>
-                    <Button component={"a"} className="footerLinks" href="#">
-                        <LocationOnOutlinedIcon /> Address
+                    <Button
+                        component={"a"}
+                        target="_blank"
+                        className="footerLinks"
+                        href="https://yandex.uz/maps/-/CDbTBJOQ"
+                    >
+                        <LocationOnOutlinedIcon /> Набережная улица, 51
                     </Button>
                     <Button component={"a"} className="footerLinks" href="#">
                         <EmailOutlinedIcon /> Email
                     </Button>
-                    <Typography fontWeight={600} className="footerLinks">
-                        +998 00 123 45 67
+                    <Typography
+                        fontWeight={600}
+                        component={"a"}
+                        target="_blank"
+                        href="tel:+998555150550"
+                        style={{ textDecoration: "none", color: "white" }}
+                        className="footerLinks"
+                    >
+                        +998 55 515 05 50
                     </Typography>
                 </Stack>
             </Stack>

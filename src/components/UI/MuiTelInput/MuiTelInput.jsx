@@ -9,7 +9,7 @@ const MyTelInput = ({ value, onChange }) => {
             fullWidth
             required
             value={value}
-            onChange={onChange}
+            onChange={(newValue) => onChange(newValue)} // Updated to handle direct value
             inputProps={{ maxLength: 17 }}
             InputProps={{ style: { backgroundColor: "white" } }}
         />

@@ -69,7 +69,7 @@ const Navbar = () => {
                     >
                         <Link
                             sx={{ color: "#013690" }}
-                            href="tel:+998991231212"
+                            href="tel:+998555150550"
                         >
                             <LocalPhoneIcon />
                         </Link>
@@ -84,9 +84,9 @@ const Navbar = () => {
                                 },
                                 mb: 1,
                             }}
-                            href="tel:+998991231212"
+                            href="tel:+998555150550"
                         >
-                            +998 99 123 12 12
+                            +998 55 515 05 50
                         </Link>
                     </Typography>
                 </Stack>

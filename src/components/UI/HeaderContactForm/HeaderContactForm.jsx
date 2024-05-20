@@ -1,10 +1,34 @@
-import { Stack, TextField, Typography } from "@mui/material";
+import { Stack, TextField, Typography, Button } from "@mui/material";
 import MuiTelInput from "../MuiTelInput/MuiTelInput";
+import { apply } from "../../../api/request";
+import { useState } from "react";
+import Alert from "@mui/material/Alert";
 
-const HeaderContactForm = () => {
+const HeaderContactForm = ({ setOpen }) => {
+    const [fullName, setFullName] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
+    const trimmedPhoneNumber = phoneNumber.replace(/\D/g, "");
+    const [error, setError] = useState("");
+
+    const credentials = {
+        fullName,
+        phoneNumber: "+" + trimmedPhoneNumber,
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            apply(credentials);
+            setOpen(true);
+            setError("");
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
         <Stack
-            gap={2}
+            gap={1}
             p={{
                 xs: 2,
                 sm: 3,
@@ -21,18 +45,41 @@ const HeaderContactForm = () => {
                 backdropFilter: "blur(5px)",
             }}
         >
+            {error && <Alert severity="error">This is an error Alert.</Alert>}
             <Typography variant="h5" fontWeight={600} sx={{ color: "white" }}>
-                Lorem ipsum dolor sit amet
+                Biz bilan bog&apos;lanish
             </Typography>
-            <Typography variant="body1" color={"white"}>
+            <Typography variant="body1" color="white">
                 So&apos;rov qoldiring va menejerimiz siz bilan bog&apos;lanadi
             </Typography>
             <TextField
                 placeholder="Ismingiz"
                 type="text"
+                value={fullName}
+                onChange={(e) => {
+                    console.log("Name updated:", e.target.value);
+                    setFullName(e.target.value);
+                }}
                 InputProps={{ style: { backgroundColor: "white" } }}
             />
-            <MuiTelInput />
+            <MuiTelInput
+                value={phoneNumber}
+                onChange={(value) => {
+                    console.log("Phone updated:", value);
+                    setPhoneNumber(value);
+                }}
+            />
+            <Button
+                variant="contained"
+                onClick={handleSubmit}
+                sx={{
+                    py: 1.5,
+                    bgcolor: "#013690",
+                    fontWeight: 600,
+                }}
+            >
+                Jo&apos;natish
+            </Button>
         </Stack>
     );
 };

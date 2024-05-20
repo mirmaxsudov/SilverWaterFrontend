@@ -5,7 +5,6 @@ import water1 from "../../../assets/0.33litr.jpg";
 import water2 from "../../../assets/0.5litr.jpg";
 import water3 from "../../../assets/1litr.jpg";
 import water4 from "../../../assets/1.5litrbezgaz.jpg";
-import water5 from "../../../assets/1.5litrgazli.jpg";
 import water6 from "../../../assets/5litr.jpg";
 import water7 from "../../../assets/10litr.jpg";
 
@@ -30,11 +29,7 @@ const products = [
         title: "1.5L",
         img: water4,
     },
-    {
-        id: 5,
-        title: "1.5L",
-        img: water5,
-    },
+
     {
         id: 6,
         title: "5L",
