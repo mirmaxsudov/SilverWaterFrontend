@@ -113,7 +113,7 @@ export default function DrawerMobileNavigation() {
                     </ListItemButton>
                     <ListItemButton
                         component="a"
-                        href="#maxsulotlar"
+                        href="#mahsulotlar"
                         onClick={() => setOpen(false)}
                         sx={{
                             fontWeight: "lg",
@@ -128,26 +128,7 @@ export default function DrawerMobileNavigation() {
                             alignItems: "center",
                         }}
                     >
-                        <CategoryOutlinedIcon /> Maxsulotlar
-                    </ListItemButton>
-                    <ListItemButton
-                        onClick={() => setOpen(false)}
-                        component="a"
-                        href="#contacts"
-                        sx={{
-                            fontWeight: "lg",
-                            borderRadius: "0.6rem",
-                            transition: "all 0.2s ease",
-                            ":hover": {
-                                backgroundColor: "#013894 !important",
-                                color: "white !important",
-                                borderRadius: "0.6rem",
-                            },
-                            display: "flex",
-                            alignItems: "center",
-                        }}
-                    >
-                        <LocalPhoneOutlinedIcon /> Ish Bo&apos;yicha
+                        <CategoryOutlinedIcon /> Mahsulotlar
                     </ListItemButton>
                 </List>
             </Drawer>

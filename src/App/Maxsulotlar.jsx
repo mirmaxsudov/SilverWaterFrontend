@@ -4,7 +4,7 @@ import Carousel from "../components/UI/CarouselMaxsulotlar.jsx/Carousel";
 const Maxsulotlar = () => {
     return (
         <Stack
-            id={"maxsulotlar"}
+            id={"mahsulotlar"}
             maxWidth={"1366px"}
             width={"100%"}
             margin={"auto"}
@@ -28,7 +28,7 @@ const Maxsulotlar = () => {
                     },
                 }}
             >
-                Maxsulotlar
+                Mahsulotlar
             </Typography>
             <Stack direction={"row"} alignItems={"center"} width={"90%"}>
                 <Carousel />

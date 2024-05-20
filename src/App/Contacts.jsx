@@ -1,12 +1,13 @@
 import { Stack, Button, Typography } from "@mui/material";
 import TelegramIcon from "@mui/icons-material/Telegram";
-import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
+
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import WaterDropOutlinedIcon from "@mui/icons-material/WaterDropOutlined";
 import Groups2OutlinedIcon from "@mui/icons-material/Groups2Outlined";
 import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
 import CategoryOutlinedIcon from "@mui/icons-material/CategoryOutlined";
+import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 
 const Contacts = () => {
     return (
@@ -93,13 +94,6 @@ const Contacts = () => {
                     >
                         <CategoryOutlinedIcon /> Maxsulotlar
                     </Button>
-                    <Button
-                        component={"a"}
-                        className="footerLinks"
-                        href="#contacts"
-                    >
-                        <LocalPhoneOutlinedIcon /> Ish Bo&apos;yicha
-                    </Button>
                 </Stack>
                 <Stack
                     alignItems={{
@@ -137,7 +131,7 @@ const Contacts = () => {
                     <Button component={"a"} className="footerLinks" href="#">
                         <EmailOutlinedIcon /> Email
                     </Button>
-                    <Typography
+                    <Button
                         fontWeight={600}
                         component={"a"}
                         target="_blank"
@@ -145,9 +139,45 @@ const Contacts = () => {
                         style={{ textDecoration: "none", color: "white" }}
                         className="footerLinks"
                     >
-                        +998 55 515 05 50
-                    </Typography>
+                        <LocalPhoneIcon /> +998 55 515 05 50
+                    </Button>
                 </Stack>
+            </Stack>
+            <Stack
+                bgcolor={"darkblue"}
+                p={{
+                    xs: 3,
+                    md: 0,
+                }}
+                textAlign={"center"}
+            >
+                <Typography color={"white"}>
+                    Copyright ©{" "}
+                    <Button
+                        sx={{
+                            color: "white",
+                            textTransform: "none",
+                            fontWeight: "400",
+                        }}
+                        component={"a"}
+                        href="https://t.me/abdurhamonMirmaxsudov"
+                    >
+                        Mirmaxsudov
+                    </Button>{" "}
+                    &{" "}
+                    <Button
+                        sx={{
+                            color: "white",
+                            textTransform: "none",
+                            fontWeight: "400",
+                        }}
+                        component={"a"}
+                        href="https://t.me/abdulkhodiev1"
+                    >
+                        Abdulkhodiev
+                    </Button>{" "}
+                    2024. All rights reserved.
+                </Typography>
             </Stack>
         </Stack>
     );

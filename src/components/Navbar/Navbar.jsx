@@ -45,13 +45,10 @@ const Navbar = () => {
                         Biz Haqimizda
                     </a>
                     <a className="navLinks" href="#tanlov">
-                        Tog&apos;ri Tanlov
+                        To&apos;g&apos;ri Tanlov
                     </a>
-                    <a className="navLinks" href="#maxsulotlar">
-                        Maxsulotlar
-                    </a>
-                    <a className="navLinks" href="#contacts">
-                        Ish Bo&apos;yicha
+                    <a className="navLinks" href="#mahsulotlar">
+                        Mahsulotlar
                     </a>
                 </Stack>
                 <Stack>

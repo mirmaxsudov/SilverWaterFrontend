@@ -31,7 +31,7 @@ const Tanlov = () => {
                 }}
                 px={{ xs: 2, sm: 5, md: 5, lg: 5, xl: 5 }}
             >
-                Silver Water - To&apos;gri Tanlov
+                Silver Water - To&apos;g&apos;ri Tanlov
             </Typography>
             <Stack direction={"row"} alignItems={"center"}>
                 <CardAnimation />
