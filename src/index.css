@@ -34,6 +34,7 @@ html {
     background-image: url(../src/assets/heroimg.jpg);
     background-repeat: no-repeat;
     width: 100%;
+    background-position: center;
     max-width: 1920px;
     height: calc(100vh - 80px);
     max-height: calc(1280px - 80px);

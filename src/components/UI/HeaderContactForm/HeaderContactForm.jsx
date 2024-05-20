@@ -23,6 +23,7 @@ const HeaderContactForm = ({ setOpen }) => {
             setError("");
         } catch (error) {
             console.log(error);
+            setError(error.response.data.message);
         }
     };
 
@@ -57,7 +58,6 @@ const HeaderContactForm = ({ setOpen }) => {
                 type="text"
                 value={fullName}
                 onChange={(e) => {
-                    console.log("Name updated:", e.target.value);
                     setFullName(e.target.value);
                 }}
                 InputProps={{ style: { backgroundColor: "white" } }}
@@ -65,7 +65,6 @@ const HeaderContactForm = ({ setOpen }) => {
             <MuiTelInput
                 value={phoneNumber}
                 onChange={(value) => {
-                    console.log("Phone updated:", value);
                     setPhoneNumber(value);
                 }}
             />
