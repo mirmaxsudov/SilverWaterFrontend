@@ -128,8 +128,13 @@ const Contacts = () => {
                     >
                         <LocationOnOutlinedIcon /> Набережная улица, 51
                     </Button>
-                    <Button component={"a"} className="footerLinks" href="#">
-                        <EmailOutlinedIcon /> Email
+                    <Button
+                        component={"a"}
+                        className="footerLinks"
+                        target="_blank"
+                        href="mailto:Info@silver-water.uz"
+                    >
+                        <EmailOutlinedIcon /> Info@silver-water.uz
                     </Button>
                     <Button
                         fontWeight={600}
