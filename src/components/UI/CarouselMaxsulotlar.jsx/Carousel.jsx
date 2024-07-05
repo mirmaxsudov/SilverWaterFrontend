@@ -1,10 +1,10 @@
 import styles from "./Carousel.module.css";
-import { Button, Box, Grid } from "@mui/material";
+import { Button, Box } from "@mui/material";
 
 import water1 from "../../../assets/0.33litr.jpg";
 import water2 from "../../../assets/0.5litr.jpg";
 import water3 from "../../../assets/1litr.jpg";
-import water4 from "../../../assets/1.5litrbezgaz.jpg";
+import water4 from "../../../assets/1_5water.jpg";
 import water6 from "../../../assets/5litr.jpg";
 import water7 from "../../../assets/10litr.jpg";
 
