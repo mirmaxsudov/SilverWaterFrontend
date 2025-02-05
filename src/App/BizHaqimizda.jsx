@@ -26,14 +26,26 @@ const BizHaqimizda = () => {
                         lg: "50%",
                     }}
                 >
-                    <video
+                    {/* <video
                         width="100%"
                         style={{ borderRadius: "1rem" }}
                         controls
                     >
                         <source src={promoVideo} type="video/mp4" />
                         Your browser does not support the video tag.
-                    </video>
+                    </video> */}
+                    <div>
+                        <iframe
+                            width="100%"
+                            height="400px"
+                            style={{ borderRadius: "1rem" }}
+                            src="https://www.youtube.com/embed/-qTlzRCqv4s?si=g2ylp_yF8szH9D8B"
+                            title="YouTube video player"
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerPolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                    </div>
                 </Box>
                 <Box
                     width={{
