@@ -1,5 +1,6 @@
-import {Link, Outlet} from "react-router-dom";
+import {NavLink, Outlet} from "react-router-dom";
 import Logo from "../assets/logo.png"
+import "./AdminLayout.css"
 
 const AdminLayout = () => {
     const NavLinks = [
@@ -57,17 +58,17 @@ const AdminLayout = () => {
                     <span className="font-semibold text-lg">Silver Water</span>
                 </div>
 
-                <nav className="flex-1 overflow-y-auto p-4">
+                <nav className="flex-1 overflow-y-auto p-4 nav-links-container">
                     <ul className="space-y-2">
                         {
                             NavLinks.map(({id, title, link}) => (
                                 <li key={id}>
-                                    <Link
+                                    <NavLink
                                         to={link}
-                                        className="flex items-center p-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700"
+                                        className="nav-link flex text-wrap items-center p-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700"
                                     >
                                         <span className="ml-3">{title}</span>
-                                    </Link>
+                                    </NavLink>
                                 </li>
                             ))
                         }
@@ -75,7 +76,9 @@ const AdminLayout = () => {
                 </nav>
 
                 <div className="border-t border-gray-200 p-4">
-                    <p className="text-sm text-gray-600">Abdurahmon Mirmaxsudov</p>
+                    <NavLink className={"nav-link"} to={"profile/84"}>
+                        <p className="text-sm text-gray-600">Abdurahmon Mirmaxsudov</p>
+                    </NavLink>
                 </div>
             </aside>
             <main className="flex-1 bg-gray-50 p-6 overflow-y-auto">

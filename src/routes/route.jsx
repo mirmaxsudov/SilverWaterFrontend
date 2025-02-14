@@ -3,6 +3,7 @@ import Home from "../pages/Home.jsx";
 import NotFound from "../error/NotFound.jsx";
 import Login from "../pages/login/Login.jsx";
 import AdminLayout from "../layout/AdminLayout.jsx";
+import Profile, {profileAction} from "../components/profile/Profile.jsx";
 
 export const route = createBrowserRouter([
     {
@@ -18,6 +19,7 @@ export const route = createBrowserRouter([
     {
         path: "/admin",
         element: <AdminLayout/>,
+        // errorElement: <NotFound/>,
         children: [
             {
                 path: "manage-users",
@@ -50,6 +52,11 @@ export const route = createBrowserRouter([
             {
                 path: "manage-applications",
                 element: <div>Manage Applications</div>
+            },
+            {
+                path: "profile/:id",
+                element: <Profile/>,
+                loader: profileAction
             }
         ]
     },
