@@ -1,30 +1,38 @@
 import {MdInsertEmoticon} from "react-icons/md";
 import {useLoaderData} from "react-router-dom";
 import {useState, useEffect} from "react";
+import {useTranslation} from "react-i18next";
+import {changeLanguage} from "../../features/language/languageSlice.js";
+import {useDispatch} from "react-redux";
 
 const Profile = () => {
     const profileData = useLoaderData();
     const [error, setError] = useState(null);
+    const {t} = useTranslation();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (!profileData || profileData.error)
-            setError("User not found");
+            setError(t("profile.error"));
 
-    }, [profileData]);
+    }, [profileData, t]);
 
     return (<section className="profile-section">
         <div className="container mx-auto">
             <div className="top flex items-center justify-between">
-                <h1 className="font-bold text-3xl">Profile</h1>
+                <h1 className="font-bold text-3xl">{t("profile.title")}</h1>
                 <div className="flex items-center gap-[20px]">
-                    <select name="language" className="bg-white text-black font-semibold py-2 rounded px-4 border">
+                    <select onChange={(e) => {
+                        e.preventDefault();
+                        dispatch(changeLanguage(e.target.value));
+                    }} name="language" className="bg-white text-black font-semibold py-2 rounded px-4 border">
                         <option value="uz">Uz</option>
                         <option value="ru">Ru</option>
                         <option value="en">En</option>
                     </select>
                     <button
                         className="bg-red-300 text-red-700 font-semibold py-2 rounded px-4 hover:bg-red-600 transition-all duration-300 hover:text-[#fff]">
-                        Logout
+                        {t("profile.logout")}
                     </button>
                 </div>
             </div>

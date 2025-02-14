@@ -4,6 +4,8 @@ import NotFound from "../error/NotFound.jsx";
 import Login from "../pages/login/Login.jsx";
 import AdminLayout from "../layout/AdminLayout.jsx";
 import Profile, {profileAction} from "../components/profile/Profile.jsx";
+import Dashboard from "../components/admin/dashboard/Dashboard.jsx";
+import Applications from "../components/admin/applications/Applications.jsx";
 
 export const route = createBrowserRouter([
     {
@@ -21,6 +23,10 @@ export const route = createBrowserRouter([
         element: <AdminLayout/>,
         // errorElement: <NotFound/>,
         children: [
+            {
+                path: "dashboard",
+                element: <Dashboard/>
+            },
             {
                 path: "manage-users",
                 element: <div>Manage Users</div>
@@ -51,12 +57,16 @@ export const route = createBrowserRouter([
             },
             {
                 path: "manage-applications",
-                element: <div>Manage Applications</div>
+                element: <Applications/>,
             },
             {
                 path: "profile/:id",
                 element: <Profile/>,
                 loader: profileAction
+            },
+            {
+                path: "settings",
+                element: <div>Settings</div>
             }
         ]
     },

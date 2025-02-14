@@ -16,6 +16,7 @@
         "@mui/icons-material": "^5.15.13",
         "@mui/joy": "^5.0.0-beta.32",
         "@mui/material": "^5.15.14",
+        "@reduxjs/toolkit": "^2.5.1",
         "axios": "^1.6.7",
         "bootstrap": "^5.3.3",
         "cors": "^2.8.5",
@@ -24,6 +25,7 @@
         "embla-carousel-react": "^8.0.2",
         "framer-motion": "^12.4.2",
         "fs": "^0.0.1-security",
+        "i18next": "^24.2.2",
         "inherits": "^2.0.4",
         "inputmask": "^5.0.8",
         "js-cookies": "^1.0.4",
@@ -32,9 +34,13 @@
         "react": "^18.2.0",
         "react-bootstrap": "^2.10.2",
         "react-dom": "^18.2.0",
+        "react-i18next": "^15.4.0",
         "react-icons": "^5.4.0",
         "react-input-mask": "^2.0.4",
-        "react-router-dom": "^6.29.0"
+        "react-redux": "^9.2.0",
+        "react-router-dom": "^6.29.0",
+        "redux": "^5.0.1",
+        "redux-thunk": "^3.1.0"
     },
     "devDependencies": {
         "@types/react": "^18.2.66",

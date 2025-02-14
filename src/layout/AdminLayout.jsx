@@ -1,48 +1,61 @@
 import {NavLink, Outlet} from "react-router-dom";
 import Logo from "../assets/logo.png"
 import "./AdminLayout.css"
+import {useTranslation} from "react-i18next";
 
 const AdminLayout = () => {
+    const {t} = useTranslation();
+
     const NavLinks = [
         {
+            id: 0,
+            title: "admin.sidebar.dashboard",
+            link: "dashboard"
+        },
+        {
             id: 1,
-            title: "Users",
+            title: "admin.sidebar.users",
             link: "manage-users"
         },
         {
             id: 2,
-            title: "Web Products",
+            title: "admin.sidebar.webProducts",
             link: "manage-web-products"
         },
         {
             id: 3,
-            title: "Bot Products",
+            title: "admin.sidebar.botProducts",
             link: "manage-bot-products"
         },
         {
             id: 4,
-            title: "Categories",
+            title: "admin.sidebar.categories",
             link: "manage-categories"
         },
         {
             id: 5,
-            title: "Auctions",
+            title: "admin.sidebar.auctions",
             link: "manage-auctions"
         },
         {
             id: 6,
-            title: "Promo Codes",
+            title: "admin.sidebar.promoCodes",
             link: "manage-promo-codes"
         },
         {
             id: 7,
-            title: "Orders",
+            title: "admin.sidebar.orders",
             link: "manage-orders"
         },
         {
             id: 8,
-            title: "Applications",
+            title: "admin.sidebar.applications",
             link: "manage-applications"
+        },
+        {
+            id: 9,
+            title: "admin.sidebar.settings",
+            link: "settings"
         }
     ]
 
@@ -67,7 +80,7 @@ const AdminLayout = () => {
                                         to={link}
                                         className="nav-link flex text-wrap items-center p-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700"
                                     >
-                                        <span className="ml-3">{title}</span>
+                                        <span className="ml-3">{t(title)}</span>
                                     </NavLink>
                                 </li>
                             ))
