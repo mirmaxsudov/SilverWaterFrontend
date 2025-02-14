@@ -57,7 +57,6 @@ const Navbar = () => {
                             color: "#013690",
                             fontSize: "1.1rem",
                             display: "flex",
-
                             alignItems: "center",
                             gap: 1,
                         }}
@@ -86,6 +85,7 @@ const Navbar = () => {
                             +998 55 515 05 50
                         </Link>
                     </Typography>
+
                 </Stack>
             </Stack>
         </Stack>

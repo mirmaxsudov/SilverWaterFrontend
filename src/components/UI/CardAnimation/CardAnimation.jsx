@@ -1,5 +1,5 @@
 import styles from "./cardAnimation.module.css";
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 
 const CardAnimation = () => {
     const [activeCard, setActiveCard] = useState("c1");

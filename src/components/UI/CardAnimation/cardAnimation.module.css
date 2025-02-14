@@ -11,31 +11,40 @@
     margin: 0;
     padding: 0;
 }
+
 .ol,
 .ul {
     list-style-type: none;
 }
+
 .img {
     height: auto;
 }
+
 .h1 {
     font-size: 4rem;
 }
+
 .h2 {
     font-size: 3rem;
 }
+
 .h3 {
     font-size: 2rem;
 }
+
 .h4 {
     font-size: 1rem;
 }
+
 .h5 {
     font-size: 0.8rem;
 }
+
 .h6 {
     font-size: 0.6rem;
 }
+
 .a {
     text-decoration: none;
 }
@@ -133,14 +142,17 @@
     background-image: url("../../../assets/card1.jpg");
     background-position: center;
 }
+
 .card[for="c2"] {
     background-image: url("../../../assets/card2.jpg");
     background-position: center;
 }
+
 .card[for="c3"] {
     background-image: url("../../../assets/card3.jpg");
     background-position: bottom;
 }
+
 .card[for="c4"] {
     background-image: url("../../../assets/card4.jpg");
     background-position: center;
@@ -151,6 +163,7 @@
         width: 100px;
     }
 }
+
 @media screen and (max-width: 1010px) {
     .card {
         width: 80px;
@@ -159,6 +172,7 @@
     .input:checked + label {
         width: 400px;
     }
+
     .card > .row > .description {
         padding: 0.5rem;
         width: 310px;
@@ -186,10 +200,12 @@
         height: 80px;
         transition: 0.6s cubic-bezier(0.28, -0.03, 0, 0.99);
     }
+
     .input:checked + label {
         height: 400px;
         width: 90%;
     }
+
     .card > .row > .description {
         width: 70%;
         height: 100%;
@@ -202,6 +218,7 @@
         width: 50px;
         height: 50px;
     }
+
     .card > .row > .description {
         width: 70%;
         height: 100%;

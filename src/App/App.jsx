@@ -1,22 +1,8 @@
-import Header from "./Header";
-import BizHaqimizda from "./BizHaqimizda";
-import Tanlov from "./Tanlov";
-import Maxsulotlar from "./Maxsulotlar";
-import Contacts from "./Contacts";
-import Navbar from "../components/Navbar/Navbar";
-import { Stack } from "@mui/material";
+import {RouterProvider} from "react-router-dom";
+import {route} from "../routes/route.jsx";
 
 function App() {
-    return (
-        <Stack sx={{ position: "relative" }} m={"auto"}>
-            <Navbar />
-            <Header />
-            <BizHaqimizda />
-            <Tanlov />
-            <Maxsulotlar />
-            <Contacts />
-        </Stack>
-    );
+    return <RouterProvider router={route}/>
 }
 
 export default App;

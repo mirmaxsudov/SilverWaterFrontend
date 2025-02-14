@@ -1,5 +1,5 @@
 import { Stack, Box, Typography } from "@mui/material";
-import promoVideo from "../assets/silver_water_football_full_hd.mp4";
+
 const BizHaqimizda = () => {
     return (
         <Stack
@@ -26,14 +26,6 @@ const BizHaqimizda = () => {
                         lg: "50%",
                     }}
                 >
-                    {/* <video
-                        width="100%"
-                        style={{ borderRadius: "1rem" }}
-                        controls
-                    >
-                        <source src={promoVideo} type="video/mp4" />
-                        Your browser does not support the video tag.
-                    </video> */}
                     <div>
                         <iframe
                             width="100%"
