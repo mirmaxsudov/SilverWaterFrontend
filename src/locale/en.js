@@ -45,5 +45,13 @@ export const en = {
         filterStatus: "Status",
         all: "All",
         download: "Download",
+    },
+    category: {
+        title: "Categories",
+        add: "Add category",
+        name: "Name",
+        count: "Product count",
+        edit: "Edit",
+        delete: "Delete",
     }
 }

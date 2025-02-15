@@ -6,6 +6,7 @@ import AdminLayout from "../layout/AdminLayout.jsx";
 import Profile, {profileAction} from "../components/profile/Profile.jsx";
 import Dashboard from "../components/admin/dashboard/Dashboard.jsx";
 import Applications from "../components/admin/applications/Applications.jsx";
+import ManageCategory, {manageCategoryAction} from "../components/manageCategory/ManageCategory.jsx";
 
 export const route = createBrowserRouter([
     {
@@ -41,7 +42,8 @@ export const route = createBrowserRouter([
             },
             {
                 path: "manage-categories",
-                element: <div>Manage Categories</div>
+                element: <ManageCategory/>,
+                loader: manageCategoryAction
             },
             {
                 path: "manage-auctions",

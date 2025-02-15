@@ -10,6 +10,7 @@ import {
 import {dateFormater} from "../../../helper/dateFormater.js";
 import PropTypes from "prop-types";
 import {useTranslation} from "react-i18next";
+import {Link} from "react-router-dom";
 
 const Applications = () => {
     const dispatch = useDispatch();
@@ -25,7 +26,7 @@ const Applications = () => {
     if (error) return <div>{error}</div>;
 
     return (
-        <div className="p-4">
+        <div className="p-4 container mx-auto">
             {/* Header */}
             <div className="flex justify-between items-center mb-5">
                 <h1 className="text-3xl font-bold">{t("applications.title")}</h1>
@@ -45,9 +46,9 @@ const Applications = () => {
                 />
                 <button
                     className="bg-green-300 text-green-700 font-semibold py-2 rounded px-4 whitespace-nowrap hover:bg-green-600 hover:text-white transition-all duration-300">
-                    <a download href="http://localhost:8080/api/v1/application/download-all">
+                    <Link className={"n"} download to="http://localhost:8080/api/v1/application/download-all">
                         {t("applications.download")}
-                    </a>
+                    </Link>
                 </button>
             </div>
 
@@ -107,8 +108,8 @@ const Applications = () => {
                             className="border p-2 rounded"
                         >
                             <option value="all">{t("applications.all")}</option>
-                            <option value="true">{t("applications.notAnswered")}</option>
-                            <option value="false">{t("applications.answered")}</option>
+                            <option value="false">{t("applications.notAnswered")}</option>
+                            <option value="true">{t("applications.answered")}</option>
                         </select>
                     </label>
 
@@ -192,6 +193,7 @@ const ApplicationStatus = ({status, t}) => {
 
 ApplicationStatus.propTypes = {
     status: PropTypes.bool.isRequired,
+    t: PropTypes.func.isRequired,
 };
 
 export default Applications;

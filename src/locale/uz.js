@@ -45,5 +45,13 @@ export const uz = {
         filterStatus: "Xolati",
         all: "Barcha",
         download: "Yuklab olish",
+    },
+    category: {
+        title: "Kategoriyalar",
+        add: "Kategoriya qo'shish",
+        name: "Nomi",
+        count: "Mahsulotlar soni",
+        edit: "Tahrirlash",
+        delete: "O'chirish",    
     }
 }

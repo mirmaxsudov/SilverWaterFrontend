@@ -1,10 +1,10 @@
-import {NavLink, Outlet} from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 import Logo from "../assets/logo.png"
 import "./AdminLayout.css"
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 const AdminLayout = () => {
-    const {t} = useTranslation();
+    const { t } = useTranslation();
 
     const NavLinks = [
         {
@@ -74,7 +74,7 @@ const AdminLayout = () => {
                 <nav className="flex-1 overflow-y-auto p-4 nav-links-container">
                     <ul className="space-y-2">
                         {
-                            NavLinks.map(({id, title, link}) => (
+                            NavLinks.map(({ id, title, link }) => (
                                 <li key={id}>
                                     <NavLink
                                         to={link}
@@ -95,8 +95,15 @@ const AdminLayout = () => {
                 </div>
             </aside>
             <main className="flex-1 bg-gray-50 p-6 overflow-y-auto">
-                <Outlet/>
+                <Outlet />
             </main>
+
+            {/* <iframe
+                allow="microphone;"
+                width="350"
+                height="430"
+                src="https://console.dialogflow.com/api-client/demo/embedded/c77f02fe-d989-4079-9a75-b236b00980a1">
+            </iframe> */}
         </div>
     );
 };

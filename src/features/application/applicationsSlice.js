@@ -52,7 +52,8 @@ const filterAndSortData = (state) => {
     // Filter by search query on fullName (if searchQuery is not empty)
     if (state.searchQuery) {
         filtered = filtered.filter((app) =>
-            app.fullName.toLowerCase().includes(state.searchQuery.toLowerCase())
+            app.fullName.toLowerCase().includes(state.searchQuery.toLowerCase()) ||
+            app.phoneNumber.toLowerCase().includes(state.searchQuery.toLowerCase())
         );
     }
 

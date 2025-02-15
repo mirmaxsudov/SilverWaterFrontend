@@ -45,5 +45,13 @@ export const ru = {
         filterStatus: "Статус",
         all: "Все",
         download: "Скачать",
+    },
+    category: {
+        title: "Категории",
+        add: "Добавить категорию",
+        name: "Название",
+        count: "Количество продуктов",
+        edit: "Редактировать",
+        delete: "Удалить",
     }
 }
