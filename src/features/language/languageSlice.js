@@ -1,7 +1,7 @@
 import i18next from "i18next";
-import {uz} from "../../locale/uz.js";
-import {ru} from "../../locale/ru.js";
-import {en} from "../../locale/en.js";
+import {uz} from "../../locales/uz.js";
+import {ru} from "../../locales/ru.js";
+import {en} from "../../locales/en.js";
 import {initReactI18next} from "react-i18next";
 import {createSlice} from "@reduxjs/toolkit";
 

@@ -1,8 +1,10 @@
 import {useEffect, useState} from "react";
+import {useTranslation} from "react-i18next";
 
 const AddCategoryModal = ({onClose, onCategoryAdded}) => {
     const [name, setName] = useState("");
     const [products, setProducts] = useState([]);
+    const {t} = useTranslation();
     const [selectedProductIds, setSelectedProductIds] = useState([]);
 
     // Fetch products that do not have a category
@@ -48,10 +50,10 @@ const AddCategoryModal = ({onClose, onCategoryAdded}) => {
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
             <div className="bg-white rounded p-6 w-96">
-                <h2 className="text-2xl font-bold mb-4">Add Category</h2>
+                <h2 className="text-2xl font-bold mb-4">{t("category.modal.add")}</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
-                        <label className="block font-semibold mb-1">Category Name:</label>
+                        <label className="block font-semibold mb-1">{t("category.modal.name")}:</label>
                         <input
                             type="text"
                             value={name}
@@ -61,9 +63,9 @@ const AddCategoryModal = ({onClose, onCategoryAdded}) => {
                         />
                     </div>
                     <div className="mb-4 max-h-40 overflow-y-auto">
-                        <p className="font-semibold mb-2">Select Products (without category):</p>
+                        <p className="font-semibold mb-2">{t("category.modal.products")}:</p>
                         {products.length === 0 ? (
-                            <p className="text-gray-500">No available products</p>
+                            <p className="text-gray-500">{t("category.modal.noProducts")}</p>
                         ) : (
                             products.map((product, index) => (
                                 <div key={index} className="flex items-center mb-1">
@@ -85,13 +87,13 @@ const AddCategoryModal = ({onClose, onCategoryAdded}) => {
                             onClick={onClose}
                             className="px-4 py-2 rounded bg-gray-300 text-gray-700 hover:bg-gray-400 transition"
                         >
-                            Cancel
+                            {t("category.modal.cancel")}
                         </button>
                         <button
                             type="submit"
                             className="px-4 py-2 rounded bg-green-300 text-green-700 hover:bg-green-600 transition hover:text-white"
                         >
-                            Add Category
+                            {t("category.modal.add")}
                         </button>
                     </div>
                 </form>
@@ -100,4 +102,11 @@ const AddCategoryModal = ({onClose, onCategoryAdded}) => {
     );
 };
 
+import PropTypes from "prop-types";
+
 export default AddCategoryModal;
+
+AddCategoryModal.propTypes = {
+    onClose: PropTypes.func.isRequired,
+    onCategoryAdded: PropTypes.func.isRequired,
+};

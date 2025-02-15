@@ -9,7 +9,7 @@ export const ru = {
         logout: "Выход",
         error: "Пользователь с таким идентификатором не существует"
     },
-    dashboard: {title: "Главная",},
+    dashboard: {title: "Главная"},
     admin: {
         sidebar: {
             dashboard: "Главная",
@@ -53,5 +53,16 @@ export const ru = {
         count: "Количество продуктов",
         edit: "Редактировать",
         delete: "Удалить",
+        modal: {
+            add: "Добавить категорию",
+            name: "Название",
+            products: "Продукты",
+            cancel: "Отменить",
+            edit:  "Редактировать",
+            selected: "Выбранные продукты",
+            notAdded: "Не добавлено",
+            added: "Добавлено",
+            noProducts: "Продукты отсутствуют",
+        }
     }
 }

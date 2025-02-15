@@ -52,6 +52,17 @@ export const uz = {
         name: "Nomi",
         count: "Mahsulotlar soni",
         edit: "Tahrirlash",
-        delete: "O'chirish",    
+        delete: "O'chirish",
+        modal: {
+            add: "Kategoriya qo'shish",
+            name: "Nomi",
+            products: "Mahsulotlar",
+            cancel: "Bekor qilish",
+            edit: "Tahrirlash",
+            selected: "Tanlangan mahsulotlar",
+            notAdded: "Qo'shilmagan",
+            added: "qo'shilgan",
+            noProducts: "Mahsulotlar mavjud emas",
+        }
     }
 }

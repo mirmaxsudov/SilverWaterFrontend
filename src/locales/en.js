@@ -53,5 +53,16 @@ export const en = {
         count: "Product count",
         edit: "Edit",
         delete: "Delete",
+        modal: {
+            add: "Add category",
+            name: "Name",
+            products: "Products",
+            cancel: "Cancel",
+            edit: "Edit",
+            selected: "Selected products",
+            notAdded: "Not added",
+            added: "Added",
+            noProducts: "Products not found",
+        }
     }
 }
