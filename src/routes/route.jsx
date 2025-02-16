@@ -1,32 +1,34 @@
-import {createBrowserRouter} from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import Home from "../pages/Home.jsx";
 import NotFound from "../error/NotFound.jsx";
 import Login from "../pages/login/Login.jsx";
 import AdminLayout from "../layout/AdminLayout.jsx";
-import Profile, {profileAction} from "../components/profile/Profile.jsx";
+import Profile, { profileAction } from "../components/profile/Profile.jsx";
 import Dashboard from "../components/admin/dashboard/Dashboard.jsx";
 import Applications from "../components/admin/applications/Applications.jsx";
-import ManageCategory, {manageCategoryAction} from "../components/manageCategory/ManageCategory.jsx";
+import ManageCategory, { manageCategoryAction } from "../components/manageCategory/ManageCategory.jsx";
+import WebProducts, { loader as manageWebProductsAction } from "../components/webProducts/WebProducts.jsx";
+import PromoCode from "../components/promoCodes/PromoCode.jsx";
 
 export const route = createBrowserRouter([
     {
         path: "/",
-        element: <Home/>,
+        element: <Home />,
         children: []
     },
     {
         path: "/login",
-        element: <Login/>,
+        element: <Login />,
         children: []
     },
     {
         path: "/admin",
-        element: <AdminLayout/>,
+        element: <AdminLayout />,
         // errorElement: <NotFound/>,
         children: [
             {
                 path: "dashboard",
-                element: <Dashboard/>
+                element: <Dashboard />
             },
             {
                 path: "manage-users",
@@ -34,7 +36,8 @@ export const route = createBrowserRouter([
             },
             {
                 path: "manage-web-products",
-                element: <div>Manage Web Products</div>
+                element: <WebProducts />,
+                loader: manageWebProductsAction
             },
             {
                 path: "manage-bot-products",
@@ -42,7 +45,7 @@ export const route = createBrowserRouter([
             },
             {
                 path: "manage-categories",
-                element: <ManageCategory/>,
+                element: <ManageCategory />,
                 loader: manageCategoryAction
             },
             {
@@ -51,7 +54,7 @@ export const route = createBrowserRouter([
             },
             {
                 path: "manage-promo-codes",
-                element: <div>Manage Promo Codes</div>
+                element: <PromoCode />
             },
             {
                 path: "manage-orders",
@@ -59,11 +62,11 @@ export const route = createBrowserRouter([
             },
             {
                 path: "manage-applications",
-                element: <Applications/>,
+                element: <Applications />,
             },
             {
                 path: "profile/:id",
-                element: <Profile/>,
+                element: <Profile />,
                 loader: profileAction
             },
             {
@@ -74,7 +77,7 @@ export const route = createBrowserRouter([
     },
     {
         path: "*",
-        element: <NotFound/>,
+        element: <NotFound />,
         children: []
     }
 ])

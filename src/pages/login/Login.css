@@ -1,0 +1,7 @@
+.login-section {
+    background: rgb(0, 117, 225);
+    background: -moz-radial-gradient(circle, rgba(0, 117, 225, 1) 39%, rgba(2, 81, 155, 1) 93%);
+    background: -webkit-radial-gradient(circle, rgba(0, 117, 225, 1) 39%, rgba(2, 81, 155, 1) 93%);
+    background: radial-gradient(circle, rgba(0, 117, 225, 1) 39%, rgba(2, 81, 155, 1) 93%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#0075e1", endColorstr="#02519b", GradientType=1);
+}
