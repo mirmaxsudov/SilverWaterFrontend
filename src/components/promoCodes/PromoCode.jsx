@@ -3,10 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchPromoCodes } from "../../features/promoCodes/promoCodeSlice";
 import AddPromoCodeModal from "./AddPromoCodeModal";
 import { dateFormater } from "../../helper/dateFormater";
+import { useTranslation } from "react-i18next";
 
 const PromoCodePage = () => {
     const dispatch = useDispatch();
     const promoCodes = useSelector((state) => state.promoCode.data);
+    const { t } = useTranslation();
 
     const [searchTerm, setSearchTerm] = useState("");
     const [statusFilter, setStatusFilter] = useState("all");
@@ -15,7 +17,7 @@ const PromoCodePage = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const pageSize = 20;
 
-    const [showAddModal, setShowAddModal] = useState(false);
+    const [showAddModal, setShowAddModal] = useState(!false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
     useEffect(() => {
@@ -80,14 +82,14 @@ const PromoCodePage = () => {
     return (
         <div className="p-6">
             <div className="flex justify-between items-center mb-4">
-                <h1 className="text-3xl font-bold">PromoCodes</h1>
+                <h1 className="text-3xl font-bold">{t("promoCodes.title")}</h1>
                 <div className="flex space-x-4">
                     <div className="relative">
                         <button
                             onClick={() => setDropdownOpen((prev) => !prev)}
                             className="bg-blue-300 text-blue-700 font-semibold py-2 px-4 rounded hover:bg-blue-600 hover:text-white transition"
                         >
-                            Download
+                            {t("promoCodes.download")}
                         </button>
                         {dropdownOpen && (
                             <div className="absolute left-0 mt-2 w-40 bg-white border rounded shadow-lg z-10">
@@ -98,7 +100,7 @@ const PromoCodePage = () => {
                                     }}
                                     className="block w-full text-left px-4 py-2 hover:bg-gray-200"
                                 >
-                                    Download All
+                                    {t("promoCodes.downloadAll")}
                                 </button>
                                 <button
                                     onClick={() => {
@@ -107,7 +109,7 @@ const PromoCodePage = () => {
                                     }}
                                     className="block w-full text-left px-4 py-2 hover:bg-gray-200"
                                 >
-                                    Download Filtered
+                                    {t("promoCodes.downloadFiltered")}
                                 </button>
                             </div>
                         )}
@@ -116,7 +118,7 @@ const PromoCodePage = () => {
                         onClick={() => setShowAddModal(true)}
                         className="bg-green-300 text-green-700 font-semibold py-2 px-4 rounded hover:bg-green-600 hover:text-white transition"
                     >
-                        Add
+                        {t("promoCodes.add")}
                     </button>
                 </div>
             </div>
@@ -125,7 +127,7 @@ const PromoCodePage = () => {
             <div className="flex flex-wrap gap-4 mb-4">
                 <input
                     type="text"
-                    placeholder="Search by code, gift, or createdAt"
+                    placeholder={t("promoCodes.filter.searchPlaceHolder")}
                     value={searchTerm}
                     onChange={(e) => {
                         setSearchTerm(e.target.value);
@@ -141,9 +143,9 @@ const PromoCodePage = () => {
                     }}
                     className="border rounded p-2"
                 >
-                    <option value="all">All Statuses</option>
-                    <option value="ACTIVE">ACTIVE</option>
-                    <option value="INACTIVE">INACTIVE</option>
+                    <option value="all">{t("promoCodes.filter.all")}</option>
+                    <option value="ACTIVE">{t("promoCodes.filter.active")}</option>
+                    <option value="INACTIVE">{t("promoCodes.filter.inactive")}</option>
                 </select>
                 <select
                     value={isDeletedFilter}
@@ -153,9 +155,9 @@ const PromoCodePage = () => {
                     }}
                     className="border rounded p-2"
                 >
-                    <option value="all">All</option>
-                    <option value="false">Not Deleted</option>
-                    <option value="true">Deleted</option>
+                    <option value="all">{t("promoCodes.filter.all")}</option>
+                    <option value="false">{t("promoCodes.filter.notDeleted")}</option>
+                    <option value="true">{t("promoCodes.filter.deleted")}</option>
                 </select>
             </div>
 
@@ -164,22 +166,22 @@ const PromoCodePage = () => {
                     <thead className="bg-gray-50">
                         <tr>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Code
+                                {t("promoCodes.code")}
                             </th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Gift
+                                {t("promoCodes.gift")}
                             </th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Max Usage
+                                {t("promoCodes.maxUsage")}
                             </th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Created At
+                                {t("promoCodes.createdAt")}
                             </th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Status
+                                {t("promoCodes.status")}
                             </th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Deleted
+                                {t("promoCodes.deleted")}
                             </th>
                         </tr>
                     </thead>
@@ -227,7 +229,7 @@ const PromoCodePage = () => {
                     disabled={currentPage === 1}
                     className="px-3 py-1 border rounded disabled:opacity-50"
                 >
-                    Prev
+                    {t("promoCodes.preview")}
                 </button>
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                     <button
@@ -246,7 +248,7 @@ const PromoCodePage = () => {
                     disabled={currentPage === totalPages}
                     className="px-3 py-1 border rounded disabled:opacity-50"
                 >
-                    Next
+                    {t("promoCodes.next")}
                 </button>
             </div>
 

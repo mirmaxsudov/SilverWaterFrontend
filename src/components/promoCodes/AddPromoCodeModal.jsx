@@ -1,5 +1,7 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
+import AddPromoCodeWithExcel from "./AddPromoCodeWithExcel";
+import { useTranslation } from "react-i18next";
 
 const AddPromoCodeModal = ({ onClose, onPromoCodeAdded }) => {
     const [code, setCode] = useState("");
@@ -7,6 +9,7 @@ const AddPromoCodeModal = ({ onClose, onPromoCodeAdded }) => {
     const [maxUsage, setMaxUsage] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+    const { t } = useTranslation();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -42,51 +45,54 @@ const AddPromoCodeModal = ({ onClose, onPromoCodeAdded }) => {
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <div className="bg-white rounded p-6 w-[400px]">
-                <h2 className="text-xl font-bold mb-4">Add Promo Code</h2>
-                <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                    <input
-                        type="text"
-                        placeholder="Code"
-                        value={code}
-                        onChange={(e) => setCode(e.target.value)}
-                        className="border rounded p-2"
-                        required
-                    />
-                    <input
-                        type="text"
-                        placeholder="Gift"
-                        value={gift}
-                        onChange={(e) => setGift(e.target.value)}
-                        className="border rounded p-2"
-                        required
-                    />
-                    <input
-                        type="number"
-                        placeholder="Max Usage"
-                        value={maxUsage}
-                        onChange={(e) => setMaxUsage(e.target.value)}
-                        className="border rounded p-2"
-                        required
-                    />
-                    {error && <p className="text-red-500">{error}</p>}
-                    <div className="flex justify-end gap-2">
-                        <button
-                            type="button"
-                            onClick={onClose}
-                            className="px-4 py-2 rounded bg-gray-300 text-gray-700 hover:bg-gray-400 transition"
-                        >
-                            Cancel
-                        </button>
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            className="px-4 py-2 rounded bg-green-300 text-green-700 hover:bg-green-600 transition hover:text-white"
-                        >
-                            {loading ? "Adding..." : "Add"}
-                        </button>
-                    </div>
-                </form>
+            <div className="bg-white rounded p-6 w-[600px] flex flex-row gap-10 shadow-2xl overflow-hidden">
+                <div>
+                    <h2 className="text-xl font-bold mb-4"></h2>
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                        <input
+                            type="text"
+                            placeholder={t("promoCodes.code")}
+                            value={code}
+                            onChange={(e) => setCode(e.target.value)}
+                            className="border rounded p-2"
+                            required
+                        />
+                        <input
+                            type="text"
+                            placeholder={t("promoCodes.gift")}
+                            value={gift}
+                            onChange={(e) => setGift(e.target.value)}
+                            className="border rounded p-2"
+                            required
+                        />
+                        <input
+                            type="number"
+                            placeholder={t("promoCodes.maxUsage")}
+                            value={maxUsage}
+                            onChange={(e) => setMaxUsage(e.target.value)}
+                            className="border rounded p-2"
+                            required
+                        />
+                        {error && <p className="text-red-500">{error}</p>}
+                        <div className="flex justify-end gap-2 mt-10">
+                            <button
+                                type="button"
+                                onClick={onClose}
+                                className="px-4 py-2 rounded bg-gray-300 text-gray-700 hover:bg-gray-400 transition"
+                            >
+                                {t("promoCodes.addPromoCode.cancel")}
+                            </button>
+                            <button
+                                type="submit"
+                                disabled={loading}
+                                className="px-4 py-2 rounded bg-green-300 text-green-700 hover:bg-green-600 transition hover:text-white"
+                            >
+                                {loading ? t("promoCodes.addPromoCode.adding") : t("promoCodes.addPromoCode.add")}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <AddPromoCodeWithExcel />
             </div>
         </div>
     );
