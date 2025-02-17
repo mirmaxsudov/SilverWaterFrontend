@@ -8,7 +8,7 @@ const UserDashboard = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [fullData, setFullData] = useState(null);
-    const [fullLoading, setFullLoading] = useState(false);
+    const [fullLoading, setFullLoading] = useState(true);
 
     useEffect(() => {
         (async () => {
@@ -37,13 +37,24 @@ const UserDashboard = () => {
         )();
     }, []);
 
-    if (loading) {
+    if (loading || fullLoading) {
         return (
             <section className="user-dashboard-section py-[50px]">
                 <div className="flex justify-between items-center mb-5">
                     <h3 className="font-bold text-2xl">User Statistics</h3>
                 </div>
-                <Skeleton variant="rectangular" width={600} height={300} />
+                <div className="flex justify-evenly items-center">
+                    {
+                        loading && (
+                            <Skeleton variant="rectangular" width={500} height={300} />
+                        )
+                    }
+                    {
+                        fullLoading && (
+                            <Skeleton variant="rectangular" width={500} height={300} />
+                        )
+                    }
+                </div>
             </section>
         );
     }

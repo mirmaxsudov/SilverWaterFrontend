@@ -8,6 +8,7 @@ import Groups2OutlinedIcon from "@mui/icons-material/Groups2Outlined";
 import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
 import CategoryOutlinedIcon from "@mui/icons-material/CategoryOutlined";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
+import { Link } from "react-router-dom";
 
 const Contacts = () => {
   return (
@@ -128,6 +129,11 @@ const Contacts = () => {
             className="footerLinks"
           >
             <LocalPhoneIcon /> +998 55 515 05 50
+          </Button>
+          <Button>
+            <Link to={"/admin"}>
+              Admin
+            </Link>
           </Button>
         </Stack>
       </Stack>
