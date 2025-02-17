@@ -67,7 +67,7 @@ export const ru = {
     },
   },
   promoCodes: {
-    title: "Промо-коды",
+    title: "Промо-коды {{count}}",
     download: "Скачать",
     downloadAll: "Скачать все",
     downloadFiltered: "Скачать отфильтрованные",

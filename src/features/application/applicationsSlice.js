@@ -1,11 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { $api } from "../../api/request";
 
 export const fetchApplications = createAsyncThunk(
   "applications/fetchApplications",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await fetch("http://localhost:8080/api/v1/application/all");
-      return await res.json();
+      const res = await $api.get("http://localhost:8080/api/v1/application/all");
+      return res.data;
     } catch (error) {
       return rejectWithValue("Failed to fetch applications");
     }

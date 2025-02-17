@@ -67,7 +67,7 @@ export const en = {
     },
   },
   promoCodes: {
-    title: "Promo codes",
+    title: "Promo codes {{count}}",
     download: "Download",
     downloadAll: "Download all",
     downloadFiltered: "Download filtered",

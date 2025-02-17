@@ -1,10 +1,18 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import Logo from "../assets/logo.png";
 import "./AdminLayout.css";
 import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
 
 const AdminLayout = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // if (!localStorage.getItem("token"))
+      // navigate("/login")
+  }, [])
+
 
   const NavLinks = [
     {

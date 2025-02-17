@@ -1,6 +1,7 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
+import { $api } from "../../api/request";
 
 const AddPromoCodeWithExcel = ({ onClose, onPromoCodeAdded }) => {
   const [file, setFile] = useState(null);
@@ -23,13 +24,11 @@ const AddPromoCodeWithExcel = ({ onClose, onPromoCodeAdded }) => {
     const formData = new FormData();
     formData.append("file", file);
     try {
-      const response = await fetch(
+      const response = await $api.post(
         "http://localhost:8080/api/v1/promo-codes/import",
-        {
-          method: "POST",
-          body: formData,
-        },
+        formData,
       );
+      
       if (!response.ok) {
         throw new Error("Failed to import promo codes");
       }

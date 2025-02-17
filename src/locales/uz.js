@@ -67,7 +67,7 @@ export const uz = {
     },
   },
   promoCodes: {
-    title: "Promo kodlar",
+    title: "Promo kodlar {{count}}",
     download: "Yuklab olish",
     downloadAll: "Hammasini yuklab olish",
     downloadFiltered: "Filtrdan yuklab olish",
