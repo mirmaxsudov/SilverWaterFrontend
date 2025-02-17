@@ -2,156 +2,159 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 
 const AddWebProductModal = ({ onClose, onCategoryAdded }) => {
-    const [name, setName] = useState("");
-    const [attachmentId, setAttachmentId] = useState(null);
-    const [previewUrl, setPreviewUrl] = useState(null);
-    const [uploading, setUploading] = useState(false);
-    const [error, setError] = useState("");
+  const [name, setName] = useState("");
+  const [attachmentId, setAttachmentId] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState("");
 
-    const handleImageChange = async (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
 
-        const url = URL.createObjectURL(file);
-        setPreviewUrl(url);
+    const url = URL.createObjectURL(file);
+    setPreviewUrl(url);
 
-        const formData = new FormData();
-        formData.append("img", file);
+    const formData = new FormData();
+    formData.append("img", file);
 
-        try {
-            setUploading(true);
-            const response = await fetch("http://localhost:8080/attachment/upload", {
-                method: "POST",
-                body: formData,
-            });
-            if (!response.ok) throw new Error("Image upload failed");
+    try {
+      setUploading(true);
+      const response = await fetch("http://localhost:8080/attachment/upload", {
+        method: "POST",
+        body: formData,
+      });
+      if (!response.ok) throw new Error("Image upload failed");
 
-            const data = await response.json();
-            setAttachmentId(data);
-        } catch (err) {
-            console.error("Image upload error:", err);
-            setError("Failed to upload image.");
-        } finally {
-            setUploading(false);
-        }
-    };
+      const data = await response.json();
+      setAttachmentId(data);
+    } catch (err) {
+      console.error("Image upload error:", err);
+      setError("Failed to upload image.");
+    } finally {
+      setUploading(false);
+    }
+  };
 
-    const handleDeleteImage = async () => {
-        if (!attachmentId) return;
-        try {
-            const response = await fetch(`http://localhost:8080/attachment/${attachmentId}`, {
-                method: "DELETE",
-            });
-            if (!response.ok) throw new Error("Image deletion failed");
+  const handleDeleteImage = async () => {
+    if (!attachmentId) return;
+    try {
+      const response = await fetch(
+        `http://localhost:8080/attachment/${attachmentId}`,
+        {
+          method: "DELETE",
+        },
+      );
+      if (!response.ok) throw new Error("Image deletion failed");
 
-            setAttachmentId(null);
-            setPreviewUrl(null);
-        } catch (err) {
-            console.error("Delete image error:", err);
-            setError("Failed to delete image.");
-        }
-    };
+      setAttachmentId(null);
+      setPreviewUrl(null);
+    } catch (err) {
+      console.error("Delete image error:", err);
+      setError("Failed to delete image.");
+    }
+  };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (!name || !attachmentId) {
-            setError("Product name and image are required.");
-            return;
-        }
-        try {
-            const response = await fetch("http://localhost:8080/api/v1/web-product", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    name,
-                    attachmentId,
-                }),
-            });
-            if (!response.ok) {
-                throw new Error("Failed to add product");
-            }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!name || !attachmentId) {
+      setError("Product name and image are required.");
+      return;
+    }
+    try {
+      const response = await fetch("http://localhost:8080/api/v1/web-product", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          attachmentId,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to add product");
+      }
 
-            onCategoryAdded();
-            onClose();
-        } catch (err) {
-            console.error("Failed to add product:", err);
-            setError("Failed to add product.");
-        }
-    };
+      onCategoryAdded();
+      onClose();
+    } catch (err) {
+      console.error("Failed to add product:", err);
+      setError("Failed to add product.");
+    }
+  };
 
-    return (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <div className="bg-white rounded p-6 w-[500px] flex flex-col gap-5">
-                <form onSubmit={handleSubmit} className="flex flex-col">
-                    <div className="mb-4">
-                        <label>
-                            Mahsulot nomi
-                            <input
-                                type="text"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                className="w-full border rounded p-2"
-                                required
-                            />
-                        </label>
-                    </div>
-                    <div className="mb-4">
-                        <label>
-                            Mahsulot rasimi
-                            <input
-                                type="file"
-                                accept="image/*"
-                                onChange={handleImageChange}
-                                className="w-full border rounded p-2"
-                                required={!attachmentId}
-                            />
-                        </label>
-                    </div>
-                    {uploading && <p>Uploading image...</p>}
-                    {previewUrl && (
-                        <div className="relative mb-4">
-                            <img
-                                src={previewUrl}
-                                alt="Preview"
-                                className="w-[300px] h-[300px] object-cover border rounded"
-                            />
-                            <button
-                                type="button"
-                                onClick={handleDeleteImage}
-                                className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded"
-                            >
-                                Delete
-                            </button>
-                        </div>
-                    )}
-                    {error && <p className="text-red-500">{error}</p>}
-
-                    <div className="flex justify-end gap-2">
-                        <button
-                            type="button"
-                            onClick={onClose}
-                            className="px-4 py-2 rounded bg-gray-300 text-gray-700 hover:bg-gray-400 transition"
-                        >
-                            Close
-                        </button>
-                        <button
-                            type="submit"
-                            className="px-4 py-2 rounded bg-green-300 text-green-700 hover:bg-green-600 transition hover:text-white"
-                        >
-                            Add
-                        </button>
-                    </div>
-                </form>
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+      <div className="bg-white rounded p-6 w-[500px] flex flex-col gap-5">
+        <form onSubmit={handleSubmit} className="flex flex-col">
+          <div className="mb-4">
+            <label>
+              Mahsulot nomi
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full border rounded p-2"
+                required
+              />
+            </label>
+          </div>
+          <div className="mb-4">
+            <label>
+              Mahsulot rasimi
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="w-full border rounded p-2"
+                required={!attachmentId}
+              />
+            </label>
+          </div>
+          {uploading && <p>Uploading image...</p>}
+          {previewUrl && (
+            <div className="relative mb-4">
+              <img
+                src={previewUrl}
+                alt="Preview"
+                className="w-[300px] h-[300px] object-cover border rounded"
+              />
+              <button
+                type="button"
+                onClick={handleDeleteImage}
+                className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded"
+              >
+                Delete
+              </button>
             </div>
-        </div>
-    );
+          )}
+          {error && <p className="text-red-500">{error}</p>}
+
+          <div className="flex justify-end gap-2">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-4 py-2 rounded bg-gray-300 text-gray-700 hover:bg-gray-400 transition"
+            >
+              Close
+            </button>
+            <button
+              type="submit"
+              className="px-4 py-2 rounded bg-green-300 text-green-700 hover:bg-green-600 transition hover:text-white"
+            >
+              Add
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
 };
 
 AddWebProductModal.propTypes = {
-    onClose: PropTypes.func.isRequired,
-    onCategoryAdded: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onCategoryAdded: PropTypes.func.isRequired,
 };
 
 export default AddWebProductModal;

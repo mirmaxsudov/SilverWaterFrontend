@@ -45,6 +45,7 @@ export const en = {
     filterStatus: "Status",
     all: "All",
     download: "Download",
+    info: "Successfully downloaded",
   },
   category: {
     title: "Categories",

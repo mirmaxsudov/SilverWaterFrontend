@@ -1,14 +1,13 @@
-import {createSlice} from "@reduxjs/toolkit";
-
+import { createSlice } from "@reduxjs/toolkit";
 
 const initCategoryState = {
-    categories: [],
+  categories: [],
 };
 
 const languageSlice = createSlice({
-    name: "category",
-    initialState: initCategoryState,
-    reducers: {},
+  name: "category",
+  initialState: initCategoryState,
+  reducers: {},
 });
 
 export default languageSlice.reducer;

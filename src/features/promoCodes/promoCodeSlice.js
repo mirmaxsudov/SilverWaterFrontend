@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const promoCodeInitialState = {
-    data: []
+  data: [],
 };
 
 export const fetchPromoCodes = createAsyncThunk(
@@ -13,7 +13,7 @@ export const fetchPromoCodes = createAsyncThunk(
     } catch (error) {
       return rejectWithValue("Failed to fetch applications");
     }
-  }
+  },
 );
 
 const promoCodeSlice = createSlice({

@@ -1,28 +1,64 @@
-import {useEffect} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
     fetchApplications,
     searchApplications,
     sortApplications,
     filterApplicationsByStatus,
-    resetFilters, confirmApplication,
+    resetFilters,
+    confirmApplication,
 } from "../../../features/application/applicationsSlice.js";
-import {dateFormater} from "../../../helper/dateFormater.js";
+import { dateFormater } from "../../../helper/dateFormater.js";
 import PropTypes from "prop-types";
-import {useTranslation} from "react-i18next";
-import {Link} from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
+import { notifySuccess } from "../../../helper/toast.js";
+import { Skeleton } from "@mui/material";
 
 const Applications = () => {
     const dispatch = useDispatch();
-    const {t} = useTranslation();
-    const {data, filteredData, loading, error, searchQuery, order, filterStatus} =
-        useSelector((state) => state.application);
+    const { t } = useTranslation();
+    const {
+        data,
+        filteredData,
+        loading,
+        error,
+        searchQuery,
+        order,
+        filterStatus,
+    } = useSelector((state) => state.application);
 
     useEffect(() => {
         dispatch(fetchApplications());
     }, [dispatch]);
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return <>
+        <div className="container mx-auto p-4">
+            <div className="flex justify-between">
+                <Skeleton animation="wave" variant="text" sx={{ fontSize: '3.5rem', width: "200px" }} />
+                <Skeleton animation="wave" variant="text" sx={{ fontSize: '1.5rem', width: "30px" }} />
+            </div>
+            <div className="flex gap-4">
+                <Skeleton animation="wave" variant="rounded" sx={{ fontSize: '2.5rem', width: "90%" }} />
+                <Skeleton animation="wave" variant="rounded" sx={{ fontSize: '2.5rem', width: "10%" }} />
+            </div>
+            <div className="mt-4">
+                <Skeleton animation="wave" variant="rounded" sx={{ fontSize: '4.5rem', width: "100%" }} />
+            </div>
+            <div className="mt-4">
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => <>
+                    <div className="flex gap-5">
+                        <Skeleton key={item} animation="wave" variant="rounded" sx={{ fontSize: '3.5rem', width: "100%", marginTop: "10px", marginBottom: "10px" }} />
+                        <Skeleton key={item} animation="wave" variant="rounded" sx={{ fontSize: '3.5rem', width: "100%", marginTop: "10px", marginBottom: "10px" }} />
+                        <Skeleton key={item} animation="wave" variant="rounded" sx={{ fontSize: '3.5rem', width: "100%", marginTop: "10px", marginBottom: "10px" }} />
+                        <Skeleton key={item} animation="wave" variant="rounded" sx={{ fontSize: '3.5rem', width: "100%", marginTop: "10px", marginBottom: "10px" }} />
+                        <Skeleton key={item} animation="wave" variant="rounded" sx={{ fontSize: '3.5rem', width: "100%", marginTop: "10px", marginBottom: "10px" }} />
+                        <Skeleton key={item} animation="wave" variant="rounded" sx={{ fontSize: '3.5rem', width: "100%", marginTop: "10px", marginBottom: "10px" }} />
+                    </div>
+                </>)}
+            </div>
+        </div>
+    </>;
     if (error) return <div>{error}</div>;
 
     return (
@@ -44,9 +80,13 @@ const Applications = () => {
                     onChange={(e) => dispatch(searchApplications(e.target.value))}
                     className="border p-2 w-full rounded-lg px-4"
                 />
-                <button
-                    className="bg-green-300 text-green-700 font-semibold py-2 rounded px-4 whitespace-nowrap hover:bg-green-600 hover:text-white transition-all duration-300">
-                    <Link className={"n"} download to="http://localhost:8080/api/v1/application/download-all">
+                <button className="bg-green-300 text-green-700 font-semibold py-2 rounded px-4 whitespace-nowrap hover:bg-green-600 hover:text-white transition-all duration-300">
+                    <Link
+                        onClick={() => notifySuccess(t("applications.info"))}
+                        className={"n"}
+                        download
+                        to="http://localhost:8080/api/v1/application/download-all"
+                    >
                         {t("applications.download")}
                     </Link>
                 </button>
@@ -104,7 +144,9 @@ const Applications = () => {
                         <select
                             name="status"
                             value={filterStatus}
-                            onChange={(e) => dispatch(filterApplicationsByStatus(e.target.value))}
+                            onChange={(e) =>
+                                dispatch(filterApplicationsByStatus(e.target.value))
+                            }
                             className="border p-2 rounded"
                         >
                             <option value="all">{t("applications.all")}</option>
@@ -138,46 +180,50 @@ const Applications = () => {
             {/* Applications Table */}
             <table className="border-collapse w-full border">
                 <thead>
-                <tr>
-                    <th className="border p-2">{t("applications.id")}</th>
-                    <th className="border p-2">{t("applications.fullName")}</th>
-                    <th className="border p-2">{t("applications.phoneNumber")}</th>
-                    <th className="border p-2">{t("applications.sentTime")}</th>
-                    <th className="border p-2">{t("applications.action")}</th>
-                    <th className="border p-2">{t("applications.status")}</th>
-                </tr>
+                    <tr>
+                        <th className="border p-2">{t("applications.id")}</th>
+                        <th className="border p-2">{t("applications.fullName")}</th>
+                        <th className="border p-2">{t("applications.phoneNumber")}</th>
+                        <th className="border p-2">{t("applications.sentTime")}</th>
+                        <th className="border p-2">{t("applications.action")}</th>
+                        <th className="border p-2">{t("applications.status")}</th>
+                    </tr>
                 </thead>
                 <tbody>
-                {filteredData.map((app) => (
-                    <tr key={app.id}>
-                        <td className="border p-2 text-center">{app.id}</td>
-                        <td className="border p-2 text-center">{app.fullName}</td>
-                        <td className="border p-2 text-center">{app.phoneNumber}</td>
-                        <td className="border p-2 text-center">{dateFormater(app.whenAdded)}</td>
-                        <td className="border p-2 text-center">
-                            <button
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    dispatch(confirmApplication(app.id))
-                                }}
-                                className="text-[#FFA756] bg-[#FFEDDD] p-2 w-full rounded-lg transition-all duration-300 hover:bg-yellow-500 hover:text-[#000]"
-                                disabled={app.answered}
-                            >
-                                {!app.answered ? t("applications.confirm") : t("applications.confirmed")}
-                            </button>
-                        </td>
-                        <td className="border p-2">
-                            <ApplicationStatus status={app.answered} t={t}/>
-                        </td>
-                    </tr>
-                ))}
+                    {filteredData.map((app) => (
+                        <tr key={app.id}>
+                            <td className="border p-2 text-center">{app.id}</td>
+                            <td className="border p-2 text-center">{app.fullName}</td>
+                            <td className="border p-2 text-center">{app.phoneNumber}</td>
+                            <td className="border p-2 text-center">
+                                {dateFormater(app.whenAdded)}
+                            </td>
+                            <td className="border p-2 text-center">
+                                <button
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        dispatch(confirmApplication(app.id));
+                                    }}
+                                    className="text-[#FFA756] bg-[#FFEDDD] p-2 w-full rounded-lg transition-all duration-300 hover:bg-yellow-500 hover:text-[#000]"
+                                    disabled={app.answered}
+                                >
+                                    {!app.answered
+                                        ? t("applications.confirm")
+                                        : t("applications.confirmed")}
+                                </button>
+                            </td>
+                            <td className="border p-2">
+                                <ApplicationStatus status={app.answered} t={t} />
+                            </td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
         </div>
     );
 };
 
-const ApplicationStatus = ({status, t}) => {
+const ApplicationStatus = ({ status, t }) => {
     if (!status)
         return (
             <p className="bg-[#E0D4FC] text-[#6226EF] text-center p-2 rounded-lg">

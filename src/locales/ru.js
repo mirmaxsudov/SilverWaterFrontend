@@ -45,6 +45,7 @@ export const ru = {
     filterStatus: "Статус",
     all: "Все",
     download: "Скачать",
+    info: "Успешно загружено",
   },
   category: {
     title: "Категории",
