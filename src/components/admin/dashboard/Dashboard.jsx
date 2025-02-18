@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import UserDashboard from "./user/UserDashboard";
 import PromoCodeDashboard from "./promoCode/PromoCodeDashboard";
+import ApplicationDashboard from "./application/ApplicationDashboard";
 
 const Dashboard = () => {
     const { t } = useTranslation();
@@ -17,6 +18,7 @@ const Dashboard = () => {
                 </div>
                 <UserDashboard />
                 <PromoCodeDashboard />
+                <ApplicationDashboard />
             </div>
         </section>
     );

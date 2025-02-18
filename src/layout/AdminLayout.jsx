@@ -9,9 +9,9 @@ const AdminLayout = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // if (!localStorage.getItem("token"))
+    // if (localStorage.getItem("token"))
       // navigate("/login")
-  }, [])
+  }, [navigate])
 
 
   const NavLinks = [
@@ -59,6 +59,11 @@ const AdminLayout = () => {
       id: 8,
       title: "admin.sidebar.applications",
       link: "manage-applications",
+    },
+    {
+      id: 10,
+      title: "INN",
+      link: "manage-inn"
     },
     {
       id: 9,

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
+import { $api, BASE_API_URL } from "../../api/request";
 
 const EditCategoryModal = ({ category, onClose, onCategoryUpdated }) => {
   const [name, setName] = useState(category.name);
@@ -11,33 +12,26 @@ const EditCategoryModal = ({ category, onClose, onCategoryUpdated }) => {
 
   // Fetch both the assigned and available products for this category
   useEffect(() => {
-    fetch(`${BASE_API_URL}/api/v1/category/categoryEdit/${category.id}`)
-      .then((res) => res.json())
-      .then((data) => {
-        // Assume data has two arrays: "assigned" and "available"
-        const assigned = data.assigned.map((prod) => ({
-          ...prod,
-          assigned: true,
-        }));
-        const available = data.available.map((prod) => ({
-          ...prod,
-          assigned: false,
-        }));
-        const combined = [...assigned, ...available];
-        setProducts(combined);
-        // Initially, mark all assigned products as selected
-        setSelectedProductIds(assigned.map((prod) => prod.id));
+    const res = $api.get(`${BASE_API_URL}/api/v1/category/categoryEdit/${category.id}`)
+    const data = res.data
 
-        console.log(
-          "Assigned products:",
-          assigned,
-          "Available products:",
-          available,
-          "Combined products:",
-          combined,
-        );
-      })
-      .catch((err) => console.error(err));
+    console.log(data?.available, data?.assigned);
+
+
+    // Assume data has two arrays: "assigned" and "available"
+    const assigned = data.assigned.map((prod) => ({
+      ...prod,
+      assigned: true,
+    }));
+    const available = data.available.map((prod) => ({
+      ...prod,
+      assigned: false,
+    }));
+    const combined = [...assigned, ...available];
+    setProducts(combined);
+    // Initially, mark all assigned products as selected
+    setSelectedProductIds(assigned.map((prod) => prod.id));
+
   }, [category.id]);
 
   const handleCheckboxChange = (id) => {

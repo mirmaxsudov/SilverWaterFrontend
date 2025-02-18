@@ -10,7 +10,11 @@ const AddCategoryModal = ({ onClose, onCategoryAdded }) => {
   // Fetch products that do not have a category
   useEffect(() => {
     const res = $api.get(`${BASE_API_URL}/api/v1/products/no-category`);
-    res.then((data) => setProducts(data.data));
+
+    console.log(res);
+    
+
+    setProducts(res.data)
   }, []);
 
   const handleCheckboxChange = (id) => {

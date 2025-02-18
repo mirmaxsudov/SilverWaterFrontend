@@ -13,6 +13,7 @@ import WebProducts, {
   loader as manageWebProductsAction,
 } from "../components/webProducts/WebProducts.jsx";
 import PromoCode from "../components/promoCodes/PromoCode.jsx";
+import Inn from "../components/inn/Inn.jsx";
 
 export const route = createBrowserRouter([
   {
@@ -77,6 +78,10 @@ export const route = createBrowserRouter([
         path: "settings",
         element: <div>Settings</div>,
       },
+      {
+        path: "manage-inn",
+        element: <Inn />
+      }
     ],
   },
   {

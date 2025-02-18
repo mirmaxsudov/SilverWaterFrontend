@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const BASE_API_URL = "http://localhost:8080";
-const BASE_API_URL = "http://45.92.173.205:8080";
+const BASE_API_URL = "http://localhost:8080";
+// const BASE_API_URL = "http://45.92.173.205:8080";
 // baseURL: "http://45.92.173.205:8080/api/v1/application/",
 
 const $api = axios.create({
@@ -10,9 +10,9 @@ const $api = axios.create({
 
 $api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
-  if (token) {
+  if (token)
     config.headers.Authorization = `Bearer ${token}`;
-  }
+
   return config;
 });
 
@@ -20,9 +20,9 @@ $api.interceptors.request.use((config) => {
 $api.interceptors.response.use(
   response => response,
   async error => {
-    if (error.response?.status === 401) {
-      window.location.href = '/login'
-    }
+    // if (error.response?.status === 401)
+    //   window.location.href = '/login'
+
     throw error;
   }
 );
