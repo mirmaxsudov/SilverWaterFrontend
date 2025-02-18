@@ -25,7 +25,7 @@ const AddPromoCodeWithExcel = ({ onClose, onPromoCodeAdded }) => {
     formData.append("file", file);
     try {
       const response = await $api.post(
-        "http://localhost:8080/api/v1/promo-codes/import",
+        "${BASE_API_URL}/api/v1/promo-codes/import",
         formData,
       );
       

@@ -3,10 +3,13 @@ import { useTranslation } from "react-i18next";
 import { useLoaderData } from "react-router-dom";
 import EditCategoryModal from "./EditCategoryModal.jsx";
 import AddCategoryModal from "./AddCategoryModal.jsx";
+import { $api, BASE_API_URL } from "../../api/request.jsx";
 
 const ManageCategory = () => {
   // Load the initial category data (via react-router loader)
   const initialData = useLoaderData();
+  console.log(initialData);
+  
   const [categories, setCategories] = useState(initialData);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -18,14 +21,11 @@ const ManageCategory = () => {
     if (!window.confirm("Are you sure you want to delete this category?"))
       return;
     try {
-      const res = await fetch(`http://localhost:8080/api/v1/category/${id}`, {
+      const res = await $api.delete(`${BASE_API_URL}/api/v1/category/${id}`, {
         method: "DELETE",
       });
-      if (!res.ok) {
-        alert("Failed to delete category");
-        return;
-      }
-      // Remove category from state after deletion
+      console.log(res);
+      
       setCategories(categories.filter((cat) => cat.id !== id));
     } catch (err) {
       console.error(err);
@@ -123,10 +123,11 @@ const ManageCategory = () => {
 };
 
 export const manageCategoryAction = async () => {
-  const res = await fetch("http://localhost:8080/api/v1/category");
-  if (!res.ok) return { error: "Failed to fetch category data" };
-
-  return await res.json();
+  const res = await $api.get(`${BASE_API_URL}/api/v1/category`);
+  console.log(res);
+  
+  // if (!res.ok) return { error: "Failed to fetch category data" };
+  return res.data;
 };
 
 export default ManageCategory;

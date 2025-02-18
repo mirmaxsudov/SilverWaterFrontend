@@ -48,7 +48,7 @@ const PromoCodePage = () => {
     const downloadExcel = async (all) => {
         let url;
         if (all) {
-            url = "http://localhost:8080/api/v1/promo-codes/download?all=true";
+            url = "${BASE_API_URL}/api/v1/promo-codes/download?all=true";
         } else {
             const query = new URLSearchParams();
             if (searchTerm) query.append("search", searchTerm);
@@ -58,7 +58,7 @@ const PromoCodePage = () => {
                 query.append("isDeleted", isDeletedFilter);
             console.log(query);
 
-            url = `http://localhost:8080/api/v1/promo-codes/download?${query.toString()}`;
+            url = `${BASE_API_URL}/api/v1/promo-codes/download?${query.toString()}`;
         }
         try {
             const response = await fetch(url);

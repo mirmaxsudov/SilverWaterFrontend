@@ -1,38 +1,37 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { $api } from "../../api/request";
+import { $api, BASE_API_URL } from "../../api/request";
 
 export const fetchApplications = createAsyncThunk(
   "applications/fetchApplications",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await $api.get("http://localhost:8080/api/v1/application/all");
+      console.log(BASE_API_URL);
+      
+      const res = await $api.get(`${BASE_API_URL}/api/v1/application/all`);
       return res.data;
     } catch (error) {
       return rejectWithValue("Failed to fetch applications");
     }
-  },
+  }
 );
 
 export const confirmApplication = createAsyncThunk(
   "application/confirmApplication",
   async (id, { rejectWithValue }) => {
     try {
-      const response = await fetch(
-        `http://localhost:8080/api/v1/application/confirm/${id}`,
+      const response = await $api.post(
+        `${BASE_API_URL}/api/v1/application/confirm/${id}`,
         {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          // Include a body if required by your API (or remove it if not needed)
-          body: JSON.stringify({ id }),
-        },
+          id,
+        }
       );
       if (!response.ok) return rejectWithValue("Failed to confirm application");
 
-      return await response.json();
+      return response.data;
     } catch (error) {
       return rejectWithValue("Network error");
     }
-  },
+  }
 );
 
 const initialState = {
@@ -53,7 +52,7 @@ const filterAndSortData = (state) => {
     filtered = filtered.filter(
       (app) =>
         app.fullName.toLowerCase().includes(state.searchQuery.toLowerCase()) ||
-        app.phoneNumber.toLowerCase().includes(state.searchQuery.toLowerCase()),
+        app.phoneNumber.toLowerCase().includes(state.searchQuery.toLowerCase())
     );
   }
 

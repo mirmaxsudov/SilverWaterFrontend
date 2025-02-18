@@ -9,10 +9,8 @@ const AddCategoryModal = ({ onClose, onCategoryAdded }) => {
 
   // Fetch products that do not have a category
   useEffect(() => {
-    fetch("http://localhost:8080/api/v1/products/no-category")
-      .then((res) => res.json())
-      .then((data) => setProducts(data))
-      .catch((err) => console.error(err));
+    const res = $api.get(`${BASE_API_URL}/api/v1/products/no-category`);
+    res.then((data) => setProducts(data.data));
   }, []);
 
   const handleCheckboxChange = (id) => {
@@ -28,7 +26,7 @@ const AddCategoryModal = ({ onClose, onCategoryAdded }) => {
       productIds: selectedProductIds,
     };
     try {
-      const res = await fetch("http://localhost:8080/api/v1/category", {
+      const res = await fetch("${BASE_API_URL}/api/v1/category", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -105,6 +103,7 @@ const AddCategoryModal = ({ onClose, onCategoryAdded }) => {
 };
 
 import PropTypes from "prop-types";
+import { $api, BASE_API_URL } from "../../api/request";
 
 export default AddCategoryModal;
 

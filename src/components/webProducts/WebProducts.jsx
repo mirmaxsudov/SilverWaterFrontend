@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useLoaderData, useRevalidator } from "react-router-dom";
 import AddWebProductModal from "./AddWebProductModal";
 import ShowWebProductItem from "./ShowWebProductItem";
+import { $api, BASE_API_URL } from "../../api/request";
 
 const WebProducts = () => {
   const data = useLoaderData();
@@ -43,8 +44,8 @@ const WebProducts = () => {
 };
 
 export const loader = async () => {
-  const res = await fetch("http://localhost:8080/api/v1/web-product");
-  return res.json();
+  const res = await $api.get(`${BASE_API_URL}/api/v1/web-product`);
+  return res.data;
 };
 
 export default WebProducts;

@@ -64,7 +64,7 @@ const Applications = () => {
             onClick={() => notifySuccess(t("applications.info"))}
             className={"n"}
             download
-            to="http://localhost:8080/api/v1/application/download-all"
+            to="${BASE_API_URL}/api/v1/application/download-all"
           >
             {t("applications.download")}
           </Link>

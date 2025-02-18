@@ -1,7 +1,11 @@
 import axios from "axios";
 
+// const BASE_API_URL = "http://localhost:8080";
+const BASE_API_URL = "http://45.92.173.205:8080";
+// baseURL: "http://45.92.173.205:8080/api/v1/application/",
+
 const $api = axios.create({
-  baseURL: "http://localhost:8080/api/v1/application/",
+  baseURL: `${BASE_API_URL}/api/v1/application/`,
 });
 
 $api.interceptors.request.use((config) => {
@@ -23,7 +27,7 @@ $api.interceptors.response.use(
   }
 );
 
-export { $api }
+export { $api, BASE_API_URL };
 
 
 export const apply = async (data) => {

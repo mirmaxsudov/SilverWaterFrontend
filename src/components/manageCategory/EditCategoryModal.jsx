@@ -11,7 +11,7 @@ const EditCategoryModal = ({ category, onClose, onCategoryUpdated }) => {
 
   // Fetch both the assigned and available products for this category
   useEffect(() => {
-    fetch(`http://localhost:8080/api/v1/category/categoryEdit/${category.id}`)
+    fetch(`${BASE_API_URL}/api/v1/category/categoryEdit/${category.id}`)
       .then((res) => res.json())
       .then((data) => {
         // Assume data has two arrays: "assigned" and "available"
@@ -56,7 +56,7 @@ const EditCategoryModal = ({ category, onClose, onCategoryUpdated }) => {
       console.log(payload);
 
       const res = await fetch(
-        `http://localhost:8080/api/v1/category/${category.id}`,
+        `${BASE_API_URL}/api/v1/category/${category.id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

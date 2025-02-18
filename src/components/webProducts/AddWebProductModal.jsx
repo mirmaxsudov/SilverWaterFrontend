@@ -1,5 +1,6 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
+import { $api, BASE_API_URL } from "../../api/request";
 
 const AddWebProductModal = ({ onClose, onCategoryAdded }) => {
   const [name, setName] = useState("");
@@ -20,13 +21,12 @@ const AddWebProductModal = ({ onClose, onCategoryAdded }) => {
 
     try {
       setUploading(true);
-      const response = await fetch("http://localhost:8080/attachment/upload", {
-        method: "POST",
-        body: formData,
+      const response = await $api.post(`${BASE_API_URL}/attachment/upload`, {
+        img: file,
       });
       if (!response.ok) throw new Error("Image upload failed");
 
-      const data = await response.json();
+      const data = response.data;
       setAttachmentId(data);
     } catch (err) {
       console.error("Image upload error:", err);
@@ -40,10 +40,10 @@ const AddWebProductModal = ({ onClose, onCategoryAdded }) => {
     if (!attachmentId) return;
     try {
       const response = await fetch(
-        `http://localhost:8080/attachment/${attachmentId}`,
+        `${BASE_API_URL}/attachment/${attachmentId}`,
         {
           method: "DELETE",
-        },
+        }
       );
       if (!response.ok) throw new Error("Image deletion failed");
 
@@ -62,15 +62,9 @@ const AddWebProductModal = ({ onClose, onCategoryAdded }) => {
       return;
     }
     try {
-      const response = await fetch("http://localhost:8080/api/v1/web-product", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          attachmentId,
-        }),
+      const response = await $api.post(`${BASE_API_URL}/api/v1/web-product`, {
+        name,
+        attachmentId,
       });
       if (!response.ok) {
         throw new Error("Failed to add product");

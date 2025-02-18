@@ -19,7 +19,7 @@ const AddPromoCodeModal = ({ onClose, onPromoCodeAdded }) => {
     }
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:8080/api/v1/promo-codes", {
+      const response = await fetch("${BASE_API_URL}/api/v1/promo-codes", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
