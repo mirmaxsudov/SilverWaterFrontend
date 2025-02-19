@@ -12,9 +12,8 @@ const AddCategoryModal = ({ onClose, onCategoryAdded }) => {
     const res = $api.get(`${BASE_API_URL}/api/v1/products/no-category`);
 
     console.log(res);
-    
 
-    setProducts(res.data)
+    setProducts(res.data);
   }, []);
 
   const handleCheckboxChange = (id) => {

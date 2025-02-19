@@ -28,7 +28,7 @@ const AddPromoCodeWithExcel = ({ onClose, onPromoCodeAdded }) => {
         "${BASE_API_URL}/api/v1/promo-codes/import",
         formData,
       );
-      
+
       if (!response.ok) {
         throw new Error("Failed to import promo codes");
       }

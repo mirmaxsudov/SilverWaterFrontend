@@ -10,25 +10,22 @@ const $api = axios.create({
 
 $api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
-  if (token)
-    config.headers.Authorization = `Bearer ${token}`;
+  if (token) config.headers.Authorization = `Bearer ${token}`;
 
   return config;
 });
 
-
 $api.interceptors.response.use(
-  response => response,
-  async error => {
+  (response) => response,
+  async (error) => {
     // if (error.response?.status === 401)
     //   window.location.href = '/login'
 
     throw error;
-  }
+  },
 );
 
 export { $api, BASE_API_URL };
-
 
 export const apply = async (data) => {
   const response = await $api.post("/api/v1/application/save", data);

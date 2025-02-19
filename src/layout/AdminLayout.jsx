@@ -11,8 +11,7 @@ const AdminLayout = () => {
   useEffect(() => {
     // if (localStorage.getItem("token"))
     // navigate("/login")
-  }, [navigate])
-
+  }, [navigate]);
 
   const NavLinks = [
     {
@@ -33,7 +32,7 @@ const AdminLayout = () => {
     {
       id: 11,
       title: "Web3 products",
-      link: "web3-products"
+      link: "web3-products",
     },
     {
       id: 3,
@@ -68,7 +67,7 @@ const AdminLayout = () => {
     {
       id: 10,
       title: "INN",
-      link: "manage-inn"
+      link: "manage-inn",
     },
     {
       id: 9,

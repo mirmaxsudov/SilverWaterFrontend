@@ -14,6 +14,7 @@ import WebProducts, {
 } from "../components/webProducts/WebProducts.jsx";
 import PromoCode from "../components/promoCodes/PromoCode.jsx";
 import Inn from "../components/inn/Inn.jsx";
+import ManageUsers from "../components/manageUsers/ManageUsers.jsx";
 
 export const route = createBrowserRouter([
   {
@@ -37,7 +38,13 @@ export const route = createBrowserRouter([
       },
       {
         path: "manage-users",
-        element: <div>Manage Users</div>,
+        element: <ManageUsers />,
+        children: [
+          {
+            path: "user-detail/:id",
+            element: <div>User Detail page</div>,
+          },
+        ],
       },
       {
         path: "manage-web-products",
@@ -50,7 +57,7 @@ export const route = createBrowserRouter([
       },
       {
         path: "web3-products",
-        element: <div>Web3 Products</div>
+        element: <div>Web3 Products</div>,
       },
       {
         path: "manage-categories",
@@ -84,8 +91,8 @@ export const route = createBrowserRouter([
       },
       {
         path: "manage-inn",
-        element: <Inn />
-      }
+        element: <Inn />,
+      },
     ],
   },
   {

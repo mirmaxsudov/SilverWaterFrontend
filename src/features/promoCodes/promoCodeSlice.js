@@ -14,7 +14,7 @@ export const fetchPromoCodes = createAsyncThunk(
     } catch (error) {
       return rejectWithValue("Failed to fetch applications");
     }
-  }
+  },
 );
 
 const promoCodeSlice = createSlice({

@@ -12,11 +12,12 @@ const EditCategoryModal = ({ category, onClose, onCategoryUpdated }) => {
 
   // Fetch both the assigned and available products for this category
   useEffect(() => {
-    const res = $api.get(`${BASE_API_URL}/api/v1/category/categoryEdit/${category.id}`)
-    const data = res.data
+    const res = $api.get(
+      `${BASE_API_URL}/api/v1/category/categoryEdit/${category.id}`,
+    );
+    const data = res.data;
 
     console.log(data?.available, data?.assigned);
-
 
     // Assume data has two arrays: "assigned" and "available"
     const assigned = data.assigned.map((prod) => ({
@@ -31,7 +32,6 @@ const EditCategoryModal = ({ category, onClose, onCategoryUpdated }) => {
     setProducts(combined);
     // Initially, mark all assigned products as selected
     setSelectedProductIds(assigned.map((prod) => prod.id));
-
   }, [category.id]);
 
   const handleCheckboxChange = (id) => {

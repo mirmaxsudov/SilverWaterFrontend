@@ -43,7 +43,7 @@ const AddWebProductModal = ({ onClose, onCategoryAdded }) => {
         `${BASE_API_URL}/attachment/${attachmentId}`,
         {
           method: "DELETE",
-        }
+        },
       );
       if (!response.ok) throw new Error("Image deletion failed");
 
