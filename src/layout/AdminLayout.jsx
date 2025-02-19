@@ -10,7 +10,7 @@ const AdminLayout = () => {
 
   useEffect(() => {
     // if (localStorage.getItem("token"))
-      // navigate("/login")
+    // navigate("/login")
   }, [navigate])
 
 
@@ -29,6 +29,11 @@ const AdminLayout = () => {
       id: 2,
       title: "admin.sidebar.webProducts",
       link: "manage-web-products",
+    },
+    {
+      id: 11,
+      title: "Web3 products",
+      link: "web3-products"
     },
     {
       id: 3,

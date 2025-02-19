@@ -5,7 +5,7 @@ const BASE_API_URL = "http://localhost:8080";
 // baseURL: "http://45.92.173.205:8080/api/v1/application/",
 
 const $api = axios.create({
-  baseURL: `${BASE_API_URL}/api/v1/application/`,
+  baseURL: `${BASE_API_URL}`,
 });
 
 $api.interceptors.request.use((config) => {
@@ -31,6 +31,6 @@ export { $api, BASE_API_URL };
 
 
 export const apply = async (data) => {
-  const response = await $api.post("save", data);
+  const response = await $api.post("/api/v1/application/save", data);
   return response.data;
 };

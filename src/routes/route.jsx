@@ -49,6 +49,10 @@ export const route = createBrowserRouter([
         element: <div>Manage Bot Products</div>,
       },
       {
+        path: "web3-products",
+        element: <div>Web3 Products</div>
+      },
+      {
         path: "manage-categories",
         element: <ManageCategory />,
         loader: manageCategoryAction,
