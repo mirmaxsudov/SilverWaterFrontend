@@ -15,3 +15,7 @@ export const saveSingle = (request) => {
 export const deleteInnById = (id) => {
   $api.delete(`/api/v1/inn/${id}`);
 };
+
+export const editInn = (id, request) => {
+  return $api.put(`/api/v1/inn/${id}`, request);
+};

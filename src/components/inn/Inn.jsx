@@ -5,16 +5,19 @@ import { dateFormater } from './../../helper/dateFormater';
 import { Link } from "react-router-dom";
 import { BASE_API_URL } from "../../api/request";
 import { notifyInfo } from "../../helper/toast";
+import EditInnModal from "./EditInnModal";
 
 const DOTS = "...";
 
 const Inn = () => {
     const [isOpenAddModal, setIsOpenAddModal] = useState(false);
+    const [isOpenEditModal, setIsOpenEditModal] = useState(false);
     const [page, setPage] = useState(0);
     const [limit, setLimit] = useState(10);
     const [search, setSearch] = useState("");
     const [inns, setInns] = useState([]);
     const [totalInns, setTotalInns] = useState(0);
+    const [editInn, setEditInn] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -33,6 +36,18 @@ const Inn = () => {
     const addToInns = (newInn) => setInns([...inns, newInn]);
 
     const handleCloseAddModal = () => setIsOpenAddModal(false);
+    const handleCloseEditModal = () => setIsOpenEditModal(false);
+    const openEditModal = () => setIsOpenEditModal(true);
+
+    const editInns = (editedInn) => {
+        setInns(inns.map(inn => {
+            if (inn.id === editedInn.id) {
+                return editedInn
+            } else {
+                return inn;
+            }
+        }))
+    }
 
     const handleInnDelete = id => {
         deleteInnById(id);
@@ -75,19 +90,21 @@ const Inn = () => {
                 />
 
                 {/* Table with INN records */}
-                <ShowAll handleInnDelete={handleInnDelete} inns={inns} />
+                <ShowAll openEditModal={openEditModal} handleInnDelete={handleInnDelete} setToEdit={setEditInn} inns={inns} />
 
                 {/* Pagination */}
                 <Pagination page={page} setPage={setPage} totalInns={totalInns} limit={limit} />
 
                 {/* Add Modal */}
                 {isOpenAddModal && <AddInnModal addToInns={addToInns} onClose={handleCloseAddModal} />}
+                {/* Edit Modal */}
+                {isOpenEditModal && <EditInnModal editInns={editInns} inn={editInn} onClose={handleCloseEditModal} />}
             </div>
         </section>
     );
 };
 
-const ShowAll = ({ inns, handleInnDelete }) => {
+const ShowAll = ({ inns, handleInnDelete, openEditModal, setToEdit }) => {
     return (
         <div className="py-10">
             <table className="w-full table-auto border-collapse">
@@ -108,7 +125,10 @@ const ShowAll = ({ inns, handleInnDelete }) => {
                                 <td className="p-2">{dateFormater(inn.createdAt)}</td>
                                 <td className="p-2">
                                     {/* Placeholder buttons for Edit/Delete */}
-                                    <button className="bg-yellow-300 text-yellow-700 py-1 px-2 rounded">
+                                    <button onClick={() => {
+                                        openEditModal();
+                                        setToEdit(inn);
+                                    }} className="bg-yellow-300 text-yellow-700 py-1 px-2 rounded">
                                         Edit
                                     </button>
                                     <button onClick={() => handleInnDelete(inn.id)} className="bg-red-300 text-red-700 py-1 px-2 rounded ml-2">
