@@ -86,6 +86,10 @@ export const route = createBrowserRouter([
         loader: profileAction,
       },
       {
+        path: "taken-promo-codes",
+        element: <div>Taken PromoCodes</div>
+      },
+      {
         path: "settings",
         element: <div>Settings</div>,
       },

@@ -55,6 +55,11 @@ const AdminLayout = () => {
       link: "manage-promo-codes",
     },
     {
+      id: 314, 
+      title: "Taken promo codes",
+      link: "taken-promo-codes"
+    },
+    {
       id: 7,
       title: "admin.sidebar.orders",
       link: "manage-orders",

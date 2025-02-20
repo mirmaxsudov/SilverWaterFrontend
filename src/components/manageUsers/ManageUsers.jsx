@@ -2,17 +2,16 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import ShowAll from "./ShowAll";
 import { BASE_API_URL } from "../../api/request";
-import { fetchUsersPage } from "../../api/request/admin/user/main.api";
-import { notifyInfo } from "../../helper/toast";
+import { deleteUserById, fetchUsersPage } from "../../api/request/admin/user/main.api";
+import { notifyInfo, notifySuccess } from "../../helper/toast";
 
 const DOTS = "...";
 
 const getPaginationRange = (currentPage, totalPages, siblingCount = 1) => {
     const totalPageNumbers = siblingCount * 2 + 5;
 
-    if (totalPages <= totalPageNumbers) {
+    if (totalPages <= totalPageNumbers)
         return Array.from({ length: totalPages }, (_, i) => i + 1);
-    }
 
     const leftSiblingIndex = Math.max(currentPage - siblingCount, 1);
     const rightSiblingIndex = Math.min(currentPage + siblingCount, totalPages);
@@ -84,6 +83,12 @@ const ManageUsers = () => {
     const totalPages = Math.ceil(count / size);
     const currentPage = page + 1;
     const paginationRange = getPaginationRange(currentPage, totalPages);
+
+    const deleteUer = userId => {
+        setUsers(users.filter(user => user.id !== userId))
+        deleteUserById(userId);
+        notifySuccess("Successfully deleted")
+    }
 
     const handleQueryChange = (e) => {
         setQuery(e.target.value?.trim());
@@ -165,7 +170,7 @@ const ManageUsers = () => {
                     </div>
                 </div>
 
-                <ShowAll users={users} />
+                <ShowAll deleteUser={deleteUer} users={users} />
 
                 {users?.length > 0 && (
                     <>
