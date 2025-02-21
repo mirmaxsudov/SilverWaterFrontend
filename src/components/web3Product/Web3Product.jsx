@@ -69,8 +69,8 @@ const ShowWeb3ProductItem = ({ product, handleDeleteWeb3Product }) => {
                 src={product.image.url}
             />
             <div className="p-4">
-                <h1 className="text-xl font-semibold">{product.title}</h1>
-                <p className="text-gray-600">{product.description}</p>
+                <h1 className="text-xl font-semibold">{product.name}</h1>
+                <p className="text-gray-600 mt-3">{product.price}</p>
             </div>
             <div className="p-4 flex items-center gap-4">
                 <button

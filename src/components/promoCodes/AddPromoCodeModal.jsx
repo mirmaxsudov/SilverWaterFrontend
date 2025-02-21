@@ -37,7 +37,7 @@ const AddPromoCodeModal = ({ onClose, onPromoCodeAdded }) => {
       onClose();
     } catch (err) {
       console.error(err);
-      setError("Failed to add promo code");
+      setError("Iltimos, boshqa kod kiriting");
     } finally {
       setLoading(false);
     }

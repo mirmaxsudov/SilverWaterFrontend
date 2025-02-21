@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import PropTypes from "prop-types";
+import { $api, BASE_API_URL } from "../../api/request";
+import { fetchProductsNoCategory } from "../../api/request/admin/category/main.api";
 
 const AddCategoryModal = ({ onClose, onCategoryAdded }) => {
   const [name, setName] = useState("");
@@ -7,13 +10,17 @@ const AddCategoryModal = ({ onClose, onCategoryAdded }) => {
   const { t } = useTranslation();
   const [selectedProductIds, setSelectedProductIds] = useState([]);
 
-  // Fetch products that do not have a category
   useEffect(() => {
-    const res = $api.get(`${BASE_API_URL}/api/v1/products/no-category`);
-
-    console.log(res);
-
-    setProducts(res.data);
+    const fetchProducts = async () => {
+      try {
+        const res = fetchProductsNoCategory();
+        const data = await res.json();
+        setProducts(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchProducts();
   }, []);
 
   const handleCheckboxChange = (id) => {
@@ -29,22 +36,15 @@ const AddCategoryModal = ({ onClose, onCategoryAdded }) => {
       productIds: selectedProductIds,
     };
     try {
-      const res = await fetch("${BASE_API_URL}/api/v1/category", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      if (!res.ok) {
-        alert("Failed to add category");
-        return;
-      }
-      const newCategory = await res.json();
+      const res = await $api.post("/api/v1/category", payload); 
+      const newCategory = await res.data;
       onCategoryAdded(newCategory);
       onClose();
     } catch (err) {
       console.error(err);
     }
   };
+
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -105,8 +105,6 @@ const AddCategoryModal = ({ onClose, onCategoryAdded }) => {
   );
 };
 
-import PropTypes from "prop-types";
-import { $api, BASE_API_URL } from "../../api/request";
 
 export default AddCategoryModal;
 

@@ -1,177 +1,75 @@
-import { useState, useEffect } from 'react'
-import {
-    FaSort,
-    FaPlus,
-    FaSearch
-} from 'react-icons/fa'
-import { MdOutlineFileDownload } from 'react-icons/md'
-import { FcInfo } from 'react-icons/fc'
+import { useState, useEffect } from 'react';
+import { FaSort, FaPlus, FaSearch } from 'react-icons/fa';
+import { MdOutlineFileDownload } from 'react-icons/md';
+import { FcInfo } from 'react-icons/fc';
+import AddProductModal from './AddProductModal';
+import EditProductModal from './EditProductModal';
+import { fetchProductsPage } from '../../api/request/admin/product/main.api';
+import { $api } from '../../api/request';
 
 const ManageProduct = () => {
-    const [products, setProducts] = useState([])
-    const [filteredProducts, setFilteredProducts] = useState([])
-    const [isModalOpen, setIsModalOpen] = useState(false)
-    const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false)
-    const [isInfoModalOpen, setIsInfoModalOpen] = useState(false)
-    const [selectedProduct, setSelectedProduct] = useState(null)
-    const [sortOrder, setSortOrder] = useState('asc')
-    const [searchTerm, setSearchTerm] = useState('')
-    const [formData, setFormData] = useState({
-        name: '',
-        quantity: '',
-        onePrice: '',
-        blogPrice: '',
-        desc: '',
-        photo: null,
-        isDisabled: false,
-        when: new Date().toISOString()
-    })
+    const [products, setProducts] = useState([]);
+    const [filteredProducts, setFilteredProducts] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
+    const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [selectedProduct, setSelectedProduct] = useState(null);
+    const [sortOrder, setSortOrder] = useState('asc');
+    const [searchTerm, setSearchTerm] = useState('');
 
-    const defaultProducts = [
-        {
-            id: 1,
-            name: 'Bot Pro Max',
-            desc: 'Professional bot with advanced features',
-            quantity: 50,
-            onePrice: 999,
-            blogPrice: 899,
-            isDisabled: false,
-            when: new Date().toISOString()
-        },
-        {
-            id: 2,
-            name: 'Bot Lite',
-            desc: 'Lightweight bot for basic tasks',
-            quantity: 100,
-            onePrice: 499,
-            blogPrice: 449,
-            isDisabled: false,
-            when: new Date().toISOString()
-        },
-        {
-            id: 3,
-            name: 'Bot Enterprise',
-            desc: 'Enterprise-grade bot solution',
-            quantity: 30,
-            onePrice: 1499,
-            blogPrice: 1399,
-            isDisabled: false,
-            when: new Date().toISOString()
-        },
-        {
-            id: 4,
-            name: 'Bot Assistant',
-            desc: 'Personal assistant bot',
-            quantity: 75,
-            onePrice: 299,
-            blogPrice: 279,
-            isDisabled: false,
-            when: new Date().toISOString()
-        },
-        {
-            id: 5,
-            name: 'Bot Analytics',
-            desc: 'Data analysis bot',
-            quantity: 40,
-            onePrice: 799,
-            blogPrice: 749,
-            isDisabled: true,
-            when: new Date().toISOString()
+    // Fetch products from API using the searchTerm
+    const fetchProducts = async () => {
+        try {
+            const res = await fetchProductsPage(searchTerm);
+            setProducts(res.data);
+        } catch (error) {
+            console.error('Error fetching products:', error);
         }
-    ]
+    };
 
     useEffect(() => {
-        const savedProducts = localStorage.getItem('botProducts')
-        if (savedProducts) {
-            try {
-                const parsedProducts = JSON.parse(savedProducts)
-                if (Array.isArray(parsedProducts) && parsedProducts.length > 0) {
-                    setProducts(parsedProducts)
-                    setFilteredProducts(parsedProducts)
-                    return
-                }
-            } catch (error) {
-                console.error('Error loading products:', error)
-            }
-        }
-        setProducts(defaultProducts)
-        setFilteredProducts(defaultProducts)
-        localStorage.setItem('botProducts', JSON.stringify(defaultProducts))
-    }, [])
+        fetchProducts();
+    }, [searchTerm]);
 
+    // Save products to localStorage when products change
     useEffect(() => {
-        localStorage.setItem('botProducts', JSON.stringify(products))
-    }, [products])
+        localStorage.setItem('botProducts', JSON.stringify(products));
+    }, [products]);
 
+    // Filter products when searchTerm or products change
     useEffect(() => {
         if (searchTerm.trim() === '') {
-            setFilteredProducts(products)
+            setFilteredProducts(products);
         } else {
             const filtered = products.filter(
                 product =>
                     product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                     product.desc.toLowerCase().includes(searchTerm.toLowerCase())
-            )
-            setFilteredProducts(filtered)
+            );
+            setFilteredProducts(filtered);
         }
-    }, [searchTerm, products])
+    }, [searchTerm, products]);
 
+    // Toggle sort order and sort the filtered products by name
     const handleSort = () => {
-        const newOrder = sortOrder === 'asc' ? 'desc' : 'asc'
-        setSortOrder(newOrder)
-        const sorted = [...filteredProducts].sort((a, b) => {
-            return newOrder === 'asc'
+        const newOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+        setSortOrder(newOrder);
+        const sorted = [...filteredProducts].sort((a, b) =>
+            newOrder === 'asc'
                 ? a.name.localeCompare(b.name)
                 : b.name.localeCompare(a.name)
-        })
-        setFilteredProducts(sorted)
-    }
+        );
+        setFilteredProducts(sorted);
+    };
 
-    const handleSearch = e => {
-        setSearchTerm(e.target.value)
-    }
+    const handleSearch = (e) => {
+        setSearchTerm(e.target.value);
+    };
 
-    const handleSubmit = e => {
-        e.preventDefault()
-        const newProduct = {
-            ...formData,
-            id: selectedProduct ? selectedProduct.id : Date.now(),
-            when: new Date().toISOString()
-        }
-
-        if (selectedProduct) {
-            const updated = products.map(p =>
-                p.id === selectedProduct.id ? newProduct : p
-            )
-            setProducts(updated)
-        } else {
-            setProducts([...products, newProduct])
-        }
-
-        resetForm()
-    }
-
-    const resetForm = () => {
-        setIsModalOpen(false)
-        setSelectedProduct(null)
-        setFormData({
-            name: '',
-            quantity: '',
-            onePrice: '',
-            blogPrice: '',
-            desc: '',
-            photo: null,
-            isDisabled: false,
-            when: new Date().toISOString()
-        })
-    }
-
-    const formatDate = dateString => {
-        return new Date(dateString).toLocaleString()
-    }
-
+    // Download products as CSV
     const handleDownloadCSV = () => {
-        const csvRows = []
+        const csvRows = [];
         const headers = [
             'ID',
             'Name',
@@ -180,8 +78,8 @@ const ManageProduct = () => {
             'One Price',
             'Blog Price',
             'Created At'
-        ]
-        csvRows.push(headers.join(','))
+        ];
+        csvRows.push(headers.join(','));
 
         products.forEach(product => {
             const row = [
@@ -192,37 +90,54 @@ const ManageProduct = () => {
                 product.onePrice,
                 product.blogPrice,
                 product.when
-            ]
-            csvRows.push(row.join(','))
-        })
+            ];
+            csvRows.push(row.join(','));
+        });
 
-        const csvData = csvRows.join('\n')
-        const blob = new Blob([csvData], { type: 'text/csv' })
-        const url = URL.createObjectURL(blob)
+        const csvData = csvRows.join('\n');
+        const blob = new Blob([csvData], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
 
-        const a = document.createElement('a')
-        a.href = url
-        a.download = 'products.csv'
-        document.body.appendChild(a)
-        a.click()
-        document.body.removeChild(a)
-        URL.revokeObjectURL(url)
-    }
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'products.csv';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    };
 
+    // When the user clicks Delete, set the selected product and open confirm modal
+    const handleDeleteProduct = (product) => {
+        setSelectedProduct(product);
+        setIsDeleteConfirmOpen(true);
+    };
+
+    // Call the API to delete the product and update the list
     const onDeleteProduct = id => {
-        setProducts(products.filter(product => product.id !== id))
-        setIsDeleteConfirmOpen(false)
-        setSelectedProduct(null)
-    }
+        $api.delete(`/api/v1/products/${id}`)
+            .then(() => {
+                setProducts(products.filter(product => product.id !== id));
+                setIsDeleteConfirmOpen(false);
+            })
+            .catch(err => {
+                console.error(err);
+            });
+    };
 
-    const onSaveProduct = product => {
+    const handleEditProduct = (updatedProduct) => {
         const updatedProducts = products.map(p =>
-            p.id === product.id ? product : p
-        )
-        setProducts(updatedProducts)
-        setIsInfoModalOpen(false)
-        setSelectedProduct(null)
-    }
+            p.id === updatedProduct.id ? updatedProduct : p
+        );
+        setProducts(updatedProducts);
+        setIsEditModalOpen(false);
+        setSelectedProduct(updatedProduct);
+    };
+
+    // Helper function to format date strings
+    const formatDate = dateString => {
+        return new Date(dateString).toLocaleString();
+    };
 
     return (
         <div className='container mx-auto p-4'>
@@ -238,7 +153,10 @@ const ManageProduct = () => {
                         <MdOutlineFileDownload /> Download
                     </button>
                     <button
-                        onClick={() => setIsModalOpen(true)}
+                        onClick={() => {
+                            setSelectedProduct(null);
+                            setIsModalOpen(true);
+                        }}
                         className='bg-blue-500 text-white px-4 py-2 rounded flex items-center gap-2 hover:bg-blue-600 transition-colors'
                     >
                         <FaPlus /> Add
@@ -282,8 +200,7 @@ const ManageProduct = () => {
                         {filteredProducts.map(product => (
                             <tr
                                 key={product.id}
-                                className={`border-b ${product.isDisabled ? 'bg-gray-50' : 'hover:bg-gray-50'
-                                    }`}
+                                className={`border-b ${product.isDisabled ? 'bg-gray-50' : 'hover:bg-gray-50'}`}
                             >
                                 <td className='p-4'>{product.id}</td>
                                 <td className='p-4'>{product.name}</td>
@@ -293,10 +210,10 @@ const ManageProduct = () => {
                                 <td className='p-4 text-center'>
                                     <button
                                         onClick={() => {
-                                            setSelectedProduct(product)
-                                            setIsInfoModalOpen(true)
+                                            setSelectedProduct(product);
+                                            setIsInfoModalOpen(true);
                                         }}
-                                        className='text-blue-500 hover:text-blue-600 '
+                                        className='text-blue-500 hover:text-blue-600'
                                         title='View Details'
                                     >
                                         <FcInfo className='w-6 h-6' />
@@ -305,23 +222,9 @@ const ManageProduct = () => {
                                 <td className='p-4'>
                                     <div className='flex justify-center gap-3'>
                                         <button
-                                            onClick={() => {
-                                                setSelectedProduct(product)
-                                                setIsModalOpen(true)
-                                            }}
+                                            onClick={() => handleDeleteProduct(product)}
                                             type='button'
-                                            className='text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2'
-                                        >
-                                            Edit
-                                        </button>
-
-                                        <button
-                                            onClick={() => {
-                                                setSelectedProduct(product)
-                                                setIsDeleteConfirmOpen(true)
-                                            }}
-                                            type='button'
-                                            className='text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2'
+                                            className='text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5'
                                         >
                                             Delete
                                         </button>
@@ -333,161 +236,14 @@ const ManageProduct = () => {
                 </table>
             </div>
 
+            {/* Add Product Modal */}
             {isModalOpen && (
-                <div
-                    className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4'
-                    onClick={resetForm}
-                    onKeyDown={e => e.key === 'Escape' && resetForm()}
-                    tabIndex={0}
-                >
-                    <div
-                        className='bg-white rounded-lg w-full h-full max-w-5xl max-h-screen overflow-auto p-6'
-                        onClick={e => e.stopPropagation()}
-                    >
-                        <h2 className='text-xl font-bold mb-4'>
-                            {selectedProduct ? 'Edit Product' : 'Add New Product'}
-                        </h2>
-                        <form onSubmit={handleSubmit} className='space-y-4'>
-                            <div>
-                                <label className='block text-sm font-medium mb-1'>Name</label>
-                                <input
-                                    type='text'
-                                    className='w-full border rounded p-2'
-                                    value={formData.name}
-                                    onChange={e =>
-                                        setFormData({ ...formData, name: e.target.value })
-                                    }
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label className='block text-sm font-medium mb-1'>
-                                    Quantity
-                                </label>
-                                <input
-                                    type='number'
-                                    className='w-full border rounded p-2'
-                                    value={formData.quantity}
-                                    onChange={e =>
-                                        setFormData({ ...formData, quantity: e.target.value })
-                                    }
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label className='block text-sm font-medium mb-1'>
-                                    One Price
-                                </label>
-                                <input
-                                    type='number'
-                                    className='w-full border rounded p-2'
-                                    value={formData.onePrice}
-                                    onChange={e =>
-                                        setFormData({ ...formData, onePrice: e.target.value })
-                                    }
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label className='block text-sm font-medium mb-1'>
-                                    Blog Price
-                                </label>
-                                <input
-                                    type='number'
-                                    className='w-full border rounded p-2'
-                                    value={formData.blogPrice}
-                                    onChange={e =>
-                                        setFormData({ ...formData, blogPrice: e.target.value })
-                                    }
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label className='block text-sm font-medium mb-1'>
-                                    Description
-                                </label>
-                                <textarea
-                                    className='w-full border rounded p-2'
-                                    value={formData.desc}
-                                    onChange={e =>
-                                        setFormData({ ...formData, desc: e.target.value })
-                                    }
-                                    required
-                                    rows={5}
-                                />
-                            </div>
-
-                            <div className='flex items-center gap-4'>
-                                <div className='flex flex-col'>
-                                    <label className='block text-sm font-medium mb-1'>
-                                        Photo
-                                    </label>
-                                    <input
-                                        type='file'
-                                        className='border rounded p-2'
-                                        onChange={e => {
-                                            const file = e.target.files[0]
-                                            if (file) {
-                                                setFormData({ ...formData, photo: file })
-                                            }
-                                        }}
-                                        accept='image/*'
-                                    />
-                                </div>
-
-                                {formData.photo && (
-                                    <div className='relative'>
-                                        <img
-                                            src={URL.createObjectURL(formData.photo)}
-                                            alt='Preview'
-                                            className='w-32 h-32 rounded-lg border'
-                                        />
-                                        <button
-                                            type='button'
-                                            className='absolute top-0 right-0 bg-red-500 text-white p-1 rounded-sm'
-                                            onClick={() => setFormData({ ...formData, photo: null })}
-                                        >
-                                            ✕
-                                        </button>
-                                    </div>
-                                )}
-                            </div>
-
-                            <div className='flex items-center gap-2'>
-                                <input
-                                    type='checkbox'
-                                    id='isDisabled'
-                                    checked={formData.isDisabled}
-                                    onChange={e =>
-                                        setFormData({ ...formData, isDisabled: e.target.checked })
-                                    }
-                                    className='rounded border-gray-300'
-                                />
-                                <label htmlFor='isDisabled' className='text-sm font-medium'>
-                                    Is Disabled
-                                </label>
-                            </div>
-
-                            <div className='flex justify-end gap-2 mt-6'>
-                                <button
-                                    type='button'
-                                    onClick={resetForm}
-                                    className='px-4 py-2 border rounded text-red-500 border-red-500 hover:bg-red-50'
-                                >
-                                    Close
-                                </button>
-                                <button
-                                    type='submit'
-                                    className='px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600'
-                                >
-                                    {selectedProduct ? 'Save' : 'Add'}
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+                <AddProductModal
+                    onClose={() => setIsModalOpen(false)}
+                />
             )}
 
+            {/* Product Information Modal */}
             {isInfoModalOpen && selectedProduct && (
                 <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-6'>
                     <div className='bg-white rounded-2xl shadow-lg w-full max-w-3xl transform transition-all scale-105 animate-fadeIn'>
@@ -548,8 +304,7 @@ const ManageProduct = () => {
                                             <strong>Quantity:</strong> {selectedProduct.quantity}
                                         </p>
                                         <p>
-                                            <strong>Created:</strong>{' '}
-                                            {formatDate(selectedProduct.when)}
+                                            <strong>Created:</strong> {formatDate(selectedProduct.when)}
                                         </p>
                                     </div>
                                 </div>
@@ -558,58 +313,30 @@ const ManageProduct = () => {
                                     {selectedProduct.photo ? (
                                         <div className='relative w-56 h-56 rounded-lg overflow-hidden shadow-md border'>
                                             <img
-                                                src={URL.createObjectURL(selectedProduct.photo)}
+                                                src={
+                                                    typeof selectedProduct.photo === 'string'
+                                                        ? selectedProduct.photo
+                                                        : URL.createObjectURL(selectedProduct.photo)
+                                                }
                                                 alt={selectedProduct.name}
                                                 className='object-cover w-full h-full'
                                             />
-                                            <button
-                                                className='absolute top-2 right-2 bg-white text-red-500 p-2 rounded-full shadow-md hover:bg-red-500 hover:text-white transition transform hover:scale-110'
-                                                onClick={() =>
-                                                    setSelectedProduct({
-                                                        ...selectedProduct,
-                                                        photo: null
-                                                    })
-                                                }
-                                            >
-                                                ×
-                                            </button>
                                         </div>
                                     ) : (
-                                        <label className='flex flex-col items-center border border-dashed border-gray-400 p-6 rounded-lg cursor-pointer hover:border-gray-600'>
-                                            <span className='text-gray-500'>
-                                                Click to upload a photo
-                                            </span>
-                                            <input
-                                                type='file'
-                                                accept='image/*'
-                                                className='hidden'
-                                                onChange={e => {
-                                                    const file = e.target.files[0]
-                                                    if (file) {
-                                                        setSelectedProduct({
-                                                            ...selectedProduct,
-                                                            photo: file
-                                                        })
-                                                    }
-                                                }}
-                                            />
-                                        </label>
+                                        <p className='text-gray-500'>No photo available</p>
                                     )}
                                 </div>
                             </div>
 
-                            <div className='flex justify-between mt-6'>
-                                <button
-                                    className='bg-red-500 text-white px-6 py-2 rounded-lg shadow hover:bg-red-700 transition'
-                                    onClick={() => onDeleteProduct(selectedProduct.id)}
-                                >
-                                    Delete
-                                </button>
+                            <div className='flex justify-center gap-4 mt-6'>
                                 <button
                                     className='bg-blue-500 text-white px-6 py-2 rounded-lg shadow hover:bg-blue-700 transition'
-                                    onClick={() => onSaveProduct(selectedProduct)}
+                                    onClick={() => {
+                                        setIsInfoModalOpen(false);
+                                        setIsEditModalOpen(true);
+                                    }}
                                 >
-                                    Save
+                                    Edit
                                 </button>
                                 <button
                                     className='bg-gray-300 px-6 py-2 rounded-lg shadow hover:bg-gray-400 transition'
@@ -623,6 +350,16 @@ const ManageProduct = () => {
                 </div>
             )}
 
+            {/* Edit Product Modal */}
+            {isEditModalOpen && selectedProduct && (
+                <EditProductModal
+                    product={selectedProduct}
+                    onClose={() => setIsEditModalOpen(false)}
+                    onSave={handleEditProduct}
+                />
+            )}
+
+            {/* Delete Confirmation Modal */}
             {isDeleteConfirmOpen && (
                 <div
                     className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4'
@@ -634,7 +371,7 @@ const ManageProduct = () => {
                         className='bg-white rounded-lg p-14'
                         onClick={e => e.stopPropagation()}
                     >
-                        <h2 className='text-2xl font-bold mb-4'>Are you ready?</h2>
+                        <h2 className='text-2xl font-bold mb-4'>Are you sure?</h2>
                         <div className='flex justify-center gap-4'>
                             <button
                                 onClick={() => setIsDeleteConfirmOpen(false)}
@@ -644,14 +381,9 @@ const ManageProduct = () => {
                             </button>
                             <button
                                 onClick={() => {
-                                    onDeleteProduct(selectedProduct.id)
+                                    onDeleteProduct(selectedProduct.id);
                                 }}
                                 className='px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600'
-                                onKeyDown={e => {
-                                    if (e.key === 'Enter') {
-                                        onDeleteProduct(selectedProduct.id)
-                                    }
-                                }}
                             >
                                 Yes
                             </button>
@@ -660,7 +392,7 @@ const ManageProduct = () => {
                 </div>
             )}
         </div>
-    )
-}
+    );
+};
 
 export default ManageProduct;

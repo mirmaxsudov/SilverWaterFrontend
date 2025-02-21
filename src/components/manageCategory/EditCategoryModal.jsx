@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
 import { $api, BASE_API_URL } from "../../api/request";
+import { fetchCategoryEdit } from "../../api/request/admin/category/main.api";
 
 const EditCategoryModal = ({ category, onClose, onCategoryUpdated }) => {
   const [name, setName] = useState(category.name);
@@ -10,28 +11,29 @@ const EditCategoryModal = ({ category, onClose, onCategoryUpdated }) => {
   const { t } = useTranslation();
   const [selectedProductIds, setSelectedProductIds] = useState([]);
 
-  // Fetch both the assigned and available products for this category
   useEffect(() => {
-    const res = $api.get(
-      `${BASE_API_URL}/api/v1/category/categoryEdit/${category.id}`,
-    );
-    const data = res.data;
+    const fetchProducts = async () => {
+      try {
+        const res = await fetchCategoryEdit(category.id);
+        const data = await res.json();
 
-    console.log(data?.available, data?.assigned);
+        const assigned = data.assigned.map((prod) => ({
+          ...prod,
+          assigned: true,
+        }));
+        const available = data.available.map((prod) => ({
+          ...prod,
+          assigned: false,
+        }));
+        const combined = [...assigned, ...available];
+        setProducts(combined);
+        setSelectedProductIds(assigned.map((prod) => prod.id));
 
-    // Assume data has two arrays: "assigned" and "available"
-    const assigned = data.assigned.map((prod) => ({
-      ...prod,
-      assigned: true,
-    }));
-    const available = data.available.map((prod) => ({
-      ...prod,
-      assigned: false,
-    }));
-    const combined = [...assigned, ...available];
-    setProducts(combined);
-    // Initially, mark all assigned products as selected
-    setSelectedProductIds(assigned.map((prod) => prod.id));
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchProducts();
   }, [category.id]);
 
   const handleCheckboxChange = (id) => {
