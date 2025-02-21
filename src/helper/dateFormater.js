@@ -5,3 +5,13 @@ export function dateFormater(date) {
     year: "numeric",
   });
 }
+
+export function dateFormatterWithTime(date) {
+  return new Date(date).toLocaleString("ru-RU", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+  });
+}

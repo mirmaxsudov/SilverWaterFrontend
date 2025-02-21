@@ -98,4 +98,27 @@ export const uz = {
       importing: "Yuklanmoqda ...",
     },
   },
+  auction: {
+    title: "Aksiyalar",
+    name: "Nomi",
+    add: "Aksiya qo'shish",
+    count: "Mahsulot soni",
+    edit: "Tahrirlash",
+    delete: "O'chirish",
+    gift: "Sovg'a",
+    startAuction: "Boshlanishi",
+    endAuction: "Tugashi",
+
+    modal: {
+      add: "Kategoriya qo'shish",
+      name: "Nomi",
+      products: "Mahsulotlar",
+      cancel: "Bekor qilish",
+      edit: "Tahrirlash",
+      selected: "Tanlangan mahsulotlar",
+      notAdded: "Qo'shilmagan",
+      added: "qo'shilgan",
+      noProducts: "Mahsulotlar mavjud emas",
+    },
+  },
 };

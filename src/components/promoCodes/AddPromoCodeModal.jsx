@@ -2,6 +2,7 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import AddPromoCodeWithExcel from "./AddPromoCodeWithExcel";
 import { useTranslation } from "react-i18next";
+import { addPromoCode } from "../../api/request/admin/promoCode/main.api";
 
 const AddPromoCodeModal = ({ onClose, onPromoCodeAdded }) => {
   const [code, setCode] = useState("");
@@ -19,20 +20,19 @@ const AddPromoCodeModal = ({ onClose, onPromoCodeAdded }) => {
     }
     setLoading(true);
     try {
-      const response = await fetch("${BASE_API_URL}/api/v1/promo-codes", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          code,
-          gift,
-          maxUsage: Number(maxUsage),
-        }),
-      });
-      if (!response.ok) {
-        throw new Error("Failed to add promo code");
+      const response = await addPromoCode({
+        code,
+        gift,
+        maxUsage: Number(maxUsage),
+      })
+
+      if (response.status === 200) {
+        setError("");
+        setCode("");
+        setGift("");
+        setMaxUsage("");
       }
+
       onPromoCodeAdded();
       onClose();
     } catch (err) {

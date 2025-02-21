@@ -15,6 +15,9 @@ import WebProducts, {
 import PromoCode from "../components/promoCodes/PromoCode.jsx";
 import Inn from "../components/inn/Inn.jsx";
 import ManageUsers from "../components/manageUsers/ManageUsers.jsx";
+import ManageAuction from "../components/manageAuction/ManageAuction.jsx";
+import Web3Product from "../components/web3Product/Web3Product.jsx";
+import TokenPromoCode from "../components/takenPromoCode/TokenPromoCode.jsx";
 
 export const route = createBrowserRouter([
   {
@@ -57,7 +60,7 @@ export const route = createBrowserRouter([
       },
       {
         path: "web3-products",
-        element: <div>Web3 Products</div>,
+        element: <Web3Product />,
       },
       {
         path: "manage-categories",
@@ -66,7 +69,7 @@ export const route = createBrowserRouter([
       },
       {
         path: "manage-auctions",
-        element: <div>Manage Auctions</div>,
+        element: <ManageAuction />,
       },
       {
         path: "manage-promo-codes",
@@ -87,7 +90,7 @@ export const route = createBrowserRouter([
       },
       {
         path: "taken-promo-codes",
-        element: <div>Taken PromoCodes</div>
+        element: <TokenPromoCode />
       },
       {
         path: "settings",
