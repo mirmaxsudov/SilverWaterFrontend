@@ -18,6 +18,8 @@ import ManageUsers from "../components/manageUsers/ManageUsers.jsx";
 import ManageAuction from "../components/manageAuction/ManageAuction.jsx";
 import Web3Product from "../components/web3Product/Web3Product.jsx";
 import TokenPromoCode from "../components/takenPromoCode/TokenPromoCode.jsx";
+import ManageProduct from "../components/manageProduct/ManageProduct.jsx";
+import Web3ProductForBot from "../pages/Web3ProductForBot.jsx";
 
 export const route = createBrowserRouter([
   {
@@ -29,6 +31,10 @@ export const route = createBrowserRouter([
     path: "/login",
     element: <Login />,
     children: [],
+  },
+  {
+    path: "/web-three-products",
+    element: <Web3ProductForBot />,
   },
   {
     path: "/admin",
@@ -56,7 +62,7 @@ export const route = createBrowserRouter([
       },
       {
         path: "manage-bot-products",
-        element: <div>Manage Bot Products</div>,
+        element: <ManageProduct />,
       },
       {
         path: "web3-products",

@@ -69,6 +69,10 @@ const ManageAuction = () => {
         }
     };
 
+    const reFetchAuctions = () => {
+        fetchPage(page, searchQuery);
+    };
+
     useEffect(() => {
         fetchPage(page, searchQuery);
     }, [page, searchQuery]);
@@ -251,9 +255,9 @@ const ManageAuction = () => {
 
             {isOpenAddModal && (
                 <AddMangeAuction
+                    reFetchAuctions={reFetchAuctions}
                     onClose={handleCloseAddModal}
                     onAuctionAdded={handleAuctionAdded}
-                    initialData={editingAuction}
                 />
             )}
         </>

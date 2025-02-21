@@ -5,6 +5,7 @@ import AddPromoCodeModal from "./AddPromoCodeModal";
 import { dateFormater } from "../../helper/dateFormater";
 import { useTranslation } from "react-i18next";
 import "./PromoCode.css";
+import { BASE_API_URL } from "../../api/request";
 
 const PromoCodePage = () => {
   const dispatch = useDispatch();

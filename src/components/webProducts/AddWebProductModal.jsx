@@ -21,10 +21,17 @@ const AddWebProductModal = ({ onClose, onCategoryAdded }) => {
 
     try {
       setUploading(true);
-      const response = await $api.post(`${BASE_API_URL}/attachment/upload`, {
-        img: file,
-      });
-      if (!response.ok) throw new Error("Image upload failed");
+      const response = await $api.post(
+        `${BASE_API_URL}/api/v1/attachment/upload`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (response.status !== 200) throw new Error("Image upload failed");
 
       const data = response.data;
       setAttachmentId(data);
@@ -40,7 +47,7 @@ const AddWebProductModal = ({ onClose, onCategoryAdded }) => {
     if (!attachmentId) return;
     try {
       const response = await fetch(
-        `${BASE_API_URL}/attachment/${attachmentId}`,
+        `${BASE_API_URL}/api/v1/attachment/${attachmentId}`,
         {
           method: "DELETE",
         },

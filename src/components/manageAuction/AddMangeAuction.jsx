@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { fetchAuctionProductsSearch, saveNewAuction } from "../../api/request/admin/auction/main.api";
 import { notifyError, notifySuccess } from "../../helper/toast";
 
-const AddManageAuction = ({ onClose, initialData }) => {
+const AddManageAuction = ({ onClose, initialData, reFetchAuctions }) => {
     const [name, setName] = useState(initialData?.name || "");
     const [gift, setGift] = useState(initialData?.giftProduct || "");
     const [isActive, setIsActive] = useState(initialData?.isActive || false);
@@ -14,10 +14,6 @@ const AddManageAuction = ({ onClose, initialData }) => {
     const [searchResults, setSearchResults] = useState([]);
     const [selectedSearchId, setSelectedSearchId] = useState(-1);
 
-    const [selectedDummyItem, setSelectedDummyItem] = useState(
-        initialData?.selectedDummyItem || null
-    );
-
     useEffect(() => {
         if (initialData) {
             setName(initialData.name || "");
@@ -26,7 +22,6 @@ const AddManageAuction = ({ onClose, initialData }) => {
             setCount(initialData.productCount || "");
             setStartTime(initialData.startTime || "");
             setEndTime(initialData.endTime || "");
-            setSelectedDummyItem(initialData.selectedDummyItem || null);
         }
     }, [initialData]);
 
@@ -58,6 +53,7 @@ const AddManageAuction = ({ onClose, initialData }) => {
 
             if (res.status === 200) {
                 notifySuccess("Aksiya muvaffaqiyatli qo'shildi!");
+                reFetchAuctions();
             }
         } catch (error) {
             notifyError("Xatolik yuz berdi. Iltimos, qaytadan urinib ko'ring!");
