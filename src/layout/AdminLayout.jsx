@@ -9,8 +9,8 @@ const AdminLayout = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // if (localStorage.getItem("token"))
-    // navigate("/login")
+    if (!localStorage.getItem("token"))
+      navigate("/login")
   }, [navigate]);
 
   const NavLinks = [
@@ -23,6 +23,11 @@ const AdminLayout = () => {
       id: 1,
       title: "admin.sidebar.users",
       link: "manage-users",
+    },
+    {
+      id: 3154135,
+      title: "Web Foydalanuvchilari",
+      link: "manage-web-users"
     },
     {
       id: 2,
@@ -55,8 +60,8 @@ const AdminLayout = () => {
       link: "manage-promo-codes",
     },
     {
-      id: 314, 
-      title: "Taken promo codes",
+      id: 314,
+      title: "admin.sidebar.takenPromoCode",
       link: "taken-promo-codes"
     },
     {

@@ -204,7 +204,7 @@ const ManageProduct = () => {
                             >
                                 <td className='p-4'>{product.id}</td>
                                 <td className='p-4'>{product.name}</td>
-                                <td className='p-4'>{product.desc}</td>
+                                <td className='p-4'>{product.desc.length > 20 ? product.desc.substring(0, 20) + " ... " : product.desc}</td>
                                 <td className='p-4'>{formatDate(product.when)}</td>
                                 <td className='p-4'>${product.onePrice}</td>
                                 <td className='p-4 text-center'>
@@ -272,7 +272,7 @@ const ManageProduct = () => {
                                         <p>
                                             <strong>Name:</strong> {selectedProduct.name}
                                         </p>
-                                        <p>
+                                        <p className='break-words text-[16px] text-justify'>
                                             <strong>Description:</strong> {selectedProduct.desc}
                                         </p>
                                         <p>

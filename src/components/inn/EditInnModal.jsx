@@ -1,10 +1,12 @@
 import { useRef } from "react";
 import { editInn } from "../../api/request/admin/inn/main.api";
 import { notifyError, notifyInfo } from "../../helper/toast";
+import { useTranslation } from "react-i18next";
 
 const EditInnModal = ({ inn, onClose, editInns }) => {
   const innRef = useRef();
   const storeRef = useRef();
+  const { t } = useTranslation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -46,37 +48,38 @@ const EditInnModal = ({ inn, onClose, editInns }) => {
     <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-black bg-opacity-50 z-50">
       <div className="rounded-lg p-6 grid grid-cols-1 gap-6">
         <div className="bg-gray-50 p-6 rounded-lg shadow-md flex flex-col h-full">
-          <h1 className="text-2xl font-bold mb-4 text-gray-800">Edit</h1>
+          <h1 className="text-2xl font-bold mb-4 text-gray-800">
+            {t("inn.edit")}
+          </h1>
           <form onSubmit={handleSubmit} className="space-y-4 flex-grow">
             <label className="block text-gray-700 font-medium">
-              INN
+              {t("inn.title")}
               <input
                 ref={innRef}
                 type="text"
                 required
                 defaultValue={inn?.name}
-                placeholder="Enter INN"
+                placeholder={t("inn.editModal.enterInn")}
                 className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
               />
             </label>
             <label className="block text-gray-700 font-medium">
-              Store Name
+              {t("inn.storeName")}
               <input
                 ref={storeRef}
                 type="text"
                 required
                 defaultValue={inn?.storeName}
-                placeholder="Enter store name"
+                placeholder={t("inn.editModal.enterStoreName")}
                 className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
               />
             </label>
             <label className="block text-gray-700 font-medium">
-              Qo'shilgan vaqti
+              {t("inn.createdAt")}
               <input
                 type="date"
                 disabled
                 value={inn?.createdAt ? inn.createdAt.split("T")[0] : ""}
-                placeholder="Enter store name"
                 className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
               />
             </label>
@@ -86,14 +89,14 @@ const EditInnModal = ({ inn, onClose, editInns }) => {
               onClick={onClose}
               className="w-full bg-slate-500 text-white font-semibold py-2 rounded-md mt-4 hover:bg-slate-600 transition-all duration-300"
             >
-              Close
+              {t("inn.editModal.close")}
             </button>
             <button
               onClick={handleSubmit}
               type="submit"
               className="w-full bg-green-500 text-white font-semibold py-2 rounded-md mt-4 hover:bg-green-600 transition-all duration-300"
             >
-              Edit
+              {t("inn.editModal.save")}
             </button>
           </div>
         </div>

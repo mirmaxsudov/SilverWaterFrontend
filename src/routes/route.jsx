@@ -20,6 +20,7 @@ import Web3Product from "../components/web3Product/Web3Product.jsx";
 import TokenPromoCode from "../components/takenPromoCode/TokenPromoCode.jsx";
 import ManageProduct from "../components/manageProduct/ManageProduct.jsx";
 import Web3ProductForBot from "../pages/Web3ProductForBot.jsx";
+import WebUser from '../components/webUser/WebUser.jsx';
 
 export const route = createBrowserRouter([
   {
@@ -54,6 +55,10 @@ export const route = createBrowserRouter([
             element: <div>User Detail page</div>,
           },
         ],
+      },
+      {
+        path: "manage-web-users",
+        element: <WebUser />,
       },
       {
         path: "manage-web-products",

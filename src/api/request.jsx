@@ -1,4 +1,5 @@
 import axios from "axios";
+import { notifyError } from "../helper/toast";
 
 const BASE_API_URL = "http://localhost:8080";
 // const BASE_API_URL = "http://45.92.173.205:8080";
@@ -18,8 +19,12 @@ $api.interceptors.request.use((config) => {
 $api.interceptors.response.use(
   (response) => response,
   async (error) => {
-    // if (error.response?.status === 401)
-    //   window.location.href = '/login'
+    if (error.response?.status === 401)
+      window.location.href = '/login'
+    else if (error.response?.status === 403) {
+      notifyError("Siz bu amalni bajara olmaysiz!");
+      return Promise.resolve();
+    }
 
     throw error;
   },

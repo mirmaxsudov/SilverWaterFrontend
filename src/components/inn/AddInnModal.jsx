@@ -2,11 +2,13 @@ import { useRef, useState } from "react";
 import { $api, BASE_API_URL } from "../../api/request";
 import { notifyError, notifySuccess } from "../../helper/toast";
 import { saveSingle } from "../../api/request/admin/inn/main.api";
+import { useTranslation } from "react-i18next";
 
 const AddInnModal = ({ addToInns, onClose }) => {
   const [file, setFile] = useState(null);
   const innRef = useRef();
   const storeNameRef = useRef();
+  const { t } = useTranslation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -70,7 +72,7 @@ const AddInnModal = ({ addToInns, onClose }) => {
           {/* Left Section - Add by Excel */}
           <div className="flex flex-col h-full">
             <h1 className="text-2xl font-bold mb-6 text-gray-800">
-              Add by Excel
+              {t("inn.addModal.byExcel")}
             </h1>
             <form onSubmit={handleSubmit} method="post" className="mb-6">
               <label className="block">
@@ -91,14 +93,14 @@ const AddInnModal = ({ addToInns, onClose }) => {
                 onClick={onClose}
                 className="bg-orange-500 text-white font-semibold py-2 px-5 rounded-md hover:bg-orange-600 transition-all duration-300"
               >
-                Close
+                {t("inn.addModal.close")}
               </button>
               <button
                 onClick={handleSubmit}
                 type="submit"
                 className="bg-green-500 text-white font-semibold py-2 px-5 rounded-md hover:bg-green-600 transition-all duration-300"
               >
-                Add
+                {t("inn.addModal.add")}
               </button>
             </div>
           </div>
@@ -106,24 +108,24 @@ const AddInnModal = ({ addToInns, onClose }) => {
           {/* Right Section - Add Single */}
           <div className="bg-gray-50 p-6 rounded-lg shadow-md flex flex-col h-full">
             <h1 className="text-2xl font-bold mb-4 text-gray-800">
-              Add Single
+              {t("inn.addModal.addSingle")}
             </h1>
             <form onSubmit={handleSubmitSingle} className="space-y-4 flex-grow">
               <label className="block text-gray-700 font-medium">
-                INN
+                {t("inn.title")}
                 <input
                   ref={innRef}
                   type="text"
-                  placeholder="Enter INN"
+                  placeholder={t("inn.addModal.enterInn")}
                   className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                 />
               </label>
               <label className="block text-gray-700 font-medium">
-                Store Name
+                {t("inn.addModal.storeName")}
                 <input
                   ref={storeNameRef}
                   type="text"
-                  placeholder="Enter store name"
+                  placeholder={t("inn.addModal.enterStoreName")}
                   className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                 />
               </label>
@@ -133,7 +135,7 @@ const AddInnModal = ({ addToInns, onClose }) => {
               onClick={handleSubmitSingle}
               className="w-full bg-green-500 text-white font-semibold py-2 rounded-md mt-4 hover:bg-green-600 transition-all duration-300"
             >
-              Add
+              {t("inn.addModal.add")}
             </button>
           </div>
         </div>

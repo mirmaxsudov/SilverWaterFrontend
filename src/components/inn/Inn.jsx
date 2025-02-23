@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { BASE_API_URL } from "../../api/request";
 import { notifyInfo } from "../../helper/toast";
 import EditInnModal from "./EditInnModal";
+import { useTranslation } from "react-i18next";
 
 const DOTS = "...";
 
@@ -21,6 +22,7 @@ const Inn = () => {
   const [inns, setInns] = useState([]);
   const [totalInns, setTotalInns] = useState(0);
   const [editInn, setEditInn] = useState(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -61,15 +63,14 @@ const Inn = () => {
 
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
-    setPage(0); // Reset to first page when search changes
+    setPage(0);
   };
 
   return (
     <section className="inn-section py-10">
       <div className="container mx-auto">
-        {/* Header */}
         <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold">INN</h1>
+          <h1 className="text-3xl font-bold">{t("inn.title")}</h1>
           <div className="flex items-center gap-5">
             <Link
               onClick={() => {
@@ -79,18 +80,16 @@ const Inn = () => {
               to={`${BASE_API_URL}/api/v1/inn/download-excel`}
               className="bg-blue-300 text-blue-700 font-semibold py-2 px-4 rounded hover:bg-blue-600 transition-all duration-300 hover:text-white"
             >
-              Download
+              {t("inn.download")}
             </Link>
             <button
               onClick={() => setIsOpenAddModal(true)}
               className="bg-green-300 text-green-700 font-semibold py-2 px-4 rounded hover:bg-green-600 transition-all duration-300 hover:text-white"
             >
-              Add
+              {t("inn.add")}
             </button>
           </div>
         </div>
-
-        {/* Search and Limit Selector */}
         <InnSearch
           search={search}
           onSearchChange={handleSearchChange}
@@ -98,16 +97,12 @@ const Inn = () => {
           setLimit={setLimit}
           setPage={setPage}
         />
-
-        {/* Table with INN records */}
         <ShowAll
           openEditModal={openEditModal}
           handleInnDelete={handleInnDelete}
           setToEdit={setEditInn}
           inns={inns}
         />
-
-        {/* Pagination */}
         <Pagination
           page={page}
           setPage={setPage}
@@ -133,15 +128,17 @@ const Inn = () => {
 };
 
 const ShowAll = ({ inns, handleInnDelete, openEditModal, setToEdit }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="py-10">
       <table className="w-full table-auto border-collapse">
         <thead>
           <tr className="border">
-            <th className="p-2">INN</th>
-            <th className="p-2">Store Name</th>
-            <th className="p-2">Added At</th>
-            <th className="p-2">Actions</th>
+            <th className="p-2">{t("inn.title")}</th>
+            <th className="p-2">{t("inn.storeName")}</th>
+            <th className="p-2">{t("inn.createdAt")}</th>
+            <th className="p-2">{t("inn.actions")}</th>
           </tr>
         </thead>
         <tbody>
@@ -152,7 +149,6 @@ const ShowAll = ({ inns, handleInnDelete, openEditModal, setToEdit }) => {
                 <td className="p-2 truncate">{inn.storeName}</td>
                 <td className="p-2">{dateFormater(inn.createdAt)}</td>
                 <td className="p-2">
-                  {/* Placeholder buttons for Edit/Delete */}
                   <button
                     onClick={() => {
                       openEditModal();
@@ -160,13 +156,13 @@ const ShowAll = ({ inns, handleInnDelete, openEditModal, setToEdit }) => {
                     }}
                     className="bg-yellow-300 text-yellow-700 py-1 px-2 rounded"
                   >
-                    Edit
+                    {t("inn.edit")}
                   </button>
                   <button
                     onClick={() => handleInnDelete(inn.id)}
                     className="bg-red-300 text-red-700 py-1 px-2 rounded ml-2"
                   >
-                    Delete
+                    {t("inn.delete")}
                   </button>
                 </td>
               </tr>
@@ -174,7 +170,7 @@ const ShowAll = ({ inns, handleInnDelete, openEditModal, setToEdit }) => {
           ) : (
             <tr>
               <td colSpan="4" className="text-center p-4">
-                No INNs found.
+                {t("inn.notFound")}
               </td>
             </tr>
           )}
@@ -185,12 +181,14 @@ const ShowAll = ({ inns, handleInnDelete, openEditModal, setToEdit }) => {
 };
 
 const InnSearch = ({ search, onSearchChange, limit, setLimit, setPage }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="inn-search py-10 grid grid-cols-12 items-center gap-4">
       <div className="col-span-10">
         <input
           type="text"
-          placeholder="Search ..."
+          placeholder={t("inn.search")}
           value={search}
           onChange={onSearchChange}
           className="shadow w-full p-2 border border-gray-300 rounded-lg placeholder:tracking-wider focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -201,7 +199,7 @@ const InnSearch = ({ search, onSearchChange, limit, setLimit, setPage }) => {
           value={limit}
           onChange={(e) => {
             setLimit(Number(e.target.value));
-            setPage(0); // Reset to first page when limit changes
+            setPage(0);
           }}
           className="shadow w-full p-2 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
@@ -217,17 +215,13 @@ const InnSearch = ({ search, onSearchChange, limit, setLimit, setPage }) => {
 };
 
 /**
- * Returns an array of page numbers and DOTS ("...") that should be rendered.
- *
- * @param {number} currentPage - current active page (1-indexed)
- * @param {number} totalPages - total number of pages
- * @param {number} pageNeighbours - number of page numbers to show on each side of current page
+ * @param {number} currentPage 
+ * @param {number} totalPages 
+ * @param {number} pageNeighbours 
  */
 const getPaginationRange = (currentPage, totalPages, pageNeighbours = 2) => {
-  // Calculate total numbers to show (first, last, current, neighbours, and two dots)
   const totalPageNumbers = pageNeighbours * 2 + 5;
 
-  // Case 1: total pages less than the page numbers we want to show
   if (totalPages <= totalPageNumbers) {
     return [...Array(totalPages)].map((_, index) => index + 1);
   }
@@ -241,14 +235,12 @@ const getPaginationRange = (currentPage, totalPages, pageNeighbours = 2) => {
   const pages = [];
 
   if (!showLeftDots && showRightDots) {
-    // No left dots, but right dots
     const leftItemCount = 3 + 2 * pageNeighbours;
     const leftRange = [...Array(leftItemCount)].map((_, index) => index + 1);
     pages.push(...leftRange);
     pages.push(DOTS);
     pages.push(totalPages);
   } else if (showLeftDots && !showRightDots) {
-    // Left dots, but no right dots
     const rightItemCount = 3 + 2 * pageNeighbours;
     const rightRange = [...Array(rightItemCount)].map(
       (_, index) => totalPages - rightItemCount + 1 + index,
@@ -257,7 +249,6 @@ const getPaginationRange = (currentPage, totalPages, pageNeighbours = 2) => {
     pages.push(DOTS);
     pages.push(...rightRange);
   } else if (showLeftDots && showRightDots) {
-    // Both left and right dots to be shown
     pages.push(1);
     pages.push(DOTS);
     for (let i = leftSiblingIndex; i <= rightSiblingIndex; i++) {
@@ -271,10 +262,10 @@ const getPaginationRange = (currentPage, totalPages, pageNeighbours = 2) => {
 };
 
 const Pagination = ({ page, setPage, totalInns, limit }) => {
+  const { t } = useTranslation();
   const totalPages = Math.ceil(totalInns / limit);
   if (totalPages <= 1) return null;
 
-  // Convert 0-indexed page to 1-indexed for the pagination range calculation
   const currentPage = page + 1;
   const paginationRange = getPaginationRange(currentPage, totalPages, 2);
 
@@ -285,7 +276,7 @@ const Pagination = ({ page, setPage, totalInns, limit }) => {
         disabled={page === 0}
         className="px-4 py-2 border border-gray-300 rounded-l hover:bg-gray-100 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
       >
-        Prev
+        {t("inn.prev")}
       </button>
       {paginationRange.map((item, index) => {
         if (item === DOTS) {
@@ -302,9 +293,8 @@ const Pagination = ({ page, setPage, totalInns, limit }) => {
           <button
             key={index}
             onClick={() => setPage(item - 1)}
-            className={`px-4 py-2 border-t border-b border-gray-300 text-gray-700 hover:bg-blue-600 hover:text-white focus:outline-none transition-colors duration-200 ${
-              currentPage === item ? "bg-blue-500 text-white" : ""
-            }`}
+            className={`px-4 py-2 border-t border-b border-gray-300 text-gray-700 hover:bg-blue-600 hover:text-white focus:outline-none transition-colors duration-200 ${currentPage === item ? "bg-blue-500 text-white" : ""
+              }`}
           >
             {item}
           </button>
@@ -315,7 +305,7 @@ const Pagination = ({ page, setPage, totalInns, limit }) => {
         disabled={page === totalPages - 1}
         className="px-4 py-2 border border-gray-300 rounded-r hover:bg-gray-100 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
       >
-        Next
+        {t("inn.next")}
       </button>
     </div>
   );

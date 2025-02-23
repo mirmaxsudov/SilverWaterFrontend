@@ -1,6 +1,8 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { $api, BASE_API_URL } from "../../api/request";
+import { notifyError, notifySuccess } from "../../helper/toast";
+import { deleteImageById } from "../../api/request/admin/webProduct/main.api";
 
 const AddWebProductModal = ({ onClose, onCategoryAdded }) => {
   const [name, setName] = useState("");
@@ -46,19 +48,12 @@ const AddWebProductModal = ({ onClose, onCategoryAdded }) => {
   const handleDeleteImage = async () => {
     if (!attachmentId) return;
     try {
-      const response = await fetch(
-        `${BASE_API_URL}/api/v1/attachment/${attachmentId}`,
-        {
-          method: "DELETE",
-        },
-      );
-      if (!response.ok) throw new Error("Image deletion failed");
-
+      await deleteImageById(attachmentId)
+      notifySuccess("Rasm muvaffaqiyatli o'chirildi.");
       setAttachmentId(null);
       setPreviewUrl(null);
     } catch (err) {
-      console.error("Delete image error:", err);
-      setError("Failed to delete image.");
+      notifyError("Rasmni o'chirishda xatolik yuz berdi.");
     }
   };
 
@@ -73,15 +68,21 @@ const AddWebProductModal = ({ onClose, onCategoryAdded }) => {
         name,
         attachmentId,
       });
-      if (!response.ok) {
-        throw new Error("Failed to add product");
+
+      if (response.status === 200) {
+        setName("");
+        setAttachmentId(null);
+        setPreviewUrl(null);
+        setError("");
+        onClose();
+        notifySuccess("Web mahsulot qo'shildi.");
+        return;
       }
 
       onCategoryAdded();
       onClose();
     } catch (err) {
-      console.error("Failed to add product:", err);
-      setError("Failed to add product.");
+      notifyError("Web mahsulot qo'shishda xatolik yuz berdi.");
     }
   };
 

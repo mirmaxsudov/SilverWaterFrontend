@@ -1,6 +1,7 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { $api, BASE_API_URL } from "../../api/request";
+import { notifyError } from "../../helper/toast";
 
 const Web3ProductAddModal = ({ onClose, handleWeb3ProductAdded }) => {
     const [name, setName] = useState("");
@@ -46,20 +47,11 @@ const Web3ProductAddModal = ({ onClose, handleWeb3ProductAdded }) => {
     const handleDeleteImage = async () => {
         if (!attachmentId) return;
         try {
-            const response = await fetch(
-                `${BASE_API_URL}/api/v1/attachment/${attachmentId}`,
-                {
-                    method: "DELETE",
-                },
-            );
-
-            if (!response.ok) throw new Error("Image deletion failed");
-
+            await $api.delete("/api/v1/attachment/" + attachmentId);
             setAttachmentId(null);
             setPreviewUrl(null);
         } catch (err) {
-            console.error("Delete image error:", err);
-            setError("Failed to delete image.");
+            notifyError("Qo'shimcha rasmini o'chirishda xatolik yuz berdi.");
         }
     };
 

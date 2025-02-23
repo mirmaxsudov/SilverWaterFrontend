@@ -3,6 +3,7 @@ import { useLoaderData, useRevalidator } from "react-router-dom";
 import AddWebProductModal from "./AddWebProductModal";
 import ShowWebProductItem from "./ShowWebProductItem";
 import { $api, BASE_API_URL } from "../../api/request";
+import { deleteById } from "../../api/request/admin/webProduct/main.api";
 
 const WebProducts = () => {
   const data = useLoaderData();
@@ -10,6 +11,12 @@ const WebProducts = () => {
   const [isShowAddModal, setIsShowAddModal] = useState(false);
 
   const handleProductAdded = () => revalidate();
+
+  const handleDeleteWebProduct = async id => {
+    alert("delete")
+    await deleteById(id);
+    revalidate();
+  }
 
   return (
     <>
@@ -34,7 +41,10 @@ const WebProducts = () => {
           )}
           <div className="grid grid-cols-4 mt-10 gap-5">
             {data.map((product) => (
-              <ShowWebProductItem key={product.id} product={product} />
+              <ShowWebProductItem
+                handleDeleteWebProduct={handleDeleteWebProduct}
+                key={product.id}
+                product={product} />
             ))}
           </div>
         </div>
