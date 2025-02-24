@@ -1,0 +1,38 @@
+name: Deploy Frontend to VPS
+
+on:
+  push:
+    branches:
+      - main # Change this if using another branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build project
+      run: npm run build # Change this if using another build command
+
+    - name: Deploy to VPS
+      uses: appleboy/scp-action@v0.1.4
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
+        key: ${{ secrets.VPS_PRIVATE_KEY }}
+        source: "dist/*" # Change based on your build output folder
+        target: "/home/silver/frontend/SilverWaterFrontend/dist"
+
+    - name: Restart Server (Optional)
+      uses: appleboy/ssh-action@v0.1.7
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
+        key: ${{ secrets.VPS_PRIVATE_KEY }}
+        script: |
+          sudo systemctl reload nginx
