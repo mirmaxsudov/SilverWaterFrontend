@@ -2,6 +2,7 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
 import { $api } from "../../api/request";
+import { notifyError, notifySuccess } from "../../helper/toast";
 
 const AddPromoCodeWithExcel = ({ onClose, onPromoCodeAdded }) => {
   const [file, setFile] = useState(null);
@@ -25,18 +26,21 @@ const AddPromoCodeWithExcel = ({ onClose, onPromoCodeAdded }) => {
     formData.append("file", file);
     try {
       const response = await $api.post(
-        "${BASE_API_URL}/api/v1/promo-codes/import",
+        "/api/v1/promo-codes/import",
         formData,
       );
 
-      if (!response.ok) {
-        throw new Error("Failed to import promo codes");
+
+      if (response.status === 200) {
+        onPromoCodeAdded();
+        onClose();
+        notifySuccess(response.data);
+        return;
       }
-      onPromoCodeAdded();
-      onClose();
+
     } catch (err) {
-      console.error(err);
-      setError("Failed to import promo codes.");
+      onClose();
+      notifyError("Qo'shishda xatolik yuz berdi.");
     } finally {
       setLoading(false);
     }

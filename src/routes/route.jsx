@@ -89,7 +89,7 @@ export const route = createBrowserRouter([
       },
       {
         path: "manage-orders",
-        element: <div>Manage Orders</div>,
+        element: <Settings />,
       },
       {
         path: "manage-applications",

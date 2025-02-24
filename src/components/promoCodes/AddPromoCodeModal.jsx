@@ -94,7 +94,7 @@ const AddPromoCodeModal = ({ onClose, onPromoCodeAdded }) => {
             </div>
           </form>
         </div>
-        <AddPromoCodeWithExcel />
+        <AddPromoCodeWithExcel onClose={onClose} onPromoCodeAdded={onPromoCodeAdded} />
       </div>
     </div>
   );
