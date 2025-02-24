@@ -36,7 +36,7 @@ const AddCategoryModal = ({ onClose, onCategoryAdded }) => {
       productIds: selectedProductIds,
     };
     try {
-      const res = await $api.post("/api/v1/category", payload); 
+      const res = await $api.post("/api/v1/category", payload);
       const newCategory = await res.data;
       onCategoryAdded(newCategory);
       onClose();
@@ -44,7 +44,6 @@ const AddCategoryModal = ({ onClose, onCategoryAdded }) => {
       console.error(err);
     }
   };
-
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -104,7 +103,6 @@ const AddCategoryModal = ({ onClose, onCategoryAdded }) => {
     </div>
   );
 };
-
 
 export default AddCategoryModal;
 

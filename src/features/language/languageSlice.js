@@ -24,7 +24,6 @@ const languageSlice = createSlice({
   initialState: initLanguageState,
   reducers: {
     changeLanguage: (state, action) => {
-      console.log(action.payload);
       i18next.changeLanguage(action.payload);
       state.language = action.payload;
     },

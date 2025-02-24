@@ -28,7 +28,6 @@ const EditCategoryModal = ({ category, onClose, onCategoryUpdated }) => {
         const combined = [...assigned, ...available];
         setProducts(combined);
         setSelectedProductIds(assigned.map((prod) => prod.id));
-
       } catch (err) {
         console.error(err);
       }

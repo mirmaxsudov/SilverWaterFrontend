@@ -6,7 +6,7 @@ export const fetchUsersPage = async (
   query = "",
   order = "ASC",
   role = "ALL",
-  sortBy = "ID"
+  sortBy = "ID",
 ) => {
   const res = await $api.get("/api/v1/user/page", {
     params: {

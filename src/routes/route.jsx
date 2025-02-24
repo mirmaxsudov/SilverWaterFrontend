@@ -20,7 +20,8 @@ import Web3Product from "../components/web3Product/Web3Product.jsx";
 import TokenPromoCode from "../components/takenPromoCode/TokenPromoCode.jsx";
 import ManageProduct from "../components/manageProduct/ManageProduct.jsx";
 import Web3ProductForBot from "../pages/Web3ProductForBot.jsx";
-import WebUser from '../components/webUser/WebUser.jsx';
+import WebUser from "../components/webUser/WebUser.jsx";
+import Settings from "../pages/settings/Settings.jsx";
 
 export const route = createBrowserRouter([
   {
@@ -101,11 +102,11 @@ export const route = createBrowserRouter([
       },
       {
         path: "taken-promo-codes",
-        element: <TokenPromoCode />
+        element: <TokenPromoCode />,
       },
       {
         path: "settings",
-        element: <div>Settings</div>,
+        element: <Settings />
       },
       {
         path: "manage-inn",

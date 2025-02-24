@@ -15,7 +15,7 @@ const getDefaultDates = () => {
 
 // Helper to format raw data based on the aggregation type
 const formatDashboardData = (data, chartType) => {
-  return data.map(item => {
+  return data.map((item) => {
     // Convert y to a number
     const y = Number(item.y);
     let xLabel = item.x;
@@ -35,7 +35,20 @@ const formatDashboardData = (data, chartType) => {
       // Assuming item.x is "YYYY-MM" → show short month name
       const parts = item.x.split("-");
       const monthNumber = parts[1];
-      const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      const monthNames = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ];
       const monthIndex = parseInt(monthNumber, 10) - 1;
       xLabel = monthNames[monthIndex];
     } else if (chartType === "YEAR") {
@@ -57,7 +70,11 @@ const ApplicationDashboard = () => {
   // Function to fetch chart data from the backend
   const fetchChartData = async () => {
     try {
-      const response = await fetchApplicationDashboardStats(start, end, chartType);
+      const response = await fetchApplicationDashboardStats(
+        start,
+        end,
+        chartType,
+      );
       // Format the data based on chartType before setting it to state
       const formattedData = formatDashboardData(response.data, chartType);
       setData(formattedData);

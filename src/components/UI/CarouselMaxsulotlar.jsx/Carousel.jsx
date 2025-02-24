@@ -29,7 +29,6 @@ const products = [
     title: "1.5L",
     img: water4,
   },
-
   {
     id: 6,
     title: "5L",

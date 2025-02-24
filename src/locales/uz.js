@@ -172,4 +172,13 @@ export const uz = {
       cancel: "Bekor qilish",
     },
   },
+  web3: {
+    title: "Web 3 mahsulotlar",
+    notFound: "Ma'lumotlar topilmadi",
+    add: "Qo'shish",
+    delete: "O'chirish",
+    modal: {
+      
+    }
+  },
 };

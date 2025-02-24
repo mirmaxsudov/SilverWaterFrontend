@@ -12,11 +12,11 @@ const WebProducts = () => {
 
   const handleProductAdded = () => revalidate();
 
-  const handleDeleteWebProduct = async id => {
-    alert("delete")
+  const handleDeleteWebProduct = async (id) => {
+    alert("delete");
     await deleteById(id);
     revalidate();
-  }
+  };
 
   return (
     <>
@@ -44,7 +44,8 @@ const WebProducts = () => {
               <ShowWebProductItem
                 handleDeleteWebProduct={handleDeleteWebProduct}
                 key={product.id}
-                product={product} />
+                product={product}
+              />
             ))}
           </div>
         </div>

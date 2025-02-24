@@ -1,8 +1,8 @@
 import axios from "axios";
 import { notifyError } from "../helper/toast";
 
-// const BASE_API_URL = "http://localhost:8080";
-const BASE_API_URL = "http://silver-water.uz";
+const BASE_API_URL = "http://localhost:8080";
+// const BASE_API_URL = "https://www.silver-water.uz";
 // baseURL: "http://45.92.173.205:8080/api/v1/application/",
 
 const $api = axios.create({
@@ -19,8 +19,7 @@ $api.interceptors.request.use((config) => {
 $api.interceptors.response.use(
   (response) => response,
   async (error) => {
-    if (error.response?.status === 401)
-      window.location.href = '/login'
+    if (error.response?.status === 401) window.location.href = "/login";
     else if (error.response?.status === 403) {
       notifyError("Siz bu amalni bajara olmaysiz!");
       return Promise.resolve();

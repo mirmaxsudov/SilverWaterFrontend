@@ -149,4 +149,5 @@ export const ru = {
       cancel: "Отмена",
     },
   },
+  web3: {},
 };

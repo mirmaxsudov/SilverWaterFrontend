@@ -24,7 +24,7 @@ const AddPromoCodeModal = ({ onClose, onPromoCodeAdded }) => {
         code,
         gift,
         maxUsage: Number(maxUsage),
-      })
+      });
 
       if (response.status === 200) {
         setError("");

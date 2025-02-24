@@ -215,9 +215,9 @@ const InnSearch = ({ search, onSearchChange, limit, setLimit, setPage }) => {
 };
 
 /**
- * @param {number} currentPage 
- * @param {number} totalPages 
- * @param {number} pageNeighbours 
+ * @param {number} currentPage
+ * @param {number} totalPages
+ * @param {number} pageNeighbours
  */
 const getPaginationRange = (currentPage, totalPages, pageNeighbours = 2) => {
   const totalPageNumbers = pageNeighbours * 2 + 5;
@@ -293,8 +293,9 @@ const Pagination = ({ page, setPage, totalInns, limit }) => {
           <button
             key={index}
             onClick={() => setPage(item - 1)}
-            className={`px-4 py-2 border-t border-b border-gray-300 text-gray-700 hover:bg-blue-600 hover:text-white focus:outline-none transition-colors duration-200 ${currentPage === item ? "bg-blue-500 text-white" : ""
-              }`}
+            className={`px-4 py-2 border-t border-b border-gray-300 text-gray-700 hover:bg-blue-600 hover:text-white focus:outline-none transition-colors duration-200 ${
+              currentPage === item ? "bg-blue-500 text-white" : ""
+            }`}
           >
             {item}
           </button>

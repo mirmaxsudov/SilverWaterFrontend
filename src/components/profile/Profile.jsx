@@ -3,7 +3,7 @@ import { useLoaderData, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { changeLanguage } from "../../features/language/languageSlice.js";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { $api } from "../../api/request.jsx";
 
 const Profile = () => {
@@ -12,6 +12,7 @@ const Profile = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const language = useSelector(state => state.language.language);
 
   useEffect(() => {
     if (!profileData || profileData.error) setError(t("profile.error"));
@@ -20,7 +21,7 @@ const Profile = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/login");
-  }
+  };
 
   return (
     <section className="profile-section">
@@ -33,6 +34,7 @@ const Profile = () => {
                 e.preventDefault();
                 dispatch(changeLanguage(e.target.value));
               }}
+              value={language}
               name="language"
               className="bg-white text-black font-semibold py-2 rounded px-4 border"
             >
@@ -42,7 +44,8 @@ const Profile = () => {
             </select>
             <button
               onClick={handleLogout}
-              className="bg-red-300 text-red-700 font-semibold py-2 rounded px-4 hover:bg-red-600 transition-all duration-300 hover:text-[#fff]">
+              className="bg-red-300 text-red-700 font-semibold py-2 rounded px-4 hover:bg-red-600 transition-all duration-300 hover:text-[#fff]"
+            >
               {t("profile.logout")}
             </button>
           </div>
@@ -66,7 +69,7 @@ const Profile = () => {
                     {profileData.role}
                   </p>
                   <p className="text-md mt-2 text-gray-600">
-                    {profileData.phone}
+                    {profileData.username}
                   </p>
                 </div>
               </div>
@@ -78,12 +81,12 @@ const Profile = () => {
   );
 };
 
-export const profileAction = async ({ params }) => {
+export const profileAction = async () => {
   try {
-    const res = await $api.get(`/api/v1/user/${params.id}`);
+    const res = await $api.get(`/api/v1/web-users/profile`);
     return await res.data;
   } catch (error) {
-    return { error: "Failed to fetch user data" };
+    return { error: "Afsuski, foydalanuvchi topilmadi" };
   }
 };
 

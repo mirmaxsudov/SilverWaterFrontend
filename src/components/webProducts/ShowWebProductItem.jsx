@@ -12,9 +12,10 @@ const ShowWebProductItem = ({ product, handleDeleteWebProduct }) => {
       <div className="p-4 flex items-center gap-4">
         <button
           onClick={() => {
-            handleDeleteWebProduct(product.id)
+            handleDeleteWebProduct(product.id);
           }}
-          className="bg-red-300 text-red-700 font-semibold py-2 rounded px-4 hover:bg-red-600 transition-all duration-300 hover:text-[#fff]">
+          className="bg-red-300 text-red-700 font-semibold py-2 rounded px-4 hover:bg-red-600 transition-all duration-300 hover:text-[#fff]"
+        >
           Delete
         </button>
       </div>

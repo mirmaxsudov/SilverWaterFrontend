@@ -12,7 +12,7 @@ export const fetchApplications = createAsyncThunk(
     } catch (error) {
       return rejectWithValue("Failed to fetch applications");
     }
-  }
+  },
 );
 
 export const confirmApplication = createAsyncThunk(
@@ -23,7 +23,7 @@ export const confirmApplication = createAsyncThunk(
         `${BASE_API_URL}/api/v1/application/confirm/${id}`,
         {
           id,
-        }
+        },
       );
       if (!response.ok) return rejectWithValue("Failed to confirm application");
 
@@ -31,7 +31,7 @@ export const confirmApplication = createAsyncThunk(
     } catch (error) {
       return rejectWithValue("Network error");
     }
-  }
+  },
 );
 
 const initialState = {
@@ -52,7 +52,7 @@ const filterAndSortData = (state) => {
     filtered = filtered.filter(
       (app) =>
         app.fullName.toLowerCase().includes(state.searchQuery.toLowerCase()) ||
-        app.phoneNumber.toLowerCase().includes(state.searchQuery.toLowerCase())
+        app.phoneNumber.toLowerCase().includes(state.searchQuery.toLowerCase()),
     );
   }
 

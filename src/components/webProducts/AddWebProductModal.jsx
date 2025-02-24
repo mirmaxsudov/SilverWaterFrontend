@@ -30,7 +30,7 @@ const AddWebProductModal = ({ onClose, onCategoryAdded }) => {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        }
+        },
       );
 
       if (response.status !== 200) throw new Error("Image upload failed");
@@ -48,7 +48,7 @@ const AddWebProductModal = ({ onClose, onCategoryAdded }) => {
   const handleDeleteImage = async () => {
     if (!attachmentId) return;
     try {
-      await deleteImageById(attachmentId)
+      await deleteImageById(attachmentId);
       notifySuccess("Rasm muvaffaqiyatli o'chirildi.");
       setAttachmentId(null);
       setPreviewUrl(null);
@@ -74,9 +74,7 @@ const AddWebProductModal = ({ onClose, onCategoryAdded }) => {
         setAttachmentId(null);
         setPreviewUrl(null);
         setError("");
-        onClose();
         notifySuccess("Web mahsulot qo'shildi.");
-        return;
       }
 
       onCategoryAdded();

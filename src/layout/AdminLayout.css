@@ -5,7 +5,8 @@
 
 /*}*/
 
-.nav-links-container, .category-container {
+.nav-links-container,
+.category-container {
   overflow-x: auto;
   padding: 10px;
   background: #fff;
@@ -14,26 +15,31 @@
   scrollbar-color: #013690 #f1f1f1;
 }
 
-.nav-links-container::-webkit-scrollbar, .category-container::-webkit-scrollbar {
+.nav-links-container::-webkit-scrollbar,
+.category-container::-webkit-scrollbar {
   height: 8px;
 }
 
-.nav-links-container::-webkit-scrollbar-track, .category-container::-webkit-scrollbar-track {
+.nav-links-container::-webkit-scrollbar-track,
+.category-container::-webkit-scrollbar-track {
   background: #f1f1f1;
   border-radius: 4px;
 }
 
-.nav-links-container::-webkit-scrollbar-thumb, .category-container::-webkit-scrollbar-thumb {
+.nav-links-container::-webkit-scrollbar-thumb,
+.category-container::-webkit-scrollbar-thumb {
   background-color: #013690;
   border-radius: 4px;
   transition: background-color 0.3s ease;
 }
 
-.nav-links-container::-webkit-scrollbar-thumb:hover, .category-container::-webkit-scrollbar-thumb:hover {
+.nav-links-container::-webkit-scrollbar-thumb:hover,
+.category-container::-webkit-scrollbar-thumb:hover {
   background-color: #0150a0;
 }
 
-.nav-links-container a:hover, .category-container a:hover {
+.nav-links-container a:hover,
+.category-container a:hover {
   color: #0150a0;
 }
 

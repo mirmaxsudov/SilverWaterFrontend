@@ -130,16 +130,6 @@ const Contacts = () => {
           >
             <LocalPhoneIcon /> +998 55 515 05 50
           </Button>
-          <Button>
-            <Link to={"/admin"} className="text-white">
-              Admin
-            </Link>
-          </Button>
-          <Button>
-            <Link to={"/login"} className="text-white">
-              Login
-            </Link>
-          </Button>
         </Stack>
       </Stack>
       <Stack

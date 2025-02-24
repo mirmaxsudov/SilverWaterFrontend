@@ -15,7 +15,6 @@ const Login = () => {
       const response = await login(data);
 
       console.log(response.data);
-      
 
       localStorage.setItem("token", response.data.accessToken);
       notifySuccess("Muvaffaqiyatli kirdingiz");

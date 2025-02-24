@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { 
-  fetchAllWebUsers, 
-  createWebUser, 
-  updateWebUser, 
-  deleteWebUser 
+import {
+  fetchAllWebUsers,
+  createWebUser,
+  updateWebUser,
+  deleteWebUser,
 } from "../../api/request/admin/webUser/main.api";
 import { notifySuccess, notifyError } from "../../helper/toast";
 
@@ -12,18 +12,20 @@ const WebUser = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [editForm, setEditForm] = useState({ username: "", role: "" });
-  
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [addForm, setAddForm] = useState({ username: "", password: "", role: "USER" });
 
-  // Fetch all users from the API
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [addForm, setAddForm] = useState({
+    username: "",
+    password: "",
+    role: "USER",
+  });
+
   const fetchWebUsersData = async () => {
     try {
       const response = await fetchAllWebUsers();
       setWebUsers(response.data);
     } catch (error) {
-      console.error(error);
-      notifyError("Error fetching users");
+      notifyError("Xatolik yuz berdi, qaytadan urinib ko'ring.");
     }
   };
 
@@ -31,20 +33,24 @@ const WebUser = () => {
     fetchWebUsersData();
   }, []);
 
-  // Delete a user with confirmation
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this user?")) return;
+    if (!window.confirm("Rostdan ham o'chirmoqchimisiz?")) return;
     try {
       await deleteWebUser(id);
-      notifySuccess("User deleted successfully");
+      notifySuccess("Foydalanuvchi o'chirildi");
       fetchWebUsersData();
     } catch (error) {
-      console.error(error);
-      notifyError("Error deleting user");
+      console.log(error);
+
+      if (error.response.status >= 400 && error.response.status < 500) {
+        notifyError(error.response.data.message);
+        return;
+      }
+
+      notifyError("Xatolik yuz berdi, qaytadan urinib ko'ring.");
     }
   };
 
-  // Open the edit modal with the selected user's data
   const handleEdit = (user) => {
     setSelectedUser(user);
     setEditForm({ username: user.username, role: user.role });
@@ -60,17 +66,20 @@ const WebUser = () => {
     e.preventDefault();
     try {
       await updateWebUser(selectedUser.id, editForm);
-      notifySuccess("User updated successfully");
+      notifySuccess("Foydalanuvchi muvaffaqiyatli o'zgartirildi");
       setIsEditModalOpen(false);
       setSelectedUser(null);
       fetchWebUsersData();
     } catch (error) {
-      console.error(error);
-      notifyError("Error updating user");
+      if (error.response.status >= 400 && error.response.status < 500) {
+        notifyError(error.response.data.message);
+        return;
+      }
+
+      notifyError("Xatolik yuz berdi, qaytadan urinib ko'ring.");
     }
   };
 
-  // Open the add new user modal
   const openAddModal = () => {
     setAddForm({ username: "", password: "", role: "USER" });
     setIsAddModalOpen(true);
@@ -85,12 +94,16 @@ const WebUser = () => {
     e.preventDefault();
     try {
       await createWebUser(addForm);
-      notifySuccess("User created successfully");
+      notifySuccess("Foydalanuvchi muvaffaqiyatli qo'shildi");
       setIsAddModalOpen(false);
       fetchWebUsersData();
     } catch (error) {
-      console.error(error);
-      notifyError("Error creating user");
+      if (error.response.status >= 400 && error.response.status < 500) {
+        notifyError(error.response.data.message);
+        return;
+      }
+
+      notifyError("Xatolik yuz berdi, qaytadan urinib ko'ring.");
     }
   };
 
@@ -98,57 +111,62 @@ const WebUser = () => {
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="max-w-5xl mx-auto bg-white shadow rounded-lg p-6">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">Manage Web Users</h1>
-          <button 
+          <h1 className="text-2xl font-bold">Web Users boshqarish</h1>
+          <button
             onClick={openAddModal}
             className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
           >
-            Add New User
+            Qo'shish
           </button>
         </div>
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                   ID
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Username
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Role
                 </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {webUsers.map((user) => (
-                <tr key={user.id}>
+                <tr key={user.id} className="text-center">
                   <td className="px-6 py-4 whitespace-nowrap">{user.id}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">{user.username}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {user.username}
+                  </td>
                   <td className="px-6 py-4 whitespace-nowrap">{user.role}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex items-center justify-center">
                     <button
                       onClick={() => handleEdit(user)}
-                      className="text-blue-600 hover:text-blue-900 mr-4"
+                      className="border-[1px] py-1 px-3 rounded-lg hover:bg-blue-500 border-blue-600 transition-all duration-300  text-blue-600 hover:text-blue-50 mr-4"
                     >
-                      Edit
+                      O'zgartirish
                     </button>
                     <button
                       onClick={() => handleDelete(user.id)}
-                      className="text-red-600 hover:text-red-900"
+                      className="text-red-600 border-[1px] border-red-600 font-semibold py-1 rounded-lg px-3 hover:bg-red-600 transition-all duration-300 hover:text-[#fff]"
                     >
-                      Delete
+                      O'chirish
                     </button>
                   </td>
                 </tr>
               ))}
               {webUsers.length === 0 && (
                 <tr>
-                  <td colSpan="4" className="px-6 py-4 text-center text-gray-500">
+                  <td
+                    colSpan="4"
+                    className="px-6 py-4 text-center text-gray-500"
+                  >
                     No users found.
                   </td>
                 </tr>
