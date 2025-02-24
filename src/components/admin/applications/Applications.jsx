@@ -42,7 +42,6 @@ const Applications = () => {
 
   return (
     <div className="p-4 container mx-auto">
-      {/* Header */}
       <div className="flex justify-between items-center mb-5">
         <h1 className="text-3xl font-bold">{t("applications.title")}</h1>
         <p className="text-2xl font-semibold underline underline-offset-4">
@@ -50,7 +49,6 @@ const Applications = () => {
         </p>
       </div>
 
-      {/* Search Input */}
       <div className={"flex items-center mb-5 gap-4"}>
         <input
           type="text"
@@ -71,10 +69,8 @@ const Applications = () => {
         </button>
       </div>
 
-      {/* Filter Panel */}
       <div className="border rounded-2xl py-5 px-5 mb-7 shadow">
         <div className="flex flex-wrap gap-4 justify-between items-center">
-          {/* Filter Icon and Label */}
           <div className="flex items-center gap-2">
             <svg
               width="22"
@@ -117,7 +113,6 @@ const Applications = () => {
             </select>
           </label>
 
-          {/* Status Filter Select */}
           <label className="flex items-center gap-2">
             <p>{t("applications.filterStatus")}</p>
             <select

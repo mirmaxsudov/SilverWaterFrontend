@@ -25,6 +25,7 @@ jobs:
         host: ${{ secrets.VPS_HOST }}
         username: ${{ secrets.VPS_USER }}
         key: ${{ secrets.VPS_PRIVATE_KEY }}
+        port: 22
         source: "dist/*" # Change based on your build output folder
         target: "/home/silver/frontend/SilverWaterFrontend/dist"
 
