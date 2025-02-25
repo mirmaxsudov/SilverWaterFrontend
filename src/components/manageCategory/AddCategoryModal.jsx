@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import PropTypes from "prop-types";
-import { $api, BASE_API_URL } from "../../api/request";
+import { $api } from "../../api/request";
 import { fetchProductsNoCategory } from "../../api/request/admin/category/main.api";
+import { notifyError, notifySuccess } from "../../helper/toast";
 
 const AddCategoryModal = ({ onClose, onCategoryAdded }) => {
   const [name, setName] = useState("");
@@ -31,22 +32,28 @@ const AddCategoryModal = ({ onClose, onCategoryAdded }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!name || name.trim() === "") {
+      notifyError("Malumotlarni to'liq kiriting.");
+      return;
+    }
+
     const payload = {
       name,
       productIds: selectedProductIds,
     };
     try {
       const res = await $api.post("/api/v1/category", payload);
-      const newCategory = await res.data;
-      onCategoryAdded(newCategory);
+      onCategoryAdded(res.data);
       onClose();
+      notifySuccess("Yengi kategorya qo'shildi.")
     } catch (err) {
-      console.error(err);
+      notifyError("Xatolik yuz berdi, qaytadan urinib ko'ring.");
     }
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div className="fixed backdrop-blur-md inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-white rounded p-6 w-96">
         <h2 className="text-2xl font-bold mb-4">{t("category.modal.add")}</h2>
         <form onSubmit={handleSubmit}>

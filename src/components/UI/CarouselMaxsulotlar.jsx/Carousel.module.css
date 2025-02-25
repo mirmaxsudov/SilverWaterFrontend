@@ -56,3 +56,37 @@
   font-weight: 500;
   color: var(--text);
 }
+
+.title {
+  word-break: break-word;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px; /* adjust as needed */
+}
+
+.modalContent {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  padding: 20px;
+  outline: none;
+  max-width: 90%;
+  max-height: 90%;
+  overflow: auto;
+  text-align: center;
+}
+
+.fullImage {
+  max-width: 100%;
+  max-height: 80vh;
+}
+
+.closeBtn {
+  margin-top: 10px;
+}

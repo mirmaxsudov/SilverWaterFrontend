@@ -5,20 +5,17 @@ export const fetchUsersPage = async (
   size = 10,
   query = "",
   order = "ASC",
-  role = "ALL",
-  sortBy = "ID",
+  sortBy = "ID"
 ) => {
-  const res = await $api.get("/api/v1/user/page", {
+  const res = await $api.get("/api/v1/bot-user/page", {
     params: {
       page,
       size,
       query,
       order,
-      role,
       sortBy,
     },
   });
-
   return res;
 };
 

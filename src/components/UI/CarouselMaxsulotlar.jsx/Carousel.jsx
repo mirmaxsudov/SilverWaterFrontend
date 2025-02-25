@@ -1,93 +1,97 @@
 import styles from "./Carousel.module.css";
-import { Button, Box } from "@mui/material";
-
-import water1 from "../../../assets/0.33litr.jpg";
-import water2 from "../../../assets/0.5litr.jpg";
-import water3 from "../../../assets/1litr.jpg";
-import water4 from "../../../assets/1_5water.jpg";
-import water6 from "../../../assets/5litr.jpg";
-import water7 from "../../../assets/10litr.jpg";
-
-const products = [
-  {
-    id: 1,
-    title: "0.33L",
-    img: water1,
-  },
-  {
-    id: 2,
-    title: "0.5L",
-    img: water2,
-  },
-  {
-    id: 3,
-    title: "1L",
-    img: water3,
-  },
-  {
-    id: 4,
-    title: "1.5L",
-    img: water4,
-  },
-  {
-    id: 6,
-    title: "5L",
-    img: water6,
-  },
-  {
-    id: 7,
-    title: "10L",
-    img: water7,
-  },
-];
+import { Box, Modal, CircularProgress, Button } from "@mui/material";
+import { useEffect, useState } from "react";
+import { $api } from "../../../api/request";
+import { notifyError } from "../../../helper/toast";
 
 const Carousel = () => {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await $api.get("/api/v1/web-product");
+      setProducts(response.data);
+    } catch (error) {
+      if (error.response.status >= 400 && error.response.status < 500) {
+        notifyError("Malumotlarni yuklashda xatolik yuz berdi");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const handleImageClick = (imageUrl) => {
+    setSelectedImage(imageUrl);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedImage(null);
+  };
+
   return (
     <div className={styles.body}>
-      <Box
-        className={styles.slider}
-        display="grid"
-        gridTemplateColumns="repeat(12, 1fr)"
-        gap={2}
-      >
-        {products.map((product) => (
-          <Box
-            gridColumn={{
-              xs: "span 12",
-              sm: "span 6",
-              md: "span 6",
-              lg: "span 6",
-              xl: "span 3",
-            }}
-            className={styles.card}
-            key={product.id}
-          >
-            <Box className={styles.img}>
-              <img src={product.img} />
-            </Box>
-            <div className={styles.content}>
-              <div className={styles.title}>{product.title}</div>
-              <Button
-                variant="contained"
-                component={"a"}
-                href={"#"}
-                sx={{
-                  bgcolor: "primary",
-                  color: "white",
-                  borderRadius: "10px",
-                  "&:hover": {
-                    bgcolor: "black",
-                    color: "white",
-                  },
-                  textTransform: "none",
-                }}
+      {loading ? (
+        <Box className={styles.loading}>
+          <CircularProgress />
+        </Box>
+      ) : (
+        <Box
+          className={styles.slider}
+          display="grid"
+          gridTemplateColumns="repeat(12, 1fr)"
+          gap={2}
+        >
+          {products.map((product) => (
+            <Box
+              gridColumn={{
+                xs: "span 12",
+                sm: "span 6",
+                md: "span 6",
+                lg: "span 6",
+                xl: "span 3",
+              }}
+              className={styles.card}
+              key={product.id}
+            >
+              <Box
+                className={styles.img}
+                onClick={() => handleImageClick(product.image.url)}
+                style={{ cursor: "pointer" }}
               >
-                Buyurtma Qilish
-              </Button>
-            </div>
-          </Box>
-        ))}
-      </Box>
+                <img src={product.image.url} alt={product.title} />
+              </Box>
+              <div className={styles.content}>
+                <div
+                  className={`${styles.title} text-wrap`}
+                  style={{ wordBreak: "break-word" }}
+                >
+                  <p>{product.title}</p>
+                </div>
+              </div>
+            </Box>
+          ))}
+        </Box>
+      )}
+      <Modal open={Boolean(selectedImage)} onClose={handleCloseModal}>
+        <Box className={styles.modalContent}>
+          {selectedImage && (
+            <img
+              src={selectedImage}
+              alt="Full view"
+              className={styles.fullImage}
+            />
+          )}
+          <Button onClick={handleCloseModal} className={styles.closeBtn}>
+            Yopish
+          </Button>
+        </Box>
+      </Modal>
     </div>
   );
 };

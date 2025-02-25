@@ -1,16 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { $api, BASE_API_URL } from "../../api/request";
+import { $api } from "../../api/request";
 
 export const fetchApplications = createAsyncThunk(
   "applications/fetchApplications",
   async (_, { rejectWithValue }) => {
     try {
-      console.log(BASE_API_URL);
-
-      const res = await $api.get(`${BASE_API_URL}/api/v1/application/all`);
+      const res = await $api.get(`/api/v1/application/all`);
       return res.data;
     } catch (error) {
-      return rejectWithValue("Failed to fetch applications");
+      return rejectWithValue("Arizalarni yuklab olishda xatolik yuz berdi.");
     }
   }
 );
@@ -33,14 +31,13 @@ const initialState = {
   loading: false,
   error: null,
   searchQuery: "",
-  order: "asc", // "asc" or "desc"
+  order: "asc",
   filterStatus: "all", // "all", "true", or "false" (filter by app.answered value)
 };
 
 const filterAndSortData = (state) => {
   let filtered = state.data;
 
-  // Filter by search query on fullName (if searchQuery is not empty)
   if (state.searchQuery) {
     filtered = filtered.filter(
       (app) =>
@@ -49,14 +46,11 @@ const filterAndSortData = (state) => {
     );
   }
 
-  // Filter by status if not "all"
   if (state.filterStatus !== "all") {
-    // Convert string to boolean: "true" => true, "false" => false
     const statusBool = state.filterStatus === "true";
     filtered = filtered.filter((app) => app.answered === statusBool);
   }
 
-  // Sort by id (or any other field such as a date) based on order
   filtered.sort((a, b) => {
     if (state.order === "asc") {
       return a.id - b.id;

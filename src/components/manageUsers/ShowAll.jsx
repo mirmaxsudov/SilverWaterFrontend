@@ -1,58 +1,139 @@
-import { Link } from "react-router-dom";
-import { dateFormater } from "../../helper/dateFormater";
+import { useState } from "react";
 
 const ShowAll = ({ users, deleteUser }) => {
-  if (!users || users.length === 0)
-    return (
-      <p className="text-[50px] mt-10 text-center font-semibold text-gray-500">
-        No users found.
-      </p>
-    );
+  const [selectedUser, setSelectedUser] = useState(null);
 
-  const handleDelete = (id) => deleteUser(id);
+  const handleShowDetails = (user) => {
+    setSelectedUser(user);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedUser(null);
+  };
 
   return (
-    <div className="overflow-x-auto mt-4 rounded-lg">
-      <table className="w-full border-collapse">
-        <thead>
-          <tr className="bg-gray-200 text-gray-700">
-            <th className="p-2 border">ID</th>
-            <th className="p-2 border">Role</th>
-            <th className="p-2 border">First Name</th>
-            <th className="p-2 border">Phone Number</th>
-            <th className="p-2 border">Added At</th>
-            <th className="p-2 border">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user) => (
-            <tr key={user.id} className="hover:bg-gray-50 text-center">
-              <td className="p-2 border">{user.id}</td>
-              <td className="p-2 border">{user.role}</td>
-              <td className="p-2 border">{user.firstName}</td>
-              <td className="p-2 border">{user.phoneNumber}</td>
-              <td className="p-2 border">{dateFormater(user.addedAt)}</td>
-              <td className="p-2 border flex gap-4 items-center justify-evenly">
-                <button
-                  onClick={() => {
-                    handleDelete(user.id);
-                  }}
-                  className="w-full bg-red-400 text-re-900 font-semibold py-2 px-4 rounded-lg shadow-md hover:text-white hover:bg-red-500 transition-all duration-300"
-                >
-                  Delete
-                </button>
-                <Link
-                  to={`${user.id}`}
-                  className="w-full bg-stone-400 text-stone-900 font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-stone-500 hover:text-stone-200 transition-all duration-300"
-                >
-                  Show
-                </Link>
-              </td>
+    <>
+      <div className="overflow-x-auto">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                ID
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Chat ID
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Name
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Username
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Joined At
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Actions
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {users.map((user) => (
+              <tr key={user.id}>
+                <td className="px-6 py-4 whitespace-nowrap">{user.id}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{user.chatId}</td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {user.firstName} {user.lastName}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">{user.username}</td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {new Date(user.joinedAt).toLocaleString()}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <button
+                    onClick={() => handleShowDetails(user)}
+                    className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition-colors"
+                  >
+                    Show
+                  </button>
+                  <button
+                    onClick={() => deleteUser(user.id)}
+                    className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition-colors ml-2"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Modal for showing full user details */}
+      {selectedUser && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div
+            className="absolute inset-0 bg-black opacity-50"
+            onClick={handleCloseModal}
+          ></div>
+          <div className="bg-white rounded-lg p-6 z-10 max-w-md w-full">
+            <h2 className="text-xl font-bold mb-4">User Details</h2>
+            <div className="space-y-2">
+              <p>
+                <strong>ID:</strong> {selectedUser.id}
+              </p>
+              <p>
+                <strong>Chat ID:</strong> {selectedUser.chatId}
+              </p>
+              <p>
+                <strong>First Name:</strong> {selectedUser.firstName}
+              </p>
+              <p>
+                <strong>Last Name:</strong> {selectedUser.lastName}
+              </p>
+              <p>
+                <strong>Username:</strong> {selectedUser.username}
+              </p>
+              <p>
+                <strong>Joined At:</strong>{" "}
+                {new Date(selectedUser.joinedAt).toLocaleString()}
+              </p>
+              <p>
+                <strong>Active:</strong>{" "}
+                {selectedUser.isActive ? "Yes" : "No"}
+              </p>
+              <p>
+                <strong>District:</strong> {selectedUser.district}
+              </p>
+              <p>
+                <strong>Role:</strong> {selectedUser.role}
+              </p>
+              <p>
+                <strong>Language:</strong> {selectedUser.language}
+              </p>
+              {selectedUser.inn && (
+                <>
+                  <p>
+                    <strong>INN:</strong> {selectedUser.inn}
+                  </p>
+                  <p>
+                    <strong>Store Name:</strong> {selectedUser.storeName}
+                  </p>
+                </>
+              )}
+            </div>
+            <div className="mt-4 text-right">
+              <button
+                onClick={handleCloseModal}
+                className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

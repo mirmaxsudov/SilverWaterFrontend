@@ -57,7 +57,6 @@ const ManageUsers = () => {
   const [size] = useState(10);
 
   const [query, setQuery] = useState("");
-  const [role, setRole] = useState("ALL");
   const [order, setOrder] = useState("ASC");
   const [sortBy, setSortBy] = useState("id");
 
@@ -69,7 +68,6 @@ const ManageUsers = () => {
           size,
           query,
           order,
-          role,
           sortBy,
         );
 
@@ -81,7 +79,7 @@ const ManageUsers = () => {
     };
 
     fetchUsers();
-  }, [page, size, query, role, order, sortBy]);
+  }, [page, size, query, order, sortBy]);
 
   const totalPages = Math.ceil(count / size);
   const currentPage = page + 1;
@@ -98,11 +96,6 @@ const ManageUsers = () => {
     setPage(0);
   };
 
-  const handleRoleChange = (e) => {
-    setRole(e.target.value);
-    setPage(0);
-  };
-
   const handleOrderChange = (e) => {
     setOrder(e.target.value);
     setPage(0);
@@ -116,7 +109,9 @@ const ManageUsers = () => {
   return (
     <section className="user-manage-section">
       <div className="container mx-auto">
-        <h1 className="text-3xl font-bold mb-4">User Management ({count})</h1>
+        <h1 className="text-3xl font-bold mb-4">
+          User Management ({count})
+        </h1>
         <div className="flex flex-wrap items-center justify-between gap-4 bg-white p-4 shadow-md rounded-lg">
           <div className="flex flex-wrap items-center gap-4">
             <input
@@ -126,18 +121,6 @@ const ManageUsers = () => {
               placeholder="Search users..."
               className="p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none w-60"
             />
-            <label className="rounded text-gray-700 text-sm font-medium">
-              <select
-                value={role}
-                onChange={handleRoleChange}
-                className="p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-              >
-                <option value="ALL">All</option>
-                <option value="USER">User</option>
-                <option value="ADMIN">Admin</option>
-                <option value="OPERATOR">Operator</option>
-              </select>
-            </label>
             <label className="text-gray-700 text-sm font-medium">
               <select
                 value={order}
@@ -155,7 +138,7 @@ const ManageUsers = () => {
                 className="p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
               >
                 <option value="id">Id</option>
-                <option value="JOINED_AT">Joined</option>
+                <option value="joinedAt">Joined</option>
               </select>
             </label>
           </div>
@@ -176,48 +159,45 @@ const ManageUsers = () => {
         <ShowAll deleteUser={deleteUer} users={users} />
 
         {users?.length > 0 && (
-          <>
-            <div className="flex justify-center mt-5 gap-2">
-              <button
-                onClick={() => setPage((prev) => Math.max(prev - 1, 0))}
-                disabled={page === 0}
-                className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
-              >
-                Prev
-              </button>
-              {paginationRange.map((pageNumber, index) => {
-                if (pageNumber === DOTS) {
-                  return (
-                    <span key={index} className="px-3 py-1 text-gray-700">
-                      {DOTS}
-                    </span>
-                  );
-                }
+          <div className="flex justify-center mt-5 gap-2">
+            <button
+              onClick={() => setPage((prev) => Math.max(prev - 1, 0))}
+              disabled={page === 0}
+              className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+            >
+              Prev
+            </button>
+            {paginationRange.map((pageNumber, index) => {
+              if (pageNumber === DOTS) {
                 return (
-                  <button
-                    key={index}
-                    onClick={() => setPage(pageNumber - 1)}
-                    className={`px-3 py-1 rounded ${
-                      currentPage === pageNumber
-                        ? "bg-blue-500 text-white"
-                        : "bg-gray-200 text-gray-700"
-                    }`}
-                  >
-                    {pageNumber}
-                  </button>
+                  <span key={index} className="px-3 py-1 text-gray-700">
+                    {DOTS}
+                  </span>
                 );
-              })}
-              <button
-                onClick={() =>
-                  setPage((prev) => Math.min(prev + 1, totalPages - 1))
-                }
-                disabled={page === totalPages - 1 || totalPages === 0}
-                className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
-              >
-                Next
-              </button>
-            </div>
-          </>
+              }
+              return (
+                <button
+                  key={index}
+                  onClick={() => setPage(pageNumber - 1)}
+                  className={`px-3 py-1 rounded ${currentPage === pageNumber
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200 text-gray-700"
+                    }`}
+                >
+                  {pageNumber}
+                </button>
+              );
+            })}
+            <button
+              onClick={() =>
+                setPage((prev) => Math.min(prev + 1, totalPages - 1))
+              }
+              disabled={page === totalPages - 1 || totalPages === 0}
+              className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+            >
+              Next
+            </button>
+          </div>
         )}
       </div>
     </section>

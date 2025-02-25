@@ -35,11 +35,11 @@ const ApplicationSkeleton = () => {
         />
       </div>
       <div className="mt-4">
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, index) => (
           <>
             <div className="flex gap-5">
               <Skeleton
-                key={item}
+                key={index}
                 animation="wave"
                 variant="rounded"
                 sx={{

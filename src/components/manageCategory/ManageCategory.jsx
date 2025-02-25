@@ -4,6 +4,7 @@ import { useLoaderData } from "react-router-dom";
 import EditCategoryModal from "./EditCategoryModal.jsx";
 import AddCategoryModal from "./AddCategoryModal.jsx";
 import { $api, BASE_API_URL } from "../../api/request.jsx";
+import { notifyError } from "../../helper/toast.js";
 
 const ManageCategory = () => {
   // Load the initial category data (via react-router loader)
@@ -16,39 +17,32 @@ const ManageCategory = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const { t } = useTranslation();
 
-  // DELETE request to remove category
   const handleDeleteCategory = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this category?"))
+    if (!window.confirm("Rostdan ham o'chirmoqchimisiz?"))
       return;
-    try {
-      const res = await $api.delete(`${BASE_API_URL}/api/v1/category/${id}`, {
-        method: "DELETE",
-      });
-      console.log(res);
 
+    try {
+      await $api.delete(`${BASE_API_URL}/api/v1/category/${id}`);
       setCategories(categories.filter((cat) => cat.id !== id));
     } catch (err) {
-      console.error(err);
+      notifyError("Xatolik yuz berdi, qaytadan urinib ko'ring.")
     }
   };
 
-  // Open the edit modal for a specific category
   const handleOpenEdit = (category) => {
     setSelectedCategory(category);
     setShowEditModal(true);
   };
 
-  // Called after a new category is added (from the modal)
   const handleCategoryAdded = (newCategory) => {
     setCategories([...categories, newCategory]);
   };
 
-  // Called after a category is updated (from the modal)
   const handleCategoryUpdated = (updatedCategory) => {
     setCategories(
-      categories.map((cat) =>
-        cat.id === updatedCategory.id ? updatedCategory : cat,
-      ),
+      [
+        ...categories.map((cat) => cat.id === updatedCategory.id ? updatedCategory : cat)
+      ]
     );
   };
 
@@ -124,9 +118,6 @@ const ManageCategory = () => {
 
 export const manageCategoryAction = async () => {
   const res = await $api.get(`${BASE_API_URL}/api/v1/category`);
-  console.log(res);
-
-  // if (!res.ok) return { error: "Failed to fetch category data" };
   return res.data;
 };
 

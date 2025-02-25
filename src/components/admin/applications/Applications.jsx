@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { notifySuccess } from "../../../helper/toast.js";
 import ApplicationSkeleton from "./ApplicationSkeleton.jsx";
+import { BASE_API_URL } from "../../../api/request.jsx";
 
 const Applications = () => {
   const dispatch = useDispatch();
@@ -62,7 +63,7 @@ const Applications = () => {
             onClick={() => notifySuccess(t("applications.info"))}
             className={"n"}
             download
-            to="${BASE_API_URL}/api/v1/application/download-all"
+            to={BASE_API_URL + `/api/v1/application/download-all`}
           >
             {t("applications.download")}
           </Link>
@@ -99,7 +100,6 @@ const Applications = () => {
             <p>{t("applications.filter")}</p>
           </div>
 
-          {/* Order Select */}
           <label className="flex items-center gap-2">
             <p>{t("applications.order")}</p>
             <select
@@ -151,7 +151,6 @@ const Applications = () => {
         </div>
       </div>
 
-      {/* Applications Table */}
       <table className="border-collapse w-full border">
         <thead>
           <tr>
@@ -164,8 +163,8 @@ const Applications = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredData.map((app) => (
-            <tr key={app.id}>
+          {filteredData.map((app, index) => (
+            <tr key={index + 135413}>
               <td className="border p-2 text-center">{app.id}</td>
               <td className="border p-2 text-center">{app.fullName}</td>
               <td className="border p-2 text-center">{app.phoneNumber}</td>

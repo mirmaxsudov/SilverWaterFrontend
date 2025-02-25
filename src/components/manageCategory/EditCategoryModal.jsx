@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 
 import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
-import { $api, BASE_API_URL } from "../../api/request";
+import { $api } from "../../api/request";
 import { fetchCategoryEdit } from "../../api/request/admin/category/main.api";
+import { notifyError, notifySuccess } from "../../helper/toast";
 
 const EditCategoryModal = ({ category, onClose, onCategoryUpdated }) => {
   const [name, setName] = useState(category.name);
@@ -15,13 +16,11 @@ const EditCategoryModal = ({ category, onClose, onCategoryUpdated }) => {
     const fetchProducts = async () => {
       try {
         const res = await fetchCategoryEdit(category.id);
-        const data = await res.json();
-
-        const assigned = data.assigned.map((prod) => ({
+        const assigned = res.data.assigned.map((prod) => ({
           ...prod,
           assigned: true,
         }));
-        const available = data.available.map((prod) => ({
+        const available = res.data.available.map((prod) => ({
           ...prod,
           assigned: false,
         }));
@@ -43,35 +42,30 @@ const EditCategoryModal = ({ category, onClose, onCategoryUpdated }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!name || name.trim() === "") {
+      notifyError("Malumotlarni to'liq kiriting.");
+      return;
+    }
+
     const payload = {
       name,
       productIds: selectedProductIds,
     };
     try {
-      console.log(payload);
+      const res = await $api.put(`/api/v1/category/update/${category.id}`, payload);
+      notifySuccess("Muvaffaqiyatli o'zgartirildi");
 
-      const res = await fetch(
-        `${BASE_API_URL}/api/v1/category/${category.id}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        },
-      );
-      if (!res.ok) {
-        alert("Failed to update category");
-        return;
-      }
-      const updatedCategory = await res.json();
+      const updatedCategory = res.data;
       onCategoryUpdated(updatedCategory);
       onClose();
     } catch (err) {
-      console.error(err);
+      notifyError("Xatolik yuz berdi, qaytadan urinib ko'ring.");
     }
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div className="fixed backdrop-blur-md inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-white rounded p-6 w-96">
         <h2 className="text-2xl font-bold mb-4">{t("category.modal.edit")}</h2>
         <form onSubmit={handleSubmit}>

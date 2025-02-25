@@ -1,9 +1,8 @@
 import axios from "axios";
 import { notifyError } from "../helper/toast";
 
-// const BASE_API_URL = "http://localhost:8080";
-const BASE_API_URL = "https://silver-water.uz";
-// baseURL: "http://45.92.173.205:8080/api/v1/application/",
+const BASE_API_URL = "http://localhost:8080";
+// const BASE_API_URL = "https://silver-water.uz";
 
 const $api = axios.create({
   baseURL: `${BASE_API_URL}`,
