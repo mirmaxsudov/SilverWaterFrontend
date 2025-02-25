@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import AddInnModal from "./AddInnModal";
 import {
   deleteInnById,
+  deleteInnsByIds,
   fetchInnsByPage,
 } from "../../api/request/admin/inn/main.api";
 import { dateFormater } from "./../../helper/dateFormater";
 import { Link } from "react-router-dom";
 import { BASE_API_URL } from "../../api/request";
-import { notifyInfo } from "../../helper/toast";
+import { notifyInfo, notifySuccess } from "../../helper/toast";
 import EditInnModal from "./EditInnModal";
 import { useTranslation } from "react-i18next";
 
@@ -22,6 +23,7 @@ const Inn = () => {
   const [inns, setInns] = useState([]);
   const [totalInns, setTotalInns] = useState(0);
   const [editInn, setEditInn] = useState(null);
+  const [selectedInns, setSelectedInns] = useState([]);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -46,24 +48,47 @@ const Inn = () => {
 
   const editInns = (editedInn) => {
     setInns(
-      inns.map((inn) => {
-        if (inn.id === editedInn.id) {
-          return editedInn;
-        } else {
-          return inn;
-        }
-      }),
+      inns.map((inn) => (inn.id === editedInn.id ? editedInn : inn))
     );
   };
 
   const handleInnDelete = (id) => {
     deleteInnById(id);
     setInns(inns.filter((inn) => inn.id !== id));
+    setSelectedInns(selectedInns.filter((selectedId) => selectedId !== id));
   };
 
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
     setPage(0);
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedInns.length === inns.length) {
+      setSelectedInns([]);
+    } else {
+      setSelectedInns(inns.map((inn) => inn.id));
+    }
+  };
+
+  const toggleSelectInn = (id) => {
+    if (selectedInns.includes(id)) {
+      setSelectedInns(selectedInns.filter((selectedId) => selectedId !== id));
+    } else {
+      setSelectedInns([...selectedInns, id]);
+    }
+  };
+
+  const handleDeleteSelected = async () => {
+    if (selectedInns.length === 0) return;
+    try {
+      await deleteInnsByIds(selectedInns);
+      setInns(inns.filter((inn) => !selectedInns.includes(inn.id)));
+      setSelectedInns([]);
+      notifyInfo("Tanlangan INN lar o'chirib tashlandi.");
+    } catch (error) {
+      notifyInfo("O'chirishda xatolik yuz berdi.");
+    }
   };
 
   return (
@@ -74,7 +99,7 @@ const Inn = () => {
           <div className="flex items-center gap-5">
             <Link
               onClick={() => {
-                notifyInfo("Successfully downloaded");
+                notifyInfo("Muvaffaqiyatli yuklandi.");
               }}
               download={true}
               to={`${BASE_API_URL}/api/v1/inn/download-excel`}
@@ -88,6 +113,14 @@ const Inn = () => {
             >
               {t("inn.add")}
             </button>
+            {selectedInns.length > 0 && (
+              <button
+                onClick={handleDeleteSelected}
+                className="bg-red-300 text-red-700 font-semibold py-2 px-4 rounded hover:bg-red-600 transition-all duration-300 hover:text-white"
+              >
+                O'chirish
+              </button>
+            )}
           </div>
         </div>
         <InnSearch
@@ -102,6 +135,9 @@ const Inn = () => {
           handleInnDelete={handleInnDelete}
           setToEdit={setEditInn}
           inns={inns}
+          selectedInns={selectedInns}
+          toggleSelectAll={toggleSelectAll}
+          toggleSelectInn={toggleSelectInn}
         />
         <Pagination
           page={page}
@@ -127,14 +163,30 @@ const Inn = () => {
   );
 };
 
-const ShowAll = ({ inns, handleInnDelete, openEditModal, setToEdit }) => {
+const ShowAll = ({
+  inns,
+  handleInnDelete,
+  openEditModal,
+  setToEdit,
+  selectedInns,
+  toggleSelectAll,
+  toggleSelectInn,
+}) => {
   const { t } = useTranslation();
+  const allSelected = inns.length > 0 && selectedInns.length === inns.length;
 
   return (
     <div className="py-10">
       <table className="w-full table-auto border-collapse">
         <thead>
           <tr className="border">
+            <th className="p-2">
+              <input
+                type="checkbox"
+                checked={allSelected}
+                onChange={toggleSelectAll}
+              />
+            </th>
             <th className="p-2">{t("inn.title")}</th>
             <th className="p-2">{t("inn.storeName")}</th>
             <th className="p-2">{t("inn.createdAt")}</th>
@@ -145,6 +197,13 @@ const ShowAll = ({ inns, handleInnDelete, openEditModal, setToEdit }) => {
           {inns.length > 0 ? (
             inns.map((inn) => (
               <tr key={inn.id} className="border text-center">
+                <td className="p-2">
+                  <input
+                    type="checkbox"
+                    checked={selectedInns.includes(inn.id)}
+                    onChange={() => toggleSelectInn(inn.id)}
+                  />
+                </td>
                 <td className="p-2">{inn.name}</td>
                 <td className="p-2 truncate">{inn.storeName}</td>
                 <td className="p-2">{dateFormater(inn.createdAt)}</td>
@@ -169,7 +228,7 @@ const ShowAll = ({ inns, handleInnDelete, openEditModal, setToEdit }) => {
             ))
           ) : (
             <tr>
-              <td colSpan="4" className="text-center p-4">
+              <td colSpan="5" className="text-center p-4">
                 {t("inn.notFound")}
               </td>
             </tr>
@@ -293,9 +352,8 @@ const Pagination = ({ page, setPage, totalInns, limit }) => {
           <button
             key={index}
             onClick={() => setPage(item - 1)}
-            className={`px-4 py-2 border-t border-b border-gray-300 text-gray-700 hover:bg-blue-600 hover:text-white focus:outline-none transition-colors duration-200 ${
-              currentPage === item ? "bg-blue-500 text-white" : ""
-            }`}
+            className={`px-4 py-2 border-t border-b border-gray-300 text-gray-700 hover:bg-blue-600 hover:text-white focus:outline-none transition-colors duration-200 ${currentPage === item ? "bg-blue-500 text-white" : ""
+              }`}
           >
             {item}
           </button>

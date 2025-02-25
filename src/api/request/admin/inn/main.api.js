@@ -1,6 +1,5 @@
 import { $api } from "../../../request";
 
-// This function now returns an object: { total, inns: [...] }
 export const fetchInnsByPage = async (page, limit, query = "") => {
   const res = await $api.get("/api/v1/inn/page", {
     params: { page, size: limit, query },
@@ -18,4 +17,11 @@ export const deleteInnById = (id) => {
 
 export const editInn = (id, request) => {
   return $api.put(`/api/v1/inn/${id}`, request);
+};
+
+export const deleteInnsByIds = async (ids) => {
+  const response = await $api.delete(`/api/v1/inn/delete-by-ids`, {
+    data: ids,
+  });
+  return response.data;
 };

@@ -118,6 +118,7 @@ const Applications = () => {
             <select
               name="status"
               value={filterStatus}
+              defaultValue={false}
               onChange={(e) =>
                 dispatch(filterApplicationsByStatus(e.target.value))
               }

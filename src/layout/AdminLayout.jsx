@@ -2,15 +2,20 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import Logo from "../assets/logo.png";
 import "./AdminLayout.css";
 import { useTranslation } from "react-i18next";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const AdminLayout = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [profileName, setProfileName] = useState("Palonchi");
 
   useEffect(() => {
     if (!localStorage.getItem("token")) navigate("/login");
   }, [navigate]);
+
+  const fetchProfileName = async () => {
+
+  }
 
   const NavLinks = [
     {
@@ -117,13 +122,6 @@ const AdminLayout = () => {
       <main className="flex-1 bg-gray-50 p-6 overflow-y-auto">
         <Outlet />
       </main>
-
-      {/* <iframe
-                allow="microphone;"
-                width="350"
-                height="430"
-                src="https://console.dialogflow.com/api-client/demo/embedded/c77f02fe-d989-4079-9a75-b236b00980a1">
-            </iframe> */}
     </div>
   );
 };

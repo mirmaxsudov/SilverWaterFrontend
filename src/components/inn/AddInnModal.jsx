@@ -58,7 +58,10 @@ const AddInnModal = ({ addToInns, onClose }) => {
       if (error.response && error.response.status === 400) {
         notifyError("Bu INN allaqachon mavjud.");
       } else {
-        notifyError("Xatolik yuz berdi, qaytadan urinib ko'ring.");
+        if (error.response.status == 409) {
+          notifyError("Bu INN allaqachon mavjud.");
+        } else
+          notifyError("Xatolik yuz berdi, qaytadan urinib ko'ring.");
       }
     }
   };
