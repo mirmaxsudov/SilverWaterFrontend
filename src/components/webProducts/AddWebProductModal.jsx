@@ -4,7 +4,7 @@ import { $api, BASE_API_URL } from "../../api/request";
 import { notifyError, notifySuccess } from "../../helper/toast";
 import { deleteImageById } from "../../api/request/admin/webProduct/main.api";
 
-const AddWebProductModal = ({ onClose, onCategoryAdded }) => {
+const AddWebProductModal = ({ onClose, onCategoryAdded, revalidate }) => {
   const [name, setName] = useState("");
   const [attachmentId, setAttachmentId] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -76,7 +76,8 @@ const AddWebProductModal = ({ onClose, onCategoryAdded }) => {
         setError("");
         notifySuccess("Web mahsulot qo'shildi.");
       }
-
+      
+      revalidate();
       onCategoryAdded();
       onClose();
     } catch (err) {

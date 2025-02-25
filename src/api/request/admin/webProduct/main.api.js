@@ -7,3 +7,10 @@ export const deleteById = async (id) => {
 export const deleteImageById = async (imageId) => {
   await $api.delete(`/api/v1/attachment/${imageId}`);
 };
+
+export const updateWebProductPriority = async (productId, priority) => {
+  const response = await $api.patch(
+    `/api/v1/web-product/update-priority/${productId}?priority=${priority}`
+  );
+  return response.data;
+};

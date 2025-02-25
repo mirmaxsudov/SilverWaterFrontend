@@ -2,13 +2,11 @@ import { useEffect, useState } from "react";
 import { fetchAllWeb3Products } from "../api/request/admin/web3/main.api";
 import { motion } from "framer-motion";
 
-// Container animation: staggers the appearance of children
 const containerVariants = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.1 } },
 };
 
-// Each product card animation: fades and slides up on mount
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
@@ -67,11 +65,12 @@ const Web3ProductItem = ({ product }) => {
           className="absolute inset-0 h-full w-full object-contain"
         />
       </div>
-      <div className="p-4">
+      <div className="p-4 flex flex-col items-center justify-between">
         <h3 className="text-xl font-semibold text-gray-800 mb-2 text-center">
           {product.name}
         </h3>
-        <p className="text-gray-600 text-center">${product.price}</p>
+        <p className="bg-[#4046BD] inline-block text-white py-1 px-4 font-bold tracking-wider rounded-md">${product.price}</p>
+
       </div>
     </motion.div>
   );

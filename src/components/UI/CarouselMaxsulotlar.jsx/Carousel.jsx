@@ -71,7 +71,7 @@ const Carousel = () => {
                   className={`${styles.title} text-wrap`}
                   style={{ wordBreak: "break-word" }}
                 >
-                  <p>{product.title}</p>
+                  <p className="text-start text-2xl">{product.title}</p>
                 </div>
               </div>
             </Box>
