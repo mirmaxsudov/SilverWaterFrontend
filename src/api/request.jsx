@@ -2,8 +2,8 @@ import axios from "axios";
 import { notifyError } from "../helper/toast";
 import Cookies from "js-cookie";
 
-const BASE_API_URL = "http://localhost:8080";
-// const BASE_API_URL = "https://silver-water.uz";
+// const BASE_API_URL = "http://localhost:8080";
+const BASE_API_URL = "https://silver-water.uz";
 
 const $api = axios.create({
   baseURL: `${BASE_API_URL}`,
