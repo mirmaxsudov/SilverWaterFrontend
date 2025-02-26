@@ -1,5 +1,10 @@
+import Cookies from "js-cookie";
+
 const AuthChecker = ({ children }) => {
-    const token = localStorage.getItem('token');
+    const token = Cookies.get("token");
+
+    console.log(token);
+    
 
     if (token)
         return children

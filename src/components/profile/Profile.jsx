@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { changeLanguage } from "../../features/language/languageSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import { $api } from "../../api/request.jsx";
+import Cookies from 'js-cookie';
 
 const Profile = () => {
   const profileData = useLoaderData();
@@ -19,7 +20,7 @@ const Profile = () => {
   }, [profileData, t]);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    Cookies.remove("token", { path: "/" });
     navigate("/login");
   };
 

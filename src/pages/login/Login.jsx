@@ -4,6 +4,7 @@ import { useState } from "react";
 import { notifyInfo, notifySuccess } from "../../helper/toast";
 import { login } from "../../api/request/admin/auth/main.api";
 import { useNavigate } from "react-router-dom";
+import Cookies from 'js-cookie';
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -13,10 +14,9 @@ const Login = () => {
   const loginMethod = async (data) => {
     try {
       const response = await login(data);
-
-      console.log(response.data);
-
-      localStorage.setItem("token", response.data.accessToken);
+      console.log(response);
+      
+      Cookies.set("token", response.data.accessToken, { expires: 31, path: "/" });
       notifySuccess("Muvaffaqiyatli kirdingiz");
       navigate("/admin");
     } catch (error) {

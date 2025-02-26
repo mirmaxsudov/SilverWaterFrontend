@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { $api } from "../api/request";
 import "./AdminLayout.css";
+import Cookies from "js-cookie";
 
 const AdminLayout = () => {
   const { t } = useTranslation();
@@ -12,7 +13,13 @@ const AdminLayout = () => {
   const [newApplicationCount, setNewApplicationCount] = useState(0);
 
   useEffect(() => {
-    if (!localStorage.getItem("token")) navigate("/login");
+    const token = Cookies.get("token");
+
+    console.log(token);
+
+    if (!token) {
+      navigate("/login");
+    }
   }, [navigate]);
 
   const fetchProfileName = async () => {

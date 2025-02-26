@@ -1,5 +1,6 @@
 import axios from "axios";
 import { notifyError } from "../helper/toast";
+import Cookies from "js-cookie";
 
 const BASE_API_URL = "http://localhost:8080";
 // const BASE_API_URL = "https://silver-water.uz";
@@ -9,7 +10,7 @@ const $api = axios.create({
 });
 
 $api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
+  const token = Cookies.get("token");
   if (token) config.headers.Authorization = `Bearer ${token}`;
 
   return config;

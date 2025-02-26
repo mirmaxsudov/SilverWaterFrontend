@@ -30,6 +30,7 @@
     "i18next": "^24.2.2",
     "inherits": "^2.0.4",
     "inputmask": "^5.0.8",
+    "js-cookie": "^3.0.5",
     "js-cookies": "^1.0.4",
     "mui-tel-input": "^5.1.2",
     "prop-types": "^15.8.1",
