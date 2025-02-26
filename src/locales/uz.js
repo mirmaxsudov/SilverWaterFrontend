@@ -17,7 +17,7 @@ export const uz = {
       webProducts: "Web mahsulotlar",
       botProducts: "Bot mahsulotlar",
       categories: "Kategoriyalar",
-      auctions: "Aksiyadorlar",
+      auctions: "Aksiyalar",
       promoCodes: "Promo kodi",
       orders: "Buyurtmalar",
       applications: "Arizalar",
@@ -177,8 +177,6 @@ export const uz = {
     notFound: "Ma'lumotlar topilmadi",
     add: "Qo'shish",
     delete: "O'chirish",
-    modal: {
-      
-    }
+    modal: {},
   },
 };
