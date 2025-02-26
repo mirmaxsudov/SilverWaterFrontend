@@ -13,13 +13,15 @@ const EditProductModal = ({ product, onClose, onSave }) => {
   const [quantity, setQuantity] = useState(product.quantity);
   const [onePrice, setOnePrice] = useState(product.onePrice);
   const [blogPrice, setBlogPrice] = useState(product.blogPrice);
+  // New blogCount field; default to product.blogCount or 0 if missing
+  const [blogCount, setBlogCount] = useState(product.blogCount || 0);
   const [isDisabled, setIsDisabled] = useState(product.isDisabled);
   // Use product.desc or product.description if available
   const [description, setDescription] = useState(
-    product.desc || product.description || "",
+    product.desc || product.description || ""
   );
   const [selectedCategoryId, setSelectedCategoryId] = useState(
-    product.categoryId || null,
+    product.categoryId || null
   );
 
   // Image states: use product.imageId and photo (if available)
@@ -29,7 +31,7 @@ const EditProductModal = ({ product, onClose, onSave }) => {
       ? product.photo
       : product.photo
         ? URL.createObjectURL(product.photo)
-        : null,
+        : null
   );
 
   // Fetch categories based on search query
@@ -87,6 +89,7 @@ const EditProductModal = ({ product, onClose, onSave }) => {
       quantity: Number(quantity),
       onePrice: Number(onePrice),
       blogPrice: Number(blogPrice),
+      blogCount: Number(blogCount),
       isDisabled: isDisabled,
       description,
       imageId: imageId || 0,
@@ -96,7 +99,7 @@ const EditProductModal = ({ product, onClose, onSave }) => {
     try {
       const res = await $api.put(
         `/api/v1/products/${product.id}`,
-        updatedProduct,
+        updatedProduct
       );
 
       onSave(res.data);
@@ -104,7 +107,7 @@ const EditProductModal = ({ product, onClose, onSave }) => {
 
       notifySuccess("Mahsulot muvaffaqiyatli o'zgartirildi");
     } catch (err) {
-      if (err.response.status === 400) {
+      if (err.response && err.response.status === 400) {
         notifyInfo("Hamma maydonlarni to'ldiring");
       }
     }
@@ -129,7 +132,7 @@ const EditProductModal = ({ product, onClose, onSave }) => {
                   <label className="block text-sm font-medium mb-1">Name</label>
                   <input
                     type="text"
-                    className="w-full border rounded p-2"
+                    className="w-full border rounded p-2 focus:ring-2 focus:ring-blue-500"
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
@@ -141,7 +144,7 @@ const EditProductModal = ({ product, onClose, onSave }) => {
                   </label>
                   <input
                     type="number"
-                    className="w-full border rounded p-2"
+                    className="w-full border rounded p-2 focus:ring-2 focus:ring-blue-500"
                     required
                     value={quantity}
                     onChange={(e) => setQuantity(e.target.value)}
@@ -153,7 +156,7 @@ const EditProductModal = ({ product, onClose, onSave }) => {
                   </label>
                   <input
                     type="number"
-                    className="w-full border rounded p-2"
+                    className="w-full border rounded p-2 focus:ring-2 focus:ring-blue-500"
                     required
                     value={onePrice}
                     onChange={(e) => setOnePrice(e.target.value)}
@@ -165,11 +168,32 @@ const EditProductModal = ({ product, onClose, onSave }) => {
                   </label>
                   <input
                     type="number"
-                    className="w-full border rounded p-2"
+                    className="w-full border rounded p-2 focus:ring-2 focus:ring-blue-500"
                     required
                     value={blogPrice}
                     onChange={(e) => setBlogPrice(e.target.value)}
                   />
+                </div>
+                {/* New Blog Count Input */}
+                <div>
+                  <label className="block text-sm font-medium mb-1 text-gray-700">
+                    Blog Count
+                  </label>
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="number"
+                      className="w-20 border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500"
+                      value={blogCount}
+                      onChange={(e) => setBlogCount(e.target.value)}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setBlogCount(Number(blogCount) + 1)}
+                      className="px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none"
+                    >
+                      Add
+                    </button>
+                  </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <input
@@ -190,7 +214,7 @@ const EditProductModal = ({ product, onClose, onSave }) => {
                     Description
                   </label>
                   <textarea
-                    className="w-full border rounded p-4 h-[80%]"
+                    className="w-full border rounded p-4 h-[80%] focus:ring-2 focus:ring-blue-500"
                     placeholder="Enter product description..."
                     required
                     rows={5}
@@ -226,7 +250,7 @@ const EditProductModal = ({ product, onClose, onSave }) => {
                     <button
                       type="button"
                       onClick={handleDeleteImage}
-                      className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-sm"
+                      className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-sm hover:bg-red-600 focus:outline-none"
                     >
                       ✕
                     </button>
@@ -238,13 +262,13 @@ const EditProductModal = ({ product, onClose, onSave }) => {
                   <button
                     type="button"
                     onClick={onClose}
-                    className="px-4 py-2 border rounded text-red-500 border-red-500 hover:bg-red-50"
+                    className="px-4 py-2 border rounded text-red-500 border-red-500 hover:bg-red-50 transition-colors duration-300"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                    className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors duration-300"
                   >
                     Save Changes
                   </button>

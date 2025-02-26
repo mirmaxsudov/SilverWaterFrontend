@@ -36,7 +36,8 @@ const TokenPromoCode = () => {
         id: item.promoCodeId,
         promoCode: item.promoCode,
         gift: item.gift,
-        when: item.when, // expecting a date
+        when: item.when,
+        userId: item.userId,
         userName: item.userName,
         phoneNumber: item.phoneNumber,
         acceptance: item.acceptance || "Pending",
@@ -51,7 +52,6 @@ const TokenPromoCode = () => {
     fetchTakenPromoCodes();
   }, [currentPage, searchTerm]);
 
-  // Client-side filtering for date and acceptance status.
   const filteredOrders = orders.filter((order) => {
     const matchesDate = dateFilter ? order.when === dateFilter : true;
     const matchesStatus = statusFilter
@@ -87,7 +87,6 @@ const TokenPromoCode = () => {
   const selectedOrder = orders.find((order) => order.id === selectedOrderId);
   const selectedOrderName = selectedOrder ? selectedOrder.userName : "";
 
-  // Pagination controls.
   const totalPages = Math.ceil(total / pageSize);
 
   const handlePrevPage = () => {
@@ -101,6 +100,9 @@ const TokenPromoCode = () => {
       setCurrentPage((prev) => prev + 1);
     }
   };
+
+  console.log(filteredOrders);
+
 
   return (
     <section className="order-section">
@@ -158,7 +160,7 @@ const TokenPromoCode = () => {
                   <td className="p-2">{item.phoneNumber}</td>
                   <td className="p-2">
                     <button
-                      onClick={() => openModal(item.id)}
+                      onClick={() => openModal(item.userId)}
                       className="bg-green-300 text-green-700 font-semibold py-2 rounded px-4 hover:bg-green-600 transition-all duration-300 hover:text-white"
                     >
                       {t("takenPromoCode.sendMessage")}

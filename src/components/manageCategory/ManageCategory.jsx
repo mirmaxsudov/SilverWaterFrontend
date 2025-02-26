@@ -49,7 +49,7 @@ const ManageCategory = () => {
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-3xl font-bold">{t("category.title")}</h1>
+        <h1 className="text-3xl font-bold">{t("category.title")} <span className="text-gray-600 text-2xl">({categories?.length})</span></h1>
         <button
           onClick={() => setShowAddModal(true)}
           className="bg-green-300 text-green-700 font-semibold py-2 px-4 rounded hover:bg-green-600 transition-all duration-300 hover:text-white"

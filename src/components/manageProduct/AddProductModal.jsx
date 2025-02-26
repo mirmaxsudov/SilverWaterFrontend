@@ -13,6 +13,7 @@ const AddProductModal = ({ onClose, addProductToState }) => {
   const [quantity, setQuantity] = useState("");
   const [onePrice, setOnePrice] = useState("");
   const [blogPrice, setBlogPrice] = useState("");
+  const [blogCount, setBlogCount] = useState(0);
   const [isDisabled, setIsDisabled] = useState(false);
   const [description, setDescription] = useState("");
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
@@ -80,7 +81,7 @@ const AddProductModal = ({ onClose, addProductToState }) => {
       quantity: Number(quantity),
       onePrice: Number(onePrice),
       blogPrice: Number(blogPrice),
-      blogCount: 0,
+      blogCount: Number(blogCount), // use the blogCount state here
       isAvailable: !isDisabled,
       description,
       imageId: imageId || 0,
@@ -89,10 +90,7 @@ const AddProductModal = ({ onClose, addProductToState }) => {
 
     try {
       const response = await saveProduct(productRequest);
-      const newProduct = await response.data;
-
-      console.log(response);
-      
+      const newProduct = response.data;
 
       addProductToState(newProduct);
       onClose();
@@ -103,143 +101,146 @@ const AddProductModal = ({ onClose, addProductToState }) => {
 
   return (
     <div
-      className="fixed gap-4 inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 backdrop-filter backdrop-blur-md"
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 backdrop-blur-md gap-4"
       onKeyDown={(e) => e.key === "Escape" && onClose()}
       tabIndex={0}
     >
       <div
-        className="bg-white rounded-lg w-full h-full max-w-4xl max-h-screen overflow-auto p-6"
+        className="bg-white rounded-lg w-full max-w-4xl max-h-screen overflow-auto p-6"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="text-xl font-bold mb-4">Add New Product</h2>
-        <form className="space-y-4" onSubmit={handleSubmit}>
-          <div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex flex-col gap-4">
-                <div>
-                  <label className="block text-sm font-medium mb-1">Name</label>
-                  <input
-                    type="text"
-                    className="w-full border rounded p-2"
-                    required
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-1">
-                    Quantity
-                  </label>
-                  <input
-                    type="number"
-                    className="w-full border rounded p-2"
-                    required
-                    value={quantity}
-                    onChange={(e) => setQuantity(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-1">
-                    One Price
-                  </label>
-                  <input
-                    type="number"
-                    className="w-full border rounded p-2"
-                    required
-                    value={onePrice}
-                    onChange={(e) => setOnePrice(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-1">
-                    Blog Price
-                  </label>
-                  <input
-                    type="number"
-                    className="w-full border rounded p-2"
-                    required
-                    value={blogPrice}
-                    onChange={(e) => setBlogPrice(e.target.value)}
-                  />
-                </div>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    id="isDisabled"
-                    className="rounded border-gray-300"
-                    checked={isDisabled}
-                    onChange={(e) => setIsDisabled(e.target.checked)}
-                  />
-                  <label htmlFor="isDisabled" className="text-sm font-medium">
-                    Is Disabled
-                  </label>
-                </div>
-              </div>
-              <div className="h-full">
-                <div className="h-full">
-                  <label className="block text-sm font-medium mb-1">
-                    Description
-                  </label>
-                  <textarea
-                    className="w-full border rounded p-4 h-[80%]"
-                    placeholder="Mahsulot haqida ma'lumot kiriting ..."
-                    required
-                    rows={5}
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="flex items-end justify-between gap-4 mt-5">
-              <div className="flex items-center gap-4">
-                <div className="flex flex-col">
-                  <label className="block text-sm font-medium mb-1">
-                    Photo
-                  </label>
-                  <input
-                    type="file"
-                    className="w-full border rounded p-2 mt-1 block text-sm text-gray-500
-                      file:mr-4 file:py-2 file:px-4 file:rounded file:border-0
-                      file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700
-                      hover:file:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                  />
-                </div>
-                {imagePreview && (
-                  <div className="relative">
-                    <img
-                      alt="Preview"
-                      src={imagePreview}
-                      className="w-32 h-32 rounded-lg border"
-                    />
-                    <button
-                      type="button"
-                      onClick={handleDeleteImage}
-                      className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-sm"
-                    >
-                      ✕
-                    </button>
-                  </div>
-                )}
+        <h2 className="text-2xl font-bold mb-6 text-gray-800">Add New Product</h2>
+        <form className="space-y-6" onSubmit={handleSubmit}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="flex flex-col gap-4">
+              <div>
+                <label className="block text-sm font-medium mb-1 text-gray-700">Name</label>
+                <input
+                  type="text"
+                  className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500"
+                  required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
               </div>
               <div>
-                <div className="flex justify-end gap-2 mt-6">
+                <label className="block text-sm font-medium mb-1 text-gray-700">Quantity</label>
+                <input
+                  type="number"
+                  className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500"
+                  required
+                  value={quantity}
+                  onChange={(e) => setQuantity(e.target.value)}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1 text-gray-700">One Price</label>
+                <input
+                  type="number"
+                  className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500"
+                  required
+                  value={onePrice}
+                  onChange={(e) => setOnePrice(e.target.value)}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1 text-gray-700">Blog Price</label>
+                <input
+                  type="number"
+                  className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500"
+                  required
+                  value={blogPrice}
+                  onChange={(e) => setBlogPrice(e.target.value)}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1 text-gray-700">Blog Count</label>
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="number"
+                    className="w-20 border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500"
+                    value={blogCount}
+                    onChange={(e) => setBlogCount(e.target.value)}
+                  />
                   <button
                     type="button"
-                    onClick={onClose}
-                    className="px-4 py-2 border rounded text-red-500 border-red-500 hover:bg-red-50"
+                    onClick={() => setBlogCount(Number(blogCount) + 1)}
+                    className="px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none"
                   >
-                    Yopish
-                  </button>
-                  <button
-                    type="submit"
-                    className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                  >
-                    Qo'shish
+                    Add
                   </button>
                 </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id="isDisabled"
+                  className="rounded border-gray-300"
+                  checked={isDisabled}
+                  onChange={(e) => setIsDisabled(e.target.checked)}
+                />
+                <label htmlFor="isDisabled" className="text-sm font-medium text-gray-700">
+                  Is Disabled
+                </label>
+              </div>
+            </div>
+            <div className="flex flex-col">
+              <label className="block text-sm font-medium mb-1 text-gray-700">
+                Description
+              </label>
+              <textarea
+                className="w-full border border-gray-300 rounded-lg p-4 focus:ring-2 focus:ring-blue-500"
+                placeholder="Mahsulot haqida ma'lumot kiriting ..."
+                required
+                rows={8}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </div>
+          </div>
+          <div className="flex items-end justify-between gap-4 mt-6">
+            <div className="flex items-center gap-6">
+              <div className="flex flex-col">
+                <label className="block text-sm font-medium mb-1 text-gray-700">Photo</label>
+                <input
+                  type="file"
+                  className="w-full border border-gray-300 rounded-lg p-2 mt-1 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                />
+              </div>
+              {imagePreview && (
+                <div className="relative">
+                  <img
+                    alt="Preview"
+                    src={imagePreview}
+                    className="w-32 h-32 rounded-lg border"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleDeleteImage}
+                    className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 focus:outline-none"
+                  >
+                    ✕
+                  </button>
+                </div>
+              )}
+            </div>
+            <div>
+              <div className="flex justify-end gap-3 mt-6">
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="px-4 py-2 border border-red-500 text-red-500 rounded-lg hover:bg-red-50 transition-colors duration-300"
+                >
+                  Yopish
+                </button>
+                <button
+                  type="submit"
+                  className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors duration-300"
+                >
+                  Qo'shish
+                </button>
               </div>
             </div>
           </div>

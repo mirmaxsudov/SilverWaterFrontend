@@ -1,21 +1,34 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import Logo from "../assets/logo.png";
-import "./AdminLayout.css";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
+import { $api } from "../api/request";
+import "./AdminLayout.css";
 
 const AdminLayout = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [profileName, setProfileName] = useState("Palonchi");
+  const [newApplicationCount, setNewApplicationCount] = useState(0);
 
   useEffect(() => {
     if (!localStorage.getItem("token")) navigate("/login");
   }, [navigate]);
 
   const fetchProfileName = async () => {
-
+    const res = await $api.get("/api/v1/web-users/profile-name")
+    setProfileName(res.data);
   }
+
+  const fetchNewApplicationCount = async () => {
+    const res = await $api.get("/api/v1/application/new-count");
+    setNewApplicationCount(res.data);
+  }
+
+  useEffect(() => {
+    fetchProfileName();
+    fetchNewApplicationCount();
+  }, []);
 
   const NavLinks = [
     {
@@ -104,9 +117,14 @@ const AdminLayout = () => {
               <li key={id}>
                 <NavLink
                   to={link}
-                  className="nav-link flex text-wrap items-center p-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700"
+                  className="nav-link flex items-center p-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700"
                 >
                   <span className="ml-3">{t(title)}</span>
+                  {id === 8 && newApplicationCount > 0 && (
+                    <span className="ml-auto bg-red-600 text-white rounded-full px-2 py-1 text-xs animate-bounce-3">
+                      {newApplicationCount}
+                    </span>
+                  )}
                 </NavLink>
               </li>
             ))}
@@ -115,7 +133,7 @@ const AdminLayout = () => {
 
         <div className="border-t border-gray-200 p-4">
           <NavLink className={"nav-link"} to={"profile/84"}>
-            <p className="text-sm text-gray-600">Abdurahmon Mirmaxsudov</p>
+            <p className="text-sm text-gray-600">{profileName}</p>
           </NavLink>
         </div>
       </aside>

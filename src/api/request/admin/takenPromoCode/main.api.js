@@ -16,6 +16,6 @@ export const fetchAllTakenPromoCodeSearch = async (page, size, query) => {
 
 export const sendMessageToUser = async (userId, message) => {
   return await $api.post(
-    `/api/v1/user/send-message/${userId}?message=${encodeURIComponent(message)}`,
+    `/api/v1/bot-user/message/${userId}?message=${encodeURIComponent(message)}`
   );
 };

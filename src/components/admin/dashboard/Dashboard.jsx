@@ -3,23 +3,35 @@ import UserDashboard from "./user/UserDashboard";
 import PromoCodeDashboard from "./promoCode/PromoCodeDashboard";
 import ApplicationDashboard from "./application/ApplicationDashboard";
 import { useEffect, useState } from "react";
-import { fetchLiveUsers } from "../../../api/request/admin/dashboard/main.api";
+import { fetchCryCountUsersInBot, fetchLiveUsers } from "../../../api/request/admin/dashboard/main.api";
+import { notifyError } from "../../../helper/toast";
 
 const Dashboard = () => {
   const { t } = useTranslation();
   const [live, setLive] = useState(0);
+  const [crtUsersCount, setCrtUsersCount] = useState(0);
+
+  const fetchLive = async () => {
+    try {
+      const res = await fetchLiveUsers();
+      setLive(res.data);
+    } catch (error) {
+      notifyError("Xatolik yuz berdi, qaytadan urinib ko'ring.");
+    }
+  };
+
+  const fetchCryCountUserInBot = async () => {
+    try {
+      const res = await fetchCryCountUsersInBot();
+      setCrtUsersCount(res.data);
+    } catch (error) {
+      notifyError("Xatolik yuz berdi, qaytadan urinib ko'ring.");
+    }
+  }
+
 
   useEffect(() => {
-    const fetchLive = async () => {
-      try {
-        const res = await fetchLiveUsers();
-        const data = res.data;
-        setLive(data.count);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
+    fetchCryCountUserInBot();
     fetchLive();
   }, []);
 
@@ -27,28 +39,27 @@ const Dashboard = () => {
     <section className={"dashboard-section"}>
       <div className={"container mx-auto"}>
         <h1 className="text-3xl font-bold">{t("dashboard.title")}</h1>
-        <div className={"dashboard-info grid grid-cols-4 gap-[30px] mt-10"}>
-          <DashboardInfoItem value={live} />
-          <DashboardInfoItem value={live} />
-          <DashboardInfoItem value={live} />
-          <DashboardInfoItem value={live} />
+        <div className={"dashboard-info grid grid-cols-3 gap-[30px] mt-10"}>
+          <DashboardInfoItem title="Online foydalanuvchilar" value={live} />
+          <DashboardInfoItem title="Foydalanuvchilar" value={crtUsersCount} />
+          <DashboardInfoItem title="Foydalanuvchilar" value={crtUsersCount} />
         </div>
-        <UserDashboard />
-        <PromoCodeDashboard />
+        {/* <UserDashboard /> */}
+        {/* <PromoCodeDashboard /> */}
         <ApplicationDashboard />
       </div>
     </section>
   );
 };
 
-const DashboardInfoItem = ({ value }) => {
+const DashboardInfoItem = ({ value, title }) => {
   return (
     <div
       className={"bg-[#fff] p-5 rounded-lg pe-0 shadow w-full h-full border"}
     >
       <div className={"grid grid-cols-3"}>
         <div className={"col-span-2"}>
-          <p>Live User</p>
+          <p>{title}</p>
           <p>{value}</p>
         </div>
         <div
