@@ -23,6 +23,7 @@ import Web3ProductForBot from "../pages/Web3ProductForBot.jsx";
 import WebUser from "../components/webUser/WebUser.jsx";
 import Settings from "../pages/settings/Settings.jsx";
 import AuthChecker from "../components/authChecker/AuthChecker.jsx";
+import ManageNotification from "../components/manageNotification/ManageNotification.jsx";
 
 export const route = createBrowserRouter([
   {
@@ -114,7 +115,7 @@ export const route = createBrowserRouter([
       },
       {
         path: "notifications",
-        element: <div>Notifications</div>
+        element: <ManageNotification />
       }
     ],
   },
