@@ -116,6 +116,10 @@ export const route = createBrowserRouter([
       {
         path: "notifications",
         element: <ManageNotification />
+      },
+      {
+        path: "notifications/:id",
+        element: "nimadiowrsfkghlbasfjhvb"
       }
     ],
   },

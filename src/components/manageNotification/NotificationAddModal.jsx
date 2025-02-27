@@ -3,7 +3,7 @@ import { MdOutlineClose } from "react-icons/md";
 import { notifyError, notifySuccess } from "../../helper/toast";
 import { sendMessage } from "../../api/request/botNotification/botNotification.api";
 
-const NotificationAddModal = ({ onClose }) => {
+const NotificationAddModal = ({ onClose, addToNotifications }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState("");
     const messageRef = useRef();
@@ -37,6 +37,7 @@ const NotificationAddModal = ({ onClose }) => {
                 return;
             }
 
+            addToNotifications(response.data);
             notifySuccess("Xabar muvaffaqiyatli yuborildi.");
             onClose();
         } catch (error) {
