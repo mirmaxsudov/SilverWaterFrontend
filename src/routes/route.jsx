@@ -24,6 +24,7 @@ import WebUser from "../components/webUser/WebUser.jsx";
 import Settings from "../pages/settings/Settings.jsx";
 import AuthChecker from "../components/authChecker/AuthChecker.jsx";
 import ManageNotification from "../components/manageNotification/ManageNotification.jsx";
+import BotNotificationDetails from "../components/manageNotification/details/BotNotificationDetails.jsx";
 
 export const route = createBrowserRouter([
   {
@@ -119,7 +120,7 @@ export const route = createBrowserRouter([
       },
       {
         path: "notifications/:id",
-        element: "nimadiowrsfkghlbasfjhvb"
+        element: <BotNotificationDetails />
       }
     ],
   },

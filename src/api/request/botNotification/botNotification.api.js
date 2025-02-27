@@ -12,6 +12,12 @@ export const fetchAll = async () => {
   return await $api.get(BASE_BOT_NOTIFICATION_URL + "/all");
 };
 
-export const resend = async notificationId => {
-    return await $api.post(BASE_BOT_NOTIFICATION_URL + "/resend/" + notificationId)
-}
+export const resend = async (notificationId) => {
+  return await $api.post(
+    BASE_BOT_NOTIFICATION_URL + "/resend/" + notificationId
+  );
+};
+
+export const getById = async (notificationId) => {
+  return await $api.get(BASE_BOT_NOTIFICATION_URL + "/" + notificationId);
+};
