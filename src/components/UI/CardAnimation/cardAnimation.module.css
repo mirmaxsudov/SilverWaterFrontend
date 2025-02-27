@@ -110,8 +110,8 @@
   background: rgba(255, 255, 255, 0.058);
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
   padding: 0.5rem;
   margin: 0 0 0.5rem 0;
 }
@@ -139,22 +139,22 @@
 }
 
 .card[for="c1"] {
-  background-image: url("../../../assets/card1.jpg");
+  background-image: url("../../../assets/cart1.jpg");
   background-position: center;
 }
 
 .card[for="c2"] {
-  background-image: url("../../../assets/card2.jpg");
+  background-image: url("../../../assets/cart2.jpg");
   background-position: center;
 }
 
 .card[for="c3"] {
-  background-image: url("../../../assets/card3.jpg");
+  background-image: url("../../../assets/cart3.jpg");
   background-position: bottom;
 }
 
 .card[for="c4"] {
-  background-image: url("../../../assets/card4.jpg");
+  background-image: url("../../../assets/cart4.jpg");
   background-position: center;
 }
 
