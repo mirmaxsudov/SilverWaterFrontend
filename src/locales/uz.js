@@ -23,6 +23,7 @@ export const uz = {
       applications: "Arizalar",
       takenPromoCode: "Qabul qilingan promo kodi",
       settings: "Sozlamalar",
+      notifications: "Bildirishnomalar",
     },
   },
   applications: {

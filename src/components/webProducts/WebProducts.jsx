@@ -3,7 +3,10 @@ import { useLoaderData, useRevalidator } from "react-router-dom";
 import AddWebProductModal from "./AddWebProductModal";
 import ShowWebProductItem from "./ShowWebProductItem";
 import { $api } from "../../api/request";
-import { deleteById, updateWebProductPriority } from "../../api/request/admin/webProduct/main.api";
+import {
+  deleteById,
+  updateWebProductPriority,
+} from "../../api/request/admin/webProduct/main.api";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const WebProducts = () => {
@@ -21,6 +24,7 @@ const WebProducts = () => {
 
   const onDragEnd = (result) => {
     if (!result.destination) return;
+
     const newOrder = Array.from(products);
     const [movedItem] = newOrder.splice(result.source.index, 1);
     newOrder.splice(result.destination.index, 0, movedItem);
@@ -30,7 +34,7 @@ const WebProducts = () => {
     newOrder.forEach((product, index) => {
       const newPriority = total - index;
       if (product.priority !== newPriority) {
-        updateWebProductPriority(product.id, newPriority)
+        updateWebProductPriority(product.id, newPriority);
       }
     });
   };
@@ -45,11 +49,13 @@ const WebProducts = () => {
             </h1>
             <button
               onClick={() => setIsShowAddModal(true)}
-              className="bg-green-300 text-green-700 font-semibold py-2 rounded px-4 hover:bg-green-600 transition-all duration-300 hover:text-white"
+              className="bg-green-300 text-green-700 font-semibold py-2 rounded px-4
+                         hover:bg-green-600 transition-all duration-300 hover:text-white"
             >
               Add new
             </button>
           </div>
+
           {isShowAddModal && (
             <AddWebProductModal
               revalidate={handleProductAdded}
@@ -57,11 +63,12 @@ const WebProducts = () => {
               onCategoryAdded={handleProductAdded}
             />
           )}
+
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="webProducts" direction="horizontal">
               {(provided) => (
                 <div
-                  className="grid grid-cols-4 mt-10 gap-5"
+                  className="grid grid-cols-4 gap-5 mt-10"
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                 >
@@ -78,8 +85,8 @@ const WebProducts = () => {
                           {...provided.dragHandleProps}
                         >
                           <ShowWebProductItem
-                            handleDeleteWebProduct={handleDeleteWebProduct}
                             product={product}
+                            handleDeleteWebProduct={handleDeleteWebProduct}
                           />
                         </div>
                       )}
@@ -95,7 +102,6 @@ const WebProducts = () => {
     </>
   );
 };
-
 
 export const loader = async () => {
   const res = await $api.get(`/api/v1/web-product`);

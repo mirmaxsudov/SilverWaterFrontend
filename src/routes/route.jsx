@@ -42,7 +42,6 @@ export const route = createBrowserRouter([
   {
     path: "/admin",
     element: <AuthChecker><AdminLayout /></AuthChecker>,
-    // errorElement: <NotFound/>,
     children: [
       {
         path: "dashboard",
@@ -113,6 +112,10 @@ export const route = createBrowserRouter([
         path: "manage-inn",
         element: <Inn />,
       },
+      {
+        path: "notifications",
+        element: <div>Notifications</div>
+      }
     ],
   },
   {

@@ -1,13 +1,8 @@
-/** {*/
-/*    font-family: "Raleway", serif;*/
-/*    font-optical-sizing: auto;*/
-/*    font-style: normal;*/
-
-/*}*/
-
+/* Scrollbar & NavLinks Container */
 .nav-links-container,
 .category-container {
-  overflow-x: auto;
+  /* Changed overflow-x to visible so tooltips aren’t clipped */
+  overflow-x: visible;
   padding: 10px;
   background: #fff;
   border-bottom: 1px solid #ddd;
@@ -43,14 +38,68 @@
   color: #0150a0;
 }
 
+/* Base style for nav links */
 .nav-link {
-  transition: all 0.3s ease;
+  display: inline-flex;
+  position: relative;
+  overflow: visible; /* allow tooltip to extend beyond without affecting layout */
+  transition: transform 0.3s ease, color 0.3s ease, background-color 0.3s ease;
+  cursor: pointer;
+  transform: scale(1);
 }
 
+/* Active state: scale up smoothly */
 .nav-link.active {
   color: #0150a0;
   font-weight: bold;
   background-color: #f1f1f1;
+  transform: scale(1.1);
+}
+
+/* Tooltip styling for collapsed sidebar */
+.tooltip {
+  position: absolute;
+  left: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #333;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease-in-out;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.nav-link:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Toggle button container positioned right after the sidebar */
+.sidebar-toggle-container {
+  position: absolute;
+  top: 10px;
+  z-index: 10;
+}
+
+/* Toggle button styles */
+.sidebar-toggle {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  padding: 4px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.sidebar-toggle:hover {
+  opacity: 1;
   transform: scale(1.1);
 }
 
