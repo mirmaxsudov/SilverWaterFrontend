@@ -80,7 +80,6 @@ const BotNotificationDetails = () => {
     );
   }
 
-  // Safely handle the message
   const message = botNotification.message ?? "";
   const threshold = 300;
   const isLongMessage = message.length > threshold;
@@ -132,7 +131,6 @@ const BotNotificationDetails = () => {
             </div>
           )}
 
-          {/* MESSAGE AT THE BOTTOM */}
           <div className="flex flex-col md:flex-row md:items-start">
             <span className="w-32 font-semibold">Message:</span>
             <div className="relative flex-1 text-gray-700 w-full max-w-full overflow-x-hidden">
@@ -151,7 +149,6 @@ const BotNotificationDetails = () => {
                 {displayedMessage}
               </p>
 
-              {/* READ MORE / LESS */}
               {isLongMessage && (
                 <button
                   onClick={toggleExpanded}
@@ -161,7 +158,6 @@ const BotNotificationDetails = () => {
                 </button>
               )}
 
-              {/* COPY BUTTON */}
               <button
                 onClick={handleCopy}
                 className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
@@ -171,7 +167,7 @@ const BotNotificationDetails = () => {
               </button>
 
               {copySuccess && (
-                <span className="absolute top-4 right-10 text-green-600 text-sm">
+                <span className="absolute bg-white rounded px-2 py-1 top-4 right-10 text-green-600 text-sm">
                   {copySuccess}
                 </span>
               )}
