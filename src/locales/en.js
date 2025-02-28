@@ -149,4 +149,35 @@ export const en = {
       cancel: "Cancel",
     },
   },
+  botNotifications: {
+    title: "Bot Notifications",
+    add: "Add",
+    info: {
+      id: "ID",
+      message: "Message text",
+      sentBy: "Sender",
+      sentAt: "Sent time",
+      resend: "Resend",
+    },
+    addModal: {
+      title: "Add New Notification",
+      placeHolder: "Message text",
+      sendAll: "Send to All",
+      chars: "character count",
+    },
+    details: {
+      title: "Notification Details",
+      id: "ID",
+      sentBy: "Sender",
+      sentAt: "Sent time",
+      message: "Message text",
+      copied: "Copied",
+      notFound: "Data not found",
+      loading: "Loading...",
+      goBack: "Go back",
+      readLess: "Read less",
+      readMore: "Read more",
+    }
+    
+  },  
 };

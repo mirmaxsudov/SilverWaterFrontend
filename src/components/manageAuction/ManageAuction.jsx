@@ -6,7 +6,6 @@ import {
   fetchAuctionsPage,
 } from "../../api/request/admin/auction/main.api";
 import {
-  dateFormater,
   dateFormatterWithTime,
 } from "./../../helper/dateFormater";
 import { notifySuccess } from "../../helper/toast";
@@ -15,9 +14,10 @@ const DOTS = "...";
 
 const getPaginationRange = (currentPage, totalPages, siblingCount = 1) => {
   const totalPageNumbers = siblingCount * 2 + 5;
-  if (totalPages <= totalPageNumbers) {
+
+  if (totalPages <= totalPageNumbers)
     return Array.from({ length: totalPages }, (_, index) => index + 1);
-  }
+
   const leftSiblingIndex = Math.max(currentPage - siblingCount, 1);
   const rightSiblingIndex = Math.min(currentPage + siblingCount, totalPages);
 
@@ -56,21 +56,18 @@ const getPaginationRange = (currentPage, totalPages, siblingCount = 1) => {
 const ManageAuction = () => {
   const { t } = useTranslation();
 
-  // States for auctions and pagination
   const [auctions, setAuctions] = useState([]);
-  const [page, setPage] = useState(0); // zero-indexed
+  const [page, setPage] = useState(0);
   const [size] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Modal & editing states
   const [isOpenAddModal, setIsOpenAddModal] = useState(false);
   const [editingAuction, setEditingAuction] = useState(null);
 
   const fetchPage = async (pageNumber, query) => {
     try {
       const response = await fetchAuctionsPage(pageNumber, size, query);
-      // Expected response: { count: number, auctions: [...] }
       setAuctions(response.data.auctions);
       setTotalCount(response.data.total);
     } catch (error) {
@@ -265,11 +262,10 @@ const ManageAuction = () => {
                     <button
                       key={index}
                       onClick={() => setPage(pageNumber - 1)}
-                      className={`px-3 py-1 rounded ${
-                        page + 1 === pageNumber
-                          ? "bg-blue-500 text-white"
-                          : "bg-gray-200 text-gray-700"
-                      }`}
+                      className={`px-3 py-1 rounded ${page + 1 === pageNumber
+                        ? "bg-blue-500 text-white"
+                        : "bg-gray-200 text-gray-700"
+                        }`}
                     >
                       {pageNumber}
                     </button>

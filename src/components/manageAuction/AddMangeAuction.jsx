@@ -1,225 +1,278 @@
-import { useState, useEffect } from "react";
-import {
-  fetchAuctionProductsSearch,
-  saveNewAuction,
-} from "../../api/request/admin/auction/main.api";
+import { useEffect, useState } from "react";
+import { fetchAuctionProductsSearch, saveNewAuction } from "../../api/request/admin/auction/main.api";
 import { notifyError, notifySuccess } from "../../helper/toast";
 
-const AddManageAuction = ({ onClose, initialData, reFetchAuctions }) => {
-  const [name, setName] = useState(initialData?.name || "");
-  const [gift, setGift] = useState(initialData?.giftProduct || "");
-  const [isActive, setIsActive] = useState(initialData?.isActive || false);
-  const [count, setCount] = useState(initialData?.productCount || "");
-  const [startTime, setStartTime] = useState(initialData?.startTime || "");
-  const [endTime, setEndTime] = useState(initialData?.endTime || "");
+const AddManageAuction = ({ onClose }) => {
+  const [searchProducts, setSearchProducts] = useState([]);
+  const [giftProducts, setGiftProducts] = useState([]);
+  const [query, setQuery] = useState("");
+  const [selectedProductId, setSelectedProductId] = useState(null);
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
-  const [selectedSearchId, setSelectedSearchId] = useState(-1);
+  // Auction details (left section)
+  const [auctionName, setAuctionName] = useState("");
+  const [auctionActive, setAuctionActive] = useState(true);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
-  useEffect(() => {
-    if (initialData) {
-      setName(initialData.name || "");
-      setGift(initialData.giftProduct || "");
-      setIsActive(initialData.isActive || false);
-      setCount(initialData.productCount || "");
-      setStartTime(initialData.startTime || "");
-      setEndTime(initialData.endTime || "");
+  // Gift details (right section top)
+  const [selectedGiftId, setSelectedGiftId] = useState("");
+  const [giftCount, setGiftCount] = useState("");
+  const [countOrder, setCountOrder] = useState("");
+
+  const handleOverlayClick = () => onClose();
+
+  const handleSelectedProduct = (productId) => setSelectedProductId(productId);
+
+  // Validate and submit new auction data
+  const handleAddNewAuction = async () => {
+    // Basic validations with Uzbek messages
+    if (!auctionName.trim()) {
+      notifyError("Aksiya nomi kiritilishi kerak.");
+      return;
     }
-  }, [initialData]);
-
-  useEffect(() => {
-    (async () => {
-      const res = await fetchAuctionProductsSearch("");
-      setSearchResults(res.data);
-    })();
-  }, []);
-
-  const handleAddAuction = async () => {
-    if (
-      !name.trim() ||
-      !gift.trim() ||
-      !count ||
-      !startTime ||
-      !endTime ||
-      selectedSearchId === -1
-    ) {
-      alert(
-        "Iltimos, Name, Sovg'a, Nechta, Boshlanish va Tugash vaqtlarini to'ldiring!",
-      );
+    if (!startDate || !endDate) {
+      notifyError("Boshlanish va tugash sanalari kiritilishi kerak.");
+      return;
+    }
+    if (new Date(startDate) >= new Date(endDate)) {
+      notifyError("Tugash sanasi, boshlanish sanasidan keyin bo'lishi kerak.");
+      return;
+    }
+    if (!selectedGiftId) {
+      notifyError("Iltimos, sovg'a mahsuloti tanlang.");
+      return;
+    }
+    if (!giftCount || isNaN(giftCount) || Number(giftCount) <= 0) {
+      notifyError("Sovg'a soni musbat son bo'lishi kerak.");
+      return;
+    }
+    if (!countOrder || isNaN(countOrder)) {
+      notifyError("Aksiya tartibi haqiqiy raqam bo'lishi kerak.");
+      return;
+    }
+    if (!selectedProductId) {
+      notifyError("Iltimos, aksiya uchun mahsulot tanlang.");
       return;
     }
 
-    const data = {
-      orderOfCount: +count,
-      uniqueAuctionName: name.trim(),
-      gift: gift.trim(),
-      isActive: true,
-      startTime,
-      endTime,
-      productId: selectedSearchId,
+    const auctionData = {
+      auctionName: auctionName.trim(),
+      isActive: auctionActive,
+      startTime: startDate,
+      endTime: endDate,
+      giftId: selectedGiftId,
+      giftCount: Number(giftCount),
+      countOrder: Number(countOrder),
+      productId: selectedProductId,
     };
 
     try {
-      const res = await saveNewAuction(data);
-
-      if (res.status === 200) {
-        notifySuccess("Aksiya muvaffaqiyatli qo'shildi!");
-        reFetchAuctions();
-      }
-    } catch (error) {
-      notifyError("Xatolik yuz berdi. Iltimos, qaytadan urinib ko'ring!");
-      console.log(error);
-    }
-
-    onClose();
-  };
-
-  const handleOverlayClick = (e) => {
-    if (e.target.id === "modal-overlay") {
+      await saveNewAuction(auctionData);
+      notifySuccess("Aksiya muvaffaqiyatli yaratildi!");
       onClose();
+    } catch (error) {
+      if (error.response.status === 400) {
+        notifyError(error.response.data.message);
+        return;
+      }
+
+      notifyError("Aksiyani yaratishda xatolik yuz berdi. Iltimos, qaytadan urinib ko'ring.");
     }
   };
 
-  const handleCheckboxChange = ({ productId }) => {
-    if (selectedSearchId === productId) {
-      setSelectedSearchId(null);
-    } else {
-      setSelectedSearchId(productId);
-    }
-  };
+  useEffect(() => {
+    const fetchGiftProduct = async () => {
+      try {
+        const response = await fetchAuctionProductsSearch("");
+        if (response.status !== 200) {
+          notifyError("Mahsulotlarni yuklashda xatolik yuz berdi. Qaytadan urinib ko'ring.");
+          return;
+        }
+        setGiftProducts(response.data);
+      } catch (error) {
+        notifyError("Mahsulotlarni yuklashda xatolik yuz berdi. Qaytadan urinib ko'ring.");
+      }
+    };
+    fetchGiftProduct();
+  }, []);
 
-  const handleAuctionProduct = async (searchTerm) => {
-    const res = await fetchAuctionProductsSearch(searchTerm);
-    setSearchTerm(searchTerm);
-    setSearchResults(res.data);
-  };
+  useEffect(() => {
+    const fetchSearchProduct = async (query) => {
+      try {
+        const response = await fetchAuctionProductsSearch(query);
+        if (response.status !== 200) {
+          notifyError("Mahsulotlarni qidirishda xatolik yuz berdi. Qaytadan urinib ko'ring.");
+          return;
+        }
+        setSearchProducts(response.data);
+      } catch (error) {
+        notifyError("Mahsulotlarni qidirishda xatolik yuz berdi. Qaytadan urinib ko'ring.");
+      }
+    };
+    fetchSearchProduct(query);
+  }, [query]);
 
   return (
     <div
       id="modal-overlay"
-      className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black bg-opacity-50"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm"
       onClick={handleOverlayClick}
+      tabIndex={0}
     >
-      <div className="bg-white w-full max-w-4xl mx-4 rounded shadow-lg p-6 relative">
-        <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-semibold">
-            {initialData ? "Edit Aksiya" : "Aksiya Qo'shish"}
-          </h2>
-          <button
-            onClick={onClose}
-            className="text-gray-500 hover:text-gray-700 text-xl font-bold"
-          >
-            &times;
-          </button>
-        </div>
-        <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label className="block mb-1 font-medium">Name</label>
-            <input
-              type="text"
-              className="w-full border rounded px-3 py-2 mb-3"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Auction nomi..."
-            />
-
-            <label className="block mb-1 font-medium">Sovg'a</label>
-            <input
-              type="text"
-              className="w-full border rounded px-3 py-2 mb-3"
-              value={gift}
-              onChange={(e) => setGift(e.target.value)}
-              placeholder="Sovg'a nomi..."
-            />
-
-            <div className="flex items-center mb-3">
-              <span className="mr-2 font-medium">Active</span>
-              <input
-                type="checkbox"
-                checked={isActive}
-                onChange={() => setIsActive(!isActive)}
-                className="toggle-checkbox"
-              />
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="relative bg-white w-full max-w-4xl mx-4 p-8 rounded-lg shadow-xl overflow-y-auto max-h-screen"
+      >
+        <div className="flex flex-col md:flex-row md:justify-between gap-8">
+          {/* Left Section: Auction and Gift Details */}
+          <div className="md:w-2/3">
+            <h1 className="text-2xl font-semibold text-gray-800 mb-6">
+              Yangi Aksiya
+            </h1>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Auction Details */}
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Auction Name
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Enter auction name"
+                    value={auctionName}
+                    onChange={(e) => setAuctionName(e.target.value)}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={auctionActive}
+                    onChange={(e) => setAuctionActive(e.target.checked)}
+                    className="h-5 w-5 text-blue-600 border-gray-300 rounded"
+                  />
+                  <label className="text-sm font-medium text-gray-700">
+                    Active / InActive
+                  </label>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Start Date
+                  </label>
+                  <input
+                    type="datetime-local"
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    End Date
+                  </label>
+                  <input
+                    type="datetime-local"
+                    value={endDate}
+                    onChange={(e) => setEndDate(e.target.value)}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+              </div>
+              {/* Gift Details */}
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Sovg'a
+                  </label>
+                  <select
+                    name="gift"
+                    id="gift"
+                    value={selectedGiftId}
+                    onChange={(e) => setSelectedGiftId(e.target.value)}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="">Tanlang</option>
+                    {giftProducts?.map((giftProduct) => (
+                      <option
+                        key={giftProduct.productId}
+                        value={giftProduct.productId}
+                      >
+                        {giftProduct.productName}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Gift Count
+                  </label>
+                  <input
+                    type="number"
+                    placeholder="Enter gift count"
+                    value={giftCount}
+                    onChange={(e) => setGiftCount(e.target.value)}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Count Order
+                  </label>
+                  <input
+                    type="number"
+                    placeholder="Enter auction count order"
+                    value={countOrder}
+                    onChange={(e) => setCountOrder(e.target.value)}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+              </div>
             </div>
-
-            <label className="block mb-1 font-medium">Nechta</label>
-            <input
-              type="number"
-              className="w-full border rounded px-3 py-2 mb-3"
-              value={count}
-              onChange={(e) => setCount(e.target.value)}
-              placeholder="Mahsulot soni..."
-            />
-
-            <label className="block mb-1 font-medium">Boshlanish Vaqti</label>
-            <input
-              type="datetime-local"
-              className="w-full border rounded px-3 py-2 mb-3"
-              value={startTime}
-              onChange={(e) => setStartTime(e.target.value)}
-            />
-
-            <label className="block mb-1 font-medium">Tugash Vaqti</label>
-            <input
-              type="datetime-local"
-              className="w-full border rounded px-3 py-2 mb-3"
-              value={endTime}
-              onChange={(e) => setEndTime(e.target.value)}
-            />
           </div>
-
-          <div>
-            <div className="flex items-center mb-3">
+          {/* Right Section: Product Search & ADD Button */}
+          <div className="md:w-1/3">
+            <h1 className="text-2xl font-semibold text-gray-800 mb-6">
+              Mahsulot
+            </h1>
+            <div className="space-y-6">
               <input
+                onChange={(e) => setQuery(e.target.value)}
                 type="text"
-                className="flex-1 border rounded px-3 py-2 mr-2"
-                placeholder="Search..."
-                value={searchTerm}
-                onChange={(e) => handleAuctionProduct(e.target.value)}
+                placeholder="Search ..."
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
-              <button className="bg-slate-800 text-white px-4 py-2 rounded">
-                Search
+              <div className="border border-gray-200 rounded-lg p-4 h-48 overflow-y-auto">
+                {(!searchProducts || searchProducts.length === 0) ? (
+                  <h3 className="text-center text-gray-500">Topilmadi</h3>
+                ) : (
+                  <ul>
+                    {searchProducts.map((product) => (
+                      <li
+                        key={product.productId}
+                        className="flex items-center justify-between py-2 border-b last:border-0"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={product.productId === selectedProductId}
+                          onChange={() => handleSelectedProduct(product.productId)}
+                          className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+                        />
+                        <span className="ml-2 text-gray-800">
+                          {product.productName}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+              <button
+                onClick={handleAddNewAuction}
+                className="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg transition shadow"
+              >
+                ADD
               </button>
             </div>
-            <div className="border rounded h-64 overflow-y-auto p-2">
-              {searchResults?.length > 0 &&
-                searchResults.map((item) => {
-                  const isChecked = item.productId === selectedSearchId;
-
-                  return (
-                    <label
-                      key={item.productId}
-                      className="border-b last:border-b-0 py-2 px-1 text-sm flex justify-between items-center cursor-pointer"
-                    >
-                      <span>{item.productName}</span>
-                      <input
-                        key={item.productId}
-                        type="checkbox"
-                        className="ml-2"
-                        checked={isChecked}
-                        onChange={() => handleCheckboxChange(item)}
-                      />
-                    </label>
-                  );
-                })}
-            </div>
           </div>
-        </div>
-
-        <div className="mt-6 flex justify-end space-x-3">
-          <button
-            onClick={onClose}
-            className="px-4 py-2 border rounded hover:bg-gray-100"
-          >
-            Close
-          </button>
-          <button
-            onClick={handleAddAuction}
-            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-          >
-            {initialData ? "Update" : "Add"}
-          </button>
         </div>
       </div>
     </div>

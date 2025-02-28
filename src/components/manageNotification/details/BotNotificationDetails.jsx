@@ -4,6 +4,7 @@ import { notifyError } from "../../../helper/toast";
 import { getById } from "../../../api/request/botNotification/botNotification.api";
 import { ImSpinner2 } from "react-icons/im";
 import { MdOutlineContentCopy } from "react-icons/md";
+import { useTranslation } from "react-i18next";
 
 const BotNotificationDetails = () => {
   const { id: notificationId } = useParams();
@@ -13,6 +14,7 @@ const BotNotificationDetails = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isExpanded, setIsExpanded] = useState(false);
   const [copySuccess, setCopySuccess] = useState("");
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -49,7 +51,7 @@ const BotNotificationDetails = () => {
     if (botNotification?.message) {
       try {
         await navigator.clipboard.writeText(botNotification.message);
-        setCopySuccess("Copied!");
+        setCopySuccess(t("botNotifications.details.copied"));
         setTimeout(() => setCopySuccess(""), 2000);
       } catch (err) {
         notifyError("Xabar nusxalanmadi.");
@@ -61,7 +63,7 @@ const BotNotificationDetails = () => {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
         <ImSpinner2 className="animate-spin text-4xl text-gray-600" />
-        <p className="mt-2 text-gray-600">Loading...</p>
+        <p className="mt-2 text-gray-600">{t("botNotifications.details.loading")}</p>
       </div>
     );
   }
@@ -74,7 +76,7 @@ const BotNotificationDetails = () => {
           onClick={() => navigate(-1)}
           className="mt-4 text-blue-500 hover:underline"
         >
-          Go Back
+          &larr; {t("botNotifications.details.goBack")}
         </button>
       </div>
     );
@@ -94,45 +96,32 @@ const BotNotificationDetails = () => {
         onClick={() => navigate(-1)}
         className="mb-4 text-blue-500 hover:underline"
       >
-        &larr; Back
+        &larr; {t("botNotifications.details.goBack")}
       </button>
-
       <div className="bg-white shadow-lg rounded-lg p-6">
-        <h2 className="text-2xl font-bold mb-6">Notification Details</h2>
-
+        <h2 className="text-2xl font-bold mb-6">{t("botNotifications.details.title")}</h2>
         <div className="space-y-5">
           <div className="flex flex-col md:flex-row md:items-center">
-            <span className="w-32 font-semibold">ID:</span>
+            <span className="w-32 font-semibold">{t("botNotifications.details.id")}:</span>
             <p className="text-gray-700 break-all">{botNotification.id}</p>
           </div>
-
           {botNotification.sentBy && (
             <div className="flex flex-col md:flex-row md:items-center">
-              <span className="w-32 font-semibold">Sent By:</span>
+              <span className="w-32 font-semibold">{t("botNotifications.details.sentBy")}:</span>
               <p className="text-gray-700 break-all">{botNotification.sentBy}</p>
             </div>
           )}
 
           {botNotification.sentAt && (
             <div className="flex flex-col md:flex-row md:items-center">
-              <span className="w-32 font-semibold">Sent At:</span>
+              <span className="w-32 font-semibold">{t("botNotifications.details.sentAt")}:</span>
               <p className="text-gray-700">
                 {new Date(botNotification.sentAt).toLocaleString()}
               </p>
             </div>
           )}
-
-          {botNotification.createdAt && (
-            <div className="flex flex-col md:flex-row md:items-center">
-              <span className="w-32 font-semibold">Created At:</span>
-              <p className="text-gray-700">
-                {new Date(botNotification.createdAt).toLocaleString()}
-              </p>
-            </div>
-          )}
-
           <div className="flex flex-col md:flex-row md:items-start">
-            <span className="w-32 font-semibold">Message:</span>
+            <span className="w-32 font-semibold">{t("botNotifications.details.message")}:</span>
             <div className="relative flex-1 text-gray-700 w-full max-w-full overflow-x-hidden">
               <p
                 className="
@@ -154,7 +143,7 @@ const BotNotificationDetails = () => {
                   onClick={toggleExpanded}
                   className="text-blue-500 hover:underline mt-2 block"
                 >
-                  {isExpanded ? "Show Less" : "Read More"}
+                  {isExpanded ? t("botNotifications.details.readLess") : t("botNotifications.details.readMore")}
                 </button>
               )}
 

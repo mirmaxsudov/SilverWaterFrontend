@@ -11,12 +11,12 @@ i18next.use(initReactI18next).init({
     ru: { translation: ru },
     en: { translation: en },
   },
-  lng: "uz",
+  lng: localStorage.getItem("language") || "uz",
   fallbackLng: "uz",
 });
 
 const initLanguageState = {
-  language: "uz",
+  language: localStorage.getItem("language") || "uz",
 };
 
 const languageSlice = createSlice({
@@ -26,6 +26,7 @@ const languageSlice = createSlice({
     changeLanguage: (state, action) => {
       i18next.changeLanguage(action.payload);
       state.language = action.payload;
+      localStorage.setItem("language", action.payload);
     },
   },
 });

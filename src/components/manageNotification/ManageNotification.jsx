@@ -3,11 +3,13 @@ import NotificationAddModal from "./NotificationAddModal";
 import { notifyError, notifySuccess } from "../../helper/toast";
 import { fetchAll, resend } from "../../api/request/botNotification/botNotification.api";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const ManageNotification = () => {
     const [isAddOpenModal, setIsAddOpenModal] = useState(false);
     const [notifications, setNotifications] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const { t } = useTranslation();
 
     useEffect(() => {
         const fetchNotifications = async () => {
@@ -60,10 +62,12 @@ const ManageNotification = () => {
         <section className="manage-notifications">
             <div className="container mx-auto">
                 <div className="top flex items-center justify-between">
-                    <h1 className="font-bold text-3xl ">Manage Notifications</h1>
+                    <h1 className="font-bold text-3xl ">{t("botNotifications.title")}</h1>
                     <button
                         onClick={() => setIsAddOpenModal(true)}
-                        className="bg-green-600 text-white py-2 px-5 rounded-lg hover:bg-green-700 transition-all duration-300 shadow-lg shadow-green-200">Add</button>
+                        className="bg-green-600 text-white py-2 px-5 rounded-lg hover:bg-green-700 transition-all duration-300 shadow-lg shadow-green-200">
+                        {t("botNotifications.add")}
+                    </button>
                 </div>
                 <div className="body">
                     {!isLoading && <ShowAllNotifications handleResend={handleResend} notifications={notifications} />}
@@ -78,6 +82,7 @@ const ManageNotification = () => {
 
 const ShowAllNotifications = ({ notifications, handleResend }) => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     return (
         <div className="bg-white shadow rounded-lg p-4 overflow-x-auto mt-10">
@@ -85,19 +90,19 @@ const ShowAllNotifications = ({ notifications, handleResend }) => {
                 <thead className="bg-gray-50">
                     <tr>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            ID
+                            {t("botNotifications.info.id")}
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Message
+                            {t("botNotifications.info.message")}
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Sent By
+                            {t("botNotifications.info.sentBy")}
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Sent At
+                            {t("botNotifications.info.sentAt")}
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Resend
+                            {t("botNotifications.info.resend")}
                         </th>
                     </tr>
                 </thead>
@@ -127,7 +132,9 @@ const ShowAllNotifications = ({ notifications, handleResend }) => {
                                         e.stopPropagation();
                                         handleResend(notification.id);
                                     }}
-                                    className="bg-emerald-400 text-white py-2 px-5 rounded-lg hover:bg-emerald-700 transition-all duration-300">Resend</button>
+                                    className="bg-emerald-400 text-white py-2 px-5 rounded-lg hover:bg-emerald-700 transition-all duration-300">
+                                    {t("botNotifications.info.resend")}
+                                </button>
                             </td>
                         </tr>
                     ))}

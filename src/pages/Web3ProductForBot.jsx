@@ -37,7 +37,7 @@ const Web3ProductForBot = () => {
           Silver Water Mahsulotlari
         </h1>
         <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -69,8 +69,7 @@ const Web3ProductItem = ({ product }) => {
         <h3 className="text-xl font-semibold text-gray-800 mb-2 text-center">
           {product.name}
         </h3>
-        <p className="bg-[#4046BD] inline-block text-white py-1 px-4 font-bold tracking-wider rounded-md">${product.price}</p>
-
+        <p className="bg-[#4046BD] inline-block text-white py-1 px-4 font-bold tracking-wider rounded-md">{product.price} so'm</p>
       </div>
     </motion.div>
   );

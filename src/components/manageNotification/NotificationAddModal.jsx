@@ -2,11 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { MdOutlineClose } from "react-icons/md";
 import { notifyError, notifySuccess } from "../../helper/toast";
 import { sendMessage } from "../../api/request/botNotification/botNotification.api";
+import { useTranslation } from "react-i18next";
 
 const NotificationAddModal = ({ onClose, addToNotifications }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState("");
     const messageRef = useRef();
+    const { t } = useTranslation();
 
     useEffect(() => {
         messageRef.current.focus();
@@ -59,7 +61,9 @@ const NotificationAddModal = ({ onClose, addToNotifications }) => {
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="top flex items-center justify-between">
-                    <h2 className="text-2xl font-semibold">Add New Notification</h2>
+                    <h2 className="text-2xl font-semibold">
+                        {t("botNotifications.addModal.title")}
+                    </h2>
                     <button className="text-2xl border-black border-[2px] shadow rounded-full p-2 transition-all duration-300">
                         <MdOutlineClose onClick={onClose} />
                     </button>
@@ -70,7 +74,7 @@ const NotificationAddModal = ({ onClose, addToNotifications }) => {
                             ref={messageRef}
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
-                            placeholder="Notification message"
+                            placeholder={t("botNotifications.addModal.placeHolder")}
                             className="w-full h-32 border rounded p-2"
                         ></textarea>
                     </label>
@@ -80,10 +84,10 @@ const NotificationAddModal = ({ onClose, addToNotifications }) => {
                             className="bg-green-600 text-white py-2 px-5 rounded-lg hover:bg-green-700 transition-all duration-300 shadow-lg shadow-green-200 mt-3"
                             disabled={isLoading}
                         >
-                            Send To All Users
+                            {t("botNotifications.addModal.sendAll")}
                         </button>
                         <p className={`text-right text-sm ${message.length > 4000 ? "text-red-600" : "text-gray-500"} mt-1`}>
-                            {message.length} characters
+                            {message.length} {t("botNotifications.addModal.chars")}
                         </p>
                     </div>
                 </div>
